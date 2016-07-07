@@ -1,0 +1,13 @@
+body {
+    position: relative;
+}
+
+.bodyBg {
+    position: absolute;
+    display: block;
+    bottom: 0;
+}
+
+.hidden {
+    display: none;
+}
