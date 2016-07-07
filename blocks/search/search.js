@@ -46,7 +46,6 @@ class Search {
     }
 
     _updateSuggest() {
-        console.log('val', this.val);
         if (this.val === '') {
             this._hideSuggest();
             return;

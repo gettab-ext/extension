@@ -69,8 +69,8 @@
     </div><!-- topLeft -->
 
     <div class="topRight">
-        <a href="#" class="btn" data-bind="visible: apps()"><i class="icon icon-tmenu-apps"></i>Apps</a>
-        <a href="#" class="btn" data-bind="visible: bookmarks()"><i class="icon icon-tmenu-bookmarks"></i>Bookmarks</a>
+        <a href="#" class="btn" data-bind="visible: apps()" data-block="apps"><i class="icon icon-tmenu-apps"></i>Apps</a>
+        <a href="#" class="btn" data-bind="visible: bookmarks()" data-block="bookmarks"><i class="icon icon-tmenu-bookmarks"></i>Bookmarks</a>
         <div class="btn-group">
             <a class="gallerySw" title="photo"><i class="icon icon-tmenu-photo"></i></a>
             <a class="" title="volume" data-bind="visible: music()"><i class="icon icon-tmenu-volume"></i></a>
@@ -95,7 +95,7 @@
 
     <div>
         <label><i class="icon icon-lmenu-logo"></i>Logo</label>
-        <label data-bind="css: {'switcher': true, 'active': logo}">
+        <label data-bind="css: {'switcher': true, 'active': logo}" data-toggle="logo" class="switcher">
             <span></span>
             <span class="active"></span>
             <input type="checkbox" name="logo" data-bind="checked: logo">
@@ -103,7 +103,7 @@
     </div>
     <div>
         <label><i class="icon icon-lmenu-greetings"></i>Greetings</label>
-        <label data-bind="css: {'switcher': true, 'active': greetings}">
+        <label data-bind="css: {'switcher': true, 'active': greetings}" data-toggle="greetings" class="switcher">
             <span></span>
             <span class="active"></span>
             <input type="checkbox" name="greetings" data-bind="checked: greetings">
@@ -120,7 +120,7 @@
     </div>
     <div>
         <label><i class="icon icon-lmenu-apps"></i>Apps</label>
-        <label data-bind="css: {'switcher': true, 'active': apps}">
+        <label data-bind="css: {'switcher': true, 'active': apps}" data-toggle="apps" class="switcher">
             <span></span>
             <span class="active"></span>
             <input type="checkbox" name="apps" data-bind="checked: apps">
@@ -128,7 +128,7 @@
     </div>
     <div>
         <label><i class="icon icon-lmenu-bookmarks"></i>Bookmarks</label>
-        <label data-bind="css: {'switcher': true, 'active': bookmarks}">
+        <label data-bind="css: {'switcher': true, 'active': bookmarks}" data-toggle="bookmarks" class="switcher">
             <span></span>
             <span class="active"></span>
             <input type="checkbox" name="bookmarks" data-bind="checked: bookmarks">
@@ -136,7 +136,7 @@
     </div>
     <div>
         <label><i class="icon icon-lmenu-most-visited"></i>Most Visited</label>
-        <label data-bind="css: {'switcher': true, 'active': mostVisited}">
+        <label data-bind="css: {'switcher': true, 'active': mostVisited}" data-toggle="most-visited" class="switcher">
             <span></span>
             <span class="active"></span>
             <input type="checkbox" name="mostVisited" data-bind="checked: mostVisited">
@@ -146,7 +146,7 @@
     </div>
     <div>
         <label><i class="icon icon-lmenu-recently-closed"></i>Recently closed</label>
-        <label data-bind="css: {'switcher': true, 'active': recentlyClosed}">
+        <label data-bind="css: {'switcher': true, 'active': recentlyClosed}" data-toggle="recently-closed" class="switcher">
             <span></span>
             <span class="active"></span>
             <input type="checkbox" name="recentlyClosed" data-bind="checked: recentlyClosed">
@@ -155,7 +155,7 @@
     </div>
     <div>
         <label><i class="icon icon-lmenu-music"></i>Music</label>
-        <label data-bind="css: {'switcher': true, 'active': music}">
+        <label data-bind="css: {'switcher': true, 'active': music}" data-toggle="music" class="switcher">
             <span></span>
             <span class="active"></span>
             <input type="checkbox" name="music" data-bind="checked: music">

@@ -1,0 +1,4 @@
+.leftcol>div .switcher input[type=checkbox] {
+    position: absolute;
+    left: -9999em;
+}

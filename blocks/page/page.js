@@ -1,5 +1,4 @@
-require('./page.css');
-
+import './page.css';
 import '../most-visited/most-visited';
 
 const _ = require('lodash');
@@ -10,25 +9,53 @@ const blocks = {
     },
     'most-visited': {
         visible: true
+    },
+    'logo': {
+        visible: true
+    },
+    'greetings': {
+        visible: true
+    },
+    'apps': {
+        visible: false
+    },
+    'bookmarks': {
+        visible: true
+    },
+    'recently-closed': {
+        visible: true
+    },
+    'music': {
+        visible: true
     }
 };
 
 class Page {
     constructor() {
 
-        $(window).on('settings_updated', () => this.onSettingsUpdated());
+        $(window).on('settings_updated', () => this._onSettingsUpdated());
+        this._updateBlockVisibility();
 
     }
 
 
-    onSettingsUpdated() {
+    _onSettingsUpdated() {
         this._updateBlockVisibility();
     }
 
     _updateBlockVisibility() {
         _.forOwn(blocks, (blockProps, blockName) => {
-            this.getBlockElem(blockName).toggleClass('hidden', !blockProps.visible);
+            Page.getBlockElem(blockName).toggleClass('hidden', !blockProps.visible);
         });
+    }
+
+    static isBlockVisible(blockName) {
+        return blocks[blockName].visible;
+    }
+
+    static setBlockVisibility(blockName, state) {
+        blocks[blockName].visible = !!state;
+        $(window).trigger('settings_updated');
     }
 
     static getBlockElem(blockName) {
