@@ -10,7 +10,8 @@ var dir_html = path.resolve(__dirname, 'html');
 var dir_styles = path.resolve(__dirname, 'styles');
 var dir_build = path.resolve(__dirname, 'build');
 var dir_images = path.resolve(__dirname, 'images');
-var fonts_images = path.resolve(__dirname, 'fonts');
+var dir_fonts = path.resolve(__dirname, 'fonts');
+var dir_libs = path.resolve(__dirname, 'libs');
 
 module.exports = {
     entry: path.resolve(dir_js, 'main.js'),
@@ -29,29 +30,27 @@ module.exports = {
             },
             {
                 loader: 'babel-loader',
-                test: dir_js,
+                test: /\.js$/,
             }
         ]
     },
     plugins: [
         // Simply copies the files over
         new CopyWebpackPlugin([
-            { from: dir_html } // to: output.path
-        ]),
-        new CopyWebpackPlugin([
-            { from: dir_styles } // to: output.path
-        ]),
-        new CopyWebpackPlugin([
             {
+                from: dir_html // to: output.path
+            }, {
+                from: dir_styles,
+                to: 'styles'
+            }, {
                 from: dir_images,
                 to: 'images'
-            } // to: output.path
-        ]),
-        new CopyWebpackPlugin([
-            {
-                from: fonts_images,
+            }, {
+                from: dir_fonts,
                 to: 'fonts'
-            } // to: output.path
+            }, {
+                from: dir_libs // to: output.path
+            }
         ]),
         // Avoid publishing files when compilation fails
         new webpack.NoErrorsPlugin()

@@ -4,35 +4,76 @@
     <meta charset="UTF-8">
     <title>Gettab</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <!--[if lt IE 9]>
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="styles/styles.min.css">
     <title></title>
 </head>
 <body>
-<div class="bodyBg"></div>
-<div id="searchForm" data-block="search">
-    <form action="index_main.html" method="post">
+<div class="bodyBg">
+    <div class="readout" style="margin-left:500px; background:black; opacity: 0.7; width: 400px">
+        <h3>What's in the model?</h3>
+        <table>
+            <tr>
+                <td class="label" style="width:150px;">Logo:</td>
+                <td data-bind='text: logo() ? "True" : "False"'></td>
+            </tr>
+            <tr>
+                <td class="label">greetings:</td>
+                <td data-bind='text: greetings() ? "True" : "False"'></td>
+            </tr>
+            <tr>
+                <td class="label">search:</td>
+                <td data-bind='text: search'></td>
+            </tr>
+            <tr>
+                <td class="label">searchText:</td>
+                <td data-bind='text: searchText'></td>
+            </tr>
+            <tr>
+                <td class="label">apps:</td>
+                <td data-bind='text: apps() ? "True" : "False"'></td>
+            </tr>
+            <tr>
+                <td class="label">bookmarks:</td>
+                <td data-bind='text: bookmarks() ? "True" : "False"'></td>
+            </tr>
+            <tr>
+                <td class="label">mostVisited:</td>
+                <td data-bind='text: mostVisited() ? "True" : "False"'></td>
+            </tr>
+            <tr>
+                <td class="label">recentlyClosed:</td>
+                <td data-bind='text: recentlyClosed() ? "True" : "False"'></td>
+            </tr>
+            <tr>
+                <td class="label">music:</td>
+                <td data-bind='text: music() ? "True" : "False"'></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="searchForm">
+    <form data-bind="submit: doSearch" data-block="search">
         <div class="searchLine">
-            <input type="text" name="search" placeholder="Search the web">
-            <button><i class="icon icon-search-black"></i></button>
+            <input type="text" name="search" placeholder="Search the web" data-bind='value: searchText, valueUpdate: "afterkeydown"'>
+            <button type="submit"><i class="icon icon-search-black"></i></button>
+            <div class="suggest"></div>
         </div>
     </form>
-    <p>Most visited:  <i class="icon icon-mv-yandex"></i>Yandex        <i class="icon icon-mv-yandex"></i>Gismeteo        <i class="icon icon-mv-yandex"></i>Google</p>
+    <p data-block="most-visited" data-bind="visible: mostVisited()">Most visited:  <i class="icon icon-mv-yandex"></i>Yandex        <i class="icon icon-mv-yandex"></i>Gismeteo        <i class="icon icon-mv-yandex"></i>Google</p>
 </div>
 
 <div class="top wrapper">
     <div class="topLeft">
         <a class="btn" id="leftMenuSwitch"><i class="icon icon-tmenu-menu"></i></a>
-        <i class="icon icon-logo"></i>
+        <i class="icon icon-logo" data-bind="visible: logo()"></i>
     </div><!-- topLeft -->
 
     <div class="topRight">
-        <a href="#" class="btn"><i class="icon icon-tmenu-apps"></i>Apps</a>
-        <a href="#" class="btn"><i class="icon icon-tmenu-bookmarks"></i>Bookmarks</a>
+        <a href="#" class="btn" data-bind="visible: apps()"><i class="icon icon-tmenu-apps"></i>Apps</a>
+        <a href="#" class="btn" data-bind="visible: bookmarks()"><i class="icon icon-tmenu-bookmarks"></i>Bookmarks</a>
         <div class="btn-group">
             <a class="gallerySw" title="photo"><i class="icon icon-tmenu-photo"></i></a>
-            <a class="" title="volume"><i class="icon icon-tmenu-volume"></i></a>
+            <a class="" title="volume" data-bind="visible: music()"><i class="icon icon-tmenu-volume"></i></a>
             <a class="" title="windows"><i class="icon icon-tmenu-windows"></i></a>
             <a class="" title="fav"><i class="icon icon-tmenu-fav"></i></a>
         </div>
@@ -40,7 +81,7 @@
 </div><!-- .top.wrapper -->
 
 <div class="bottom wrapper">
-    <div class="weatherWidget" data-block="weather">
+    <div class="weatherWidget">
         <div>18°C</div>
         <div>
             <p>Chernihiv</p>
@@ -54,58 +95,70 @@
 
     <div>
         <label><i class="icon icon-lmenu-logo"></i>Logo</label>
-        <label class="switcher">
+        <label data-bind="css: {'switcher': true, 'active': logo}">
             <span></span>
             <span class="active"></span>
-            <input type="checkbox">
+            <input type="checkbox" name="logo" data-bind="checked: logo">
         </label>
     </div>
     <div>
         <label><i class="icon icon-lmenu-greetings"></i>Greetings</label>
-        <label class="switcher">
+        <label data-bind="css: {'switcher': true, 'active': greetings}">
             <span></span>
             <span class="active"></span>
-            <input type="checkbox">
+            <input type="checkbox" name="greetings" data-bind="checked: greetings">
         </label>
     </div>
     <div>
         <label><i class="icon icon-lmenu-search"></i>Search</label>
 
         <div class="radios">
-            <label for="se01"><span class="radio"><input type="radio" name="searchEngine" id="se01" checked=""></span>Google</label>
-            <label for="se02"><span class="radio"><input type="radio" name="searchEngine" id="se02"></span>Yandex</label>
-            <label for="se03"><span class="radio"><input type="radio" name="searchEngine" id="se03"></span>Yahoo</label>
+            <label for="se01"><span data-bind="css: {'radio': true, 'active': (search()=='google')}"><input type="radio" name="search" value="google" id="se01" data-bind="checked: search"></span>Google</label>
+            <label for="se02"><span data-bind="css: {'radio': true, 'active': (search()=='yandex')}"><input type="radio" name="search" value="yandex" id="se02" data-bind="checked: search"></span>Yandex</label>
+            <label for="se03"><span data-bind="css: {'radio': true, 'active': (search()=='yahoo')}"><input type="radio" name="search" value ="yahoo" id="se03" data-bind="checked: search"></span>Yahoo</label>
         </div>
     </div>
     <div>
         <label><i class="icon icon-lmenu-apps"></i>Apps</label>
-        <label class="switcher">
+        <label data-bind="css: {'switcher': true, 'active': apps}">
             <span></span>
             <span class="active"></span>
-            <input type="checkbox">
+            <input type="checkbox" name="apps" data-bind="checked: apps">
         </label>
     </div>
     <div>
         <label><i class="icon icon-lmenu-bookmarks"></i>Bookmarks</label>
-        <label class="switcher">
-            <input type="checkbox">
+        <label data-bind="css: {'switcher': true, 'active': bookmarks}">
+            <span></span>
+            <span class="active"></span>
+            <input type="checkbox" name="bookmarks" data-bind="checked: bookmarks">
         </label>
     </div>
     <div>
         <label><i class="icon icon-lmenu-most-visited"></i>Most Visited</label>
+        <label data-bind="css: {'switcher': true, 'active': mostVisited}">
+            <span></span>
+            <span class="active"></span>
+            <input type="checkbox" name="mostVisited" data-bind="checked: mostVisited">
+        </label>
         <a href="#">Restore all</a>
         <a href="#">Clear all</a>
     </div>
     <div>
         <label><i class="icon icon-lmenu-recently-closed"></i>Recently closed</label>
+        <label data-bind="css: {'switcher': true, 'active': recentlyClosed}">
+            <span></span>
+            <span class="active"></span>
+            <input type="checkbox" name="recentlyClosed" data-bind="checked: recentlyClosed">
+        </label>
         <a href="#">Clear all</a>
     </div>
     <div>
         <label><i class="icon icon-lmenu-music"></i>Music</label>
-        <label class="switcher">
+        <label data-bind="css: {'switcher': true, 'active': music}">
             <span></span>
             <span class="active"></span>
-            <input type="checkbox" checked="">
+            <input type="checkbox" name="music" data-bind="checked: music">
         </label>
     </div>
 </div>
@@ -255,8 +308,9 @@
 
 </div><!-- gallery_box -->
 
-<script type="text/javascript" src="js/scripts.min.js"></script>
-
+<script src="jquery.min.js"></script>
+<script src="knockout.js"></script>
 <script src="bundle.js"></script>
+
 </body>
 </html>

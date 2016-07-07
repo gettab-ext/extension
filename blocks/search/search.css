@@ -1,0 +1,13 @@
+.suggest {
+    position: absolute;
+    top: 60px;
+    left: 48px;
+    right: 48px;
+    background: white;
+    color: black;
+    z-index: 1;
+}
+
+.suggest_hidden {
+    display: none;
+}
