@@ -12,6 +12,7 @@ var dir_build = path.resolve(__dirname, 'build');
 var dir_images = path.resolve(__dirname, 'images');
 var dir_fonts = path.resolve(__dirname, 'fonts');
 var dir_libs = path.resolve(__dirname, 'libs');
+var dir_wallpapers = path.resolve(__dirname, 'wallpapers');
 
 module.exports = {
     entry: path.resolve(dir_js, 'main.js'),
@@ -50,6 +51,9 @@ module.exports = {
                 to: 'fonts'
             }, {
                 from: dir_libs // to: output.path
+            }, {
+                from: dir_wallpapers,
+                to: 'wallpapers'
             }
         ]),
         // Avoid publishing files when compilation fails

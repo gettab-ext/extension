@@ -8,49 +8,7 @@
     <title></title>
 </head>
 <body>
-<div class="bodyBg">
-    <div class="readout" style="margin-left:500px; background:black; opacity: 0.7; width: 400px">
-        <h3>What's in the model?</h3>
-        <table>
-            <tr>
-                <td class="label" style="width:150px;">Logo:</td>
-                <td data-bind='text: logo() ? "True" : "False"'></td>
-            </tr>
-            <tr>
-                <td class="label">greetings:</td>
-                <td data-bind='text: greetings() ? "True" : "False"'></td>
-            </tr>
-            <tr>
-                <td class="label">search:</td>
-                <td data-bind='text: search'></td>
-            </tr>
-            <tr>
-                <td class="label">searchText:</td>
-                <td data-bind='text: searchText'></td>
-            </tr>
-            <tr>
-                <td class="label">apps:</td>
-                <td data-bind='text: apps() ? "True" : "False"'></td>
-            </tr>
-            <tr>
-                <td class="label">bookmarks:</td>
-                <td data-bind='text: bookmarks() ? "True" : "False"'></td>
-            </tr>
-            <tr>
-                <td class="label">mostVisited:</td>
-                <td data-bind='text: mostVisited() ? "True" : "False"'></td>
-            </tr>
-            <tr>
-                <td class="label">recentlyClosed:</td>
-                <td data-bind='text: recentlyClosed() ? "True" : "False"'></td>
-            </tr>
-            <tr>
-                <td class="label">music:</td>
-                <td data-bind='text: music() ? "True" : "False"'></td>
-            </tr>
-        </table>
-    </div>
-</div>
+<div class="bodyBg"></div>
 <div id="searchForm">
     <form data-bind="submit: doSearch" data-block="search">
         <div class="searchLine">
@@ -90,9 +48,8 @@
     </div>
 </div><!-- .bottom.wrapper -->
 
-
+<div class="leftcol-wrapper">
 <div class="leftcol modal">
-
     <div>
         <label><i class="icon icon-lmenu-logo"></i>Logo</label>
         <label data-bind="css: {'switcher': true, 'active': logo}" data-toggle="logo" class="switcher">
@@ -162,6 +119,7 @@
         </label>
     </div>
 </div>
+</div>
 
 <div class="weather_box modal">
     <div class="wrapper">
@@ -200,91 +158,19 @@
         <li data-tab="tb4">Settings</li>
     </ul>
     <div class="window_list">
-        <div id="tb1" class="active">
+        <div id="tb1" class="gallery-tab active">
             <div class="gallery flexcroll">
 
                 <ul id="scroller_base">
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0001.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0002.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0003.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
-                    <li><a href="#"><img src="images/content/bg_thumb_0004.jpg" alt=""><span class="fav"><i class="icon icon-add-favorites"></i></span></a></li>
                 </ul>
 
             </div><!-- gallery -->
         </div>
-        <div id="tb2">
+        <div id="tb2" class="gallery-tab">
             <h2>You don`t have any favorites yet!</h2>
             <p>Like photos to add them to your favorites</p>
         </div>
-        <div id="tb3">
+        <div id="tb3" class="gallery-tab">
             <div id="dropbox">
                 <h2>Drag and drop</h2>
                 <p>Your image here to upload (<i class="icon icon-file-image"></i>JPG, PNG & BMP)</p>
@@ -293,7 +179,7 @@
             </div>
 
         </div>
-        <div id="tb4">
+        <div id="tb4" class="gallery-tab">
             <h2>Open new tab with</h2>
             <form action="" name="gallerySettings">
                 <p>

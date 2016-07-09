@@ -30,10 +30,12 @@ const blocks = {
     }
 };
 
+
+
 class Page {
     constructor() {
 
-        $(window).on('settings_updated', () => this._onSettingsUpdated());
+        $(window).on(Page.EVENTS.settingsUpdated, () => this._onSettingsUpdated());
         this._updateBlockVisibility();
 
     }
@@ -55,13 +57,23 @@ class Page {
 
     static setBlockVisibility(blockName, state) {
         blocks[blockName].visible = !!state;
-        $(window).trigger('settings_updated');
+        $(window).trigger(Page.EVENTS.settingsUpdated);
     }
 
     static getBlockElem(blockName) {
         return $(`[data-block="${blockName}"]`);
     }
+
+    static onModalShow() {
+        $('.modal.active').removeClass('active');
+    }
+
 }
+
+Page.EVENTS = {
+    settingsUpdated: 'settings_updated',
+    modalShow: 'modal_show'
+};
 
 window.page = new Page();
 window.blocks = {};
