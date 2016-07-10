@@ -1,5 +1,5 @@
-import Page from '../page/page';
-import './background.css';
+import page from '../page/page';
+import './wallpaper.css';
 
 const WALLPAPERS = [{
     "name": "Default",
@@ -31,12 +31,14 @@ class Background {
         this._bindEvents();
         this._fillWallpaperList();
 
+        this.$wallpaperContainer = $(".bodyBg");
+
     }
 
     _bindEvents() {
 
         $('.gallerySw').click(function(){
-            Page.onModalShow();
+            page.onModalShow();
             $('.gallery_box').toggleClass('active');
         });
 
@@ -56,6 +58,12 @@ class Background {
         const wallpaperListHtml = WALLPAPERS.map(wallpaperThumbTmpl).join('');
 
         wallpaperListContainer.html(wallpaperListHtml);
+    }
+
+    _setWallpaper() {
+
+
+
     }
 
 }

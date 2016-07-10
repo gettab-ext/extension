@@ -1,9 +1,10 @@
 import './page.css';
 import '../most-visited/most-visited';
 
-const _ = require('lodash');
+import settings from '../settings/settings';
+import _ from 'lodash';
 
-const blocks = {
+const BLOCKS_DEFAULT = {
     'search': {
         visible: true
     },
@@ -30,42 +31,64 @@ const blocks = {
     }
 };
 
-
+const BLOCK_SETTINGS_STORAGE_KEY = 'blockSettings';
 
 class Page {
     constructor() {
 
-        $(window).on(Page.EVENTS.settingsUpdated, () => this._onSettingsUpdated());
-        this._updateBlockVisibility();
+        $(window).on(Page.EVENTS.settingsUpdated, () => this._onBlockSettingsUpdated());
 
+        this._inited = settings.inited().then(() => this._loadBlockSettings());
+
+        this._bindCommonEvents();
     }
 
+    _loadBlockSettings() {
+        this._blocks = settings.get(BLOCK_SETTINGS_STORAGE_KEY) || BLOCKS_DEFAULT;
+        this._updateBlockVisibility();
+    }
 
-    _onSettingsUpdated() {
+    _onBlockSettingsUpdated() {
+        settings.set(BLOCK_SETTINGS_STORAGE_KEY, this._blocks);
         this._updateBlockVisibility();
     }
 
     _updateBlockVisibility() {
-        _.forOwn(blocks, (blockProps, blockName) => {
-            Page.getBlockElem(blockName).toggleClass('hidden', !blockProps.visible);
+        _.forOwn(this._blocks, (blockProps, blockName) => {
+            this.getBlockElem(blockName).toggleClass('hidden', !blockProps.visible);
         });
     }
 
-    static isBlockVisible(blockName) {
-        return blocks[blockName].visible;
+    _bindCommonEvents() {
+        $('.bodyBg').click(() => this.hideModals());
     }
 
-    static setBlockVisibility(blockName, state) {
-        blocks[blockName].visible = !!state;
-        $(window).trigger(Page.EVENTS.settingsUpdated);
+    inited() {
+        return this._inited;
     }
 
-    static getBlockElem(blockName) {
+    isBlockVisible(blockName) {
+        return this._blocks[blockName] && this._blocks[blockName].visible || false;
+    }
+
+    setBlockVisibility(blockName, state) {
+        if (!this._blocks[blockName]) {
+            this._blocks[blockName] = {};
+        }
+        this._blocks[blockName].visible = !!state;
+        this._onBlockSettingsUpdated();
+    }
+
+    getBlockElem(blockName) {
         return $(`[data-block="${blockName}"]`);
     }
 
-    static onModalShow() {
+    hideModals() {
         $('.modal.active').removeClass('active');
+    }
+
+    onModalShow() {
+        this.hideModals();
     }
 
 }
@@ -75,7 +98,8 @@ Page.EVENTS = {
     modalShow: 'modal_show'
 };
 
-window.page = new Page();
+const page = new Page();
+
 window.blocks = {};
 
-export default Page;
+export default page;

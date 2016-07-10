@@ -1,9 +1,9 @@
-import Page from '../page/page';
+import page from '../page/page';
 import './search.css'
 
 class Search {
     constructor() {
-        this.$elem = Page.getBlockElem('search');
+        this.$elem = page.getBlockElem('search');
         this.$input = $("input", this.$elem);
         this.$suggest = $(".suggest", this.$elem);
 

@@ -1,6 +1,11 @@
 import 'babel-polyfill';
 
+window.addEventListener('unhandledrejection', function(event) {
+    console.error('Unhandled rejection (promise: ', event.promise, ', reason: ', event.reason, ').');
+});
+
+import '../blocks/settings/settings';
 import '../blocks/page/page';
 import '../blocks/search/search';
-import '../blocks/settings/settings';
-import '../blocks/background/background';
+import '../blocks/settings-panel/settings-panel';
+import '../blocks/wallpaper/wallpaper';

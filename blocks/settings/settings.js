@@ -1,53 +1,63 @@
-import Page from '../page/page';
-import './settings.css';
+/* global chrome */
+import _ from 'lodash';
 
-class Settings {
-    constructor() {
-        this.$elem = $('.leftcol');
+const STORAGE_KEY = "userSettings";
 
-        this._bindHandlers();
-    }
-
-    _bindHandlers() {
-
-        $('#leftMenuSwitch').click( function(){
-            $('.modal.active:not(.leftcol)').removeClass('active');
-            $('.leftcol').toggleClass('active');
-        });
-
-        const togglers$ = Array.from($(".leftcol label[data-toggle]")).forEach($toggle => {
-            $toggle = $($toggle);
-            const toggleContainer$ = $toggle.parent();
-            const blockName = $toggle.data('toggle');
-
-            console.log('bind, ', blockName);
-            toggleContainer$.on('click', () => this._onToggleClick($toggle));
-
-            if (Page.isBlockVisible(blockName)) {
-                $toggle.addClass('active');
-            } else {
-                $toggle.removeClass('active');
+if (!chrome.storage) {
+    chrome.storage = {
+        local: {
+            get(key, callback) {
+                const value = localStorage.getItem(key);
+                callback({
+                    [key]: value ? JSON.parse(value) : undefined
+                });
+            },
+            set(object, callback) {
+                _.forOwn(object, (value, key) => {
+                    localStorage.setItem(key, JSON.stringify(value));
+                });
+                callback();
             }
-        })
-
-    }
-
-    _onToggleClick($toggle) {
-        const blockName = $toggle.data('toggle');
-
-        console.log('blockName', Page.isBlockVisible(blockName));
-
-        if (Page.isBlockVisible(blockName)) {
-            $toggle.removeClass('active');
-            Page.setBlockVisibility(blockName, false);
-        } else {
-            $toggle.addClass('active');
-            Page.setBlockVisibility(blockName, true);
         }
-
-        return false;
-
     }
 }
 
-window.blocks.settings = new Settings();
+class Settings {
+    constructor() {
+
+        this._inited = this._loadSettings();
+
+    }
+
+    _loadSettings() {
+        return new Promise(resolve => {
+            chrome.storage.local.get(STORAGE_KEY, items => {
+                this._settings = Object.assign({}, items[STORAGE_KEY]);
+                resolve();
+            });
+        });
+    }
+
+    set(key, value) {
+        this._settings[key] = value;
+
+        return new Promise(resolve => {
+            chrome.storage.local.set({
+                [STORAGE_KEY]: this._settings
+            }, () => resolve());
+        });
+    }
+
+    get(key) {
+        return this._settings[key];
+    }
+
+    inited() {
+        return this._inited;
+    }
+
+}
+
+const settings = new Settings();
+
+export default settings;
