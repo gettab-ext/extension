@@ -26,7 +26,7 @@ const DEFAULT_WALLPAPPER = WALLPAPERS[0];
 
 const wallpaperThumbTmpl = ({name, path, thumb}) => (`
     <div class="wallpaper-thumb" data-name="${name}" style="background-image: url('${thumb}') ">
-        <div class="wallpaper-thumb__fav"></div>
+        <div class="wallpaper-thumb__fav"><div class="icon icon-add-favorites"></div></div>
     </div>
 `);
 

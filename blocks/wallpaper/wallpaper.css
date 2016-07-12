@@ -64,10 +64,29 @@
     cursor: pointer;
     -webkit-filter: brightness(85%);
     transition: -webkit-filter 0.3s ease-out;
+    position: relative;
 }
 
 .wallpaper-thumb:hover {
     -webkit-filter: brightness(100%);
+}
+
+.wallpaper-thumb__fav {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.icon-add-favorites {
+    background-position: -127px -35px;
+    width: 16px;
+    height: 14px;
+    position: relative;
+    top: 5px;
 }
 
 .gallery-tab-list {
