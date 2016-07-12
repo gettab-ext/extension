@@ -1,4 +1,4 @@
-import page from '../page/page';
+import page, {EVENTS} from '../page/page';
 import './wallpaper.css';
 import _ from 'lodash';
 import utils from '../utils/utils';
@@ -34,6 +34,8 @@ class Background {
 
     constructor() {
         this.$wallpaperContainer = $(".bodyBg");
+        this.$wallpaperListContainer = $("#scroller_base");
+        this.$settingPanel = $('.gallery-box');
 
         this._bindEvents();
         this._fillWallpaperList();
@@ -41,29 +43,43 @@ class Background {
     }
 
     _bindEvents() {
+        $('.gallerySw').click(() => this._showPanel());
 
-        $('.gallerySw').click(function(){
-            page.onModalShow();
-            $('.gallery_box').toggleClass('active');
+        $(".gallery-tab-list__button").click(e => {
+            const $tabButton = $(e.target);
+            const tabId = $tabButton.data('tab');
+            this._onTabButtonClick(tabId, $tabButton);
         });
 
-        $('.tab_list li').click(function(){
-            $(this).parent('.tab_list').find('li').removeClass('active');
-            $(this).addClass('active');
+        this.$wallpaperListContainer.on('click', '.wallpaper-thumb', e => this._onThumbClick(e));
+        $(".gallery-close", this.$settingPanel).click(() => this._hidePanel());
+        $(window).on(EVENTS.hideModals, () => this._hidePanel());
+    }
 
-            var $idTab = $(this).data('tab');
-            $(this).parent('.tab_list').next('.window_list').find('div').removeClass('active');
-            $(this).parent('.tab_list').next('.window_list').find('div#' + $idTab).addClass('active');
-        });
+    _showPanel() {
+        page.onModalShow();
+        this.$settingPanel.addClass('gallery-box_active');
+    }
 
-        $("#scroller_base").on('click', '.wallpaper-thumb', e => this._onThumbClick(e));
+    _hidePanel() {
+        this.$settingPanel.removeClass('gallery-box_active');
+    }
+
+    _onTabButtonClick(tabId, $tabButton) {
+        $(".gallery-tab-list__button").removeClass("gallery-tab-list__button_active");
+        $tabButton.addClass("gallery-tab-list__button_active");
+        this._setActiveTab(tabId);
+    }
+
+    _setActiveTab(tabId) {
+        this.$settingPanel.find(".gallery-tab").removeClass('active');
+        this.$settingPanel.find('.gallery-tab#' + tabId).addClass('active');
     }
 
     _fillWallpaperList() {
-        const wallpaperListContainer = $("#scroller_base");
         const wallpaperListHtml = WALLPAPERS.map(wallpaperThumbTmpl).join('');
 
-        wallpaperListContainer.html(wallpaperListHtml);
+        this.$wallpaperListContainer.html(wallpaperListHtml);
     }
 
     _loadWallpaperSettings() {

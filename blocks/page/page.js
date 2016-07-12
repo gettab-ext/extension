@@ -31,12 +31,18 @@ const BLOCKS_DEFAULT = {
     }
 };
 
+export const EVENTS = {
+    settingsUpdated: 'settings_updated',
+    modalShow: 'modal_show',
+    hideModals: 'hide_modals'
+};
+
 const BLOCK_SETTINGS_STORAGE_KEY = 'blockSettings';
 
 class Page {
     constructor() {
 
-        $(window).on(Page.EVENTS.settingsUpdated, () => this._onBlockSettingsUpdated());
+        $(window).on(EVENTS.settingsUpdated, () => this._onBlockSettingsUpdated());
 
         this._inited = settings.inited().then(() => this._loadBlockSettings());
 
@@ -84,6 +90,7 @@ class Page {
     }
 
     hideModals() {
+        $(window).trigger(EVENTS.hideModals);
         $('.modal.active').removeClass('active');
     }
 
@@ -92,11 +99,6 @@ class Page {
     }
 
 }
-
-Page.EVENTS = {
-    settingsUpdated: 'settings_updated',
-    modalShow: 'modal_show'
-};
 
 const page = new Page();
 
