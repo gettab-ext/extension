@@ -35,10 +35,13 @@ class Weather {
             .then(result => {
                 const forecast = result[0];
                 const cityName = result[1];
-                this._setInited();
+
                 this.$temp.html(this._getConvertedTemp(forecast.currently.apparentTemperature));
                 this.$status.html(forecast.currently.summary);
                 this.$city.html(cityName);
+                this.$time.html(this._getDate());
+
+                this._setInited();
             });
 
     }
@@ -91,6 +94,25 @@ class Weather {
         return $.ajax(geocodeUrl).then(response => {
             return _.get(response, 'response.GeoObjectCollection.featureMember[0].GeoObject.name');
         });
+    }
+
+    _getDate() {
+        const monthNames = [
+            "January", "February", "March",
+            "April", "May", "June", "July",
+            "August", "September", "October",
+            "November", "December"
+        ];
+        const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+        const d = new Date();
+
+        const monthIndex = d.getMonth();
+        const monthName = monthNames[monthIndex];
+        const dayIndex = d.getDay();
+        const dayName = dayNames[dayIndex];
+
+        return `${d.getHours()}:${d.getMinutes()} ${dayName}, ${monthName} ${d.getDate()}, `
     }
 
 
