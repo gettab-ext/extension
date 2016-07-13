@@ -127,33 +127,43 @@
 </div>
 </div>
 
-<div class="weather_box modal">
-    <div class="wrapper">
-        <span class="close"><i class="icon icon-window-close"></i></span>
-        <div class="summary">
-            <div><label>Feels Like</label><span  id="s01">22°</span></div>
-            <div><label>Feels Like</label><span  id="s02">22°</span></div>
-            <div><label>Humidity</label><span    id="s03">38%</span></div>
-            <div><label>Wind (km/h)</label><span id="s04">11</span></div>
-            <div><label>Rain (mm)</label><span   id="s05">0</span></div>
+<div class="weather-box-wrapper">
+    <div class="weather-box">
+        <div class="weather-box__current">
+            <div class="weather-box__current-item weather-box__current-feel">
+                <div class="weather-box__current-title">Feels Like</div>
+                <div class="weather-box__current-value">22</div>
+            </div>
+            <div class="weather-box__current-item weather-box__current-humidity">
+                <div class="weather-box__current-title">Humidity</div>
+                <div class="weather-box__current-value">38</div>
+            </div>
+            <div class="weather-box__current-item weather-box__current-wind">
+                <div class="weather-box__current-title">Wind (km/h)</div>
+                <div class="weather-box__current-value">11</div>
+            </div>
+            <div class="weather-box__current-item weather-box__current-rain">
+                <div class="weather-box__current-title">Rain (mm)</div>
+                <div class="weather-box__current-value">0</div>
+            </div>
         </div>
-        <div class="days">
-            <div><label for="">Friday</label><span      id="d01">21°</span><span id="d11">15°</span></div>
-            <div><label for="">Saturday</label><span    id="d02">21°</span><span id="d12">15°</span></div>
-            <div><label for="">Sunday</label><span      id="d03">21°</span><span id="d13">15°</span></div>
-            <div><label for="">Monday</label><span      id="d04">21°</span><span id="d14">15°</span></div>
-            <div><label for="">Tuesday</label><span     id="d05">21°</span><span id="d15">15°</span></div>
-            <div><label for="">Wednesday</label><span   id="d06">21°</span><span id="d16">15°</span></div>
-        </div>
-        <div class="links">
-            <ul>
-                <li class="btn active">°C</li>
-                <li class="btn">°F</li>
-            </ul>
-            <a id="settingsSw" class="btn"><i class="icon icon-settings"></i>Settings</a>
+        <div class="weather-box__forecast"></div>
+        <div class="weather-box__settings">
+            <div class="weather-box__settings-units">
+                <div class="weather-box__unit-button">
+                    °C
+                </div>
+                <div class="weather-box__unit-button">
+                    °F
+                </div>
+            </div>
+            <div class="weather-box__settings-button">
+                <div class="weather-box__settings-button-icon icon icon-settings"></div>
+                <div class="weather-box__settings-button-title"></div>
+            </div>
         </div>
     </div>
-</div><!-- weather_box -->
+</div>
 
 <div class="gallery-box">
     <span class="gallery-close"><i class="icon icon-window-close"></i></span>
@@ -164,7 +174,7 @@
         <div data-tab="tb4" class="gallery-tab-list__button">Settings</div>
     </div>
     <div class="window_list">
-        <div id="tb1" class="wea active">
+        <div id="tb1" class="gallery-tab active">
             <div class="gallery">
 
                 <ul id="scroller_base">

@@ -7,6 +7,7 @@ import storage from '../utils/storage';
 import utils from '../utils/utils';
 
 const WEATHER_STORAGE_KEY = 'forecast-data';
+const MYSTART_STORAGE_KEY = 'mystart-forecast-data';
 const POSITION_STORAGE_KEY = 'position-data';
 
 const WEATHER_API_URL = "http://gettab1.site:8210/w";
@@ -15,6 +16,32 @@ const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
 
 const WEATHER_STORAGE_TIME = 10 * 60 * 1000;
 const POSITION_STORAGE_TIME = 10 * 60 * 1000;
+
+const USE_MYSTART_DATA = true;
+
+const monthNames = [
+    "January", "February", "March",
+    "April", "May", "June", "July",
+    "August", "September", "October",
+    "November", "December"
+];
+const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+const forecastDayTmpl = ({day, minTemp, maxTemp}) => `
+    <div class="weather-box-forecast">
+        <div class="weather-box-forecast__day">
+            ${day}
+        </div>
+        <div class="weather-box-forecast__temp">
+            <div class="weather-box-forecast__min-temp">
+                ${minTemp}
+            </div>
+            <div class="weather-box-forecast__max-temp">
+                ${maxTemp}
+            </div>
+        </div>
+    </div>
+`;
 
 class Weather {
     constructor() {
@@ -28,11 +55,17 @@ class Weather {
         this.$icon = $(".weather-widget__weather-icon");
         this.$status = $(".weather-widget__weather-status");
 
+        this.$forecastContainer = $(".weather-box__forecast");
+
     }
 
     _init() {
 
-
+        if (USE_MYSTART_DATA) {
+            this._loadDataMystart();
+        } else {
+            this._loadDataNative();
+        }
 
     }
 
@@ -44,10 +77,20 @@ class Weather {
                 this.longitude = data.location.longitude;
 
                 this._renderWidget(
-                    data.now.feelsLike,
+                    this._getConvertedTemp(data.now.feelsLike),
                     data.location.city,
                     data.forecast[0].shortDescription
                 );
+
+                const forecast = data.forecast.map(item => {
+                    return {
+                        day: dayNames[(new Date(item.timeLocalStr)).getDay()],
+                        minTemp: item.temperatureLow,
+                        maxTemp: item.temperatureHigh
+                    };
+                });
+
+                this._renderForecast(forecast);
             });
 
     }
@@ -69,8 +112,6 @@ class Weather {
                     cityName,
                     forecast.currently.summary
                 );
-
-                this._setInited();
             });
     }
 
@@ -79,6 +120,12 @@ class Weather {
         this.$status.html(weatherSummary);
         this.$city.html(cityName);
         this.$time.html(this._getDate());
+
+        this._setInited();
+    }
+
+    _renderForecast(forecast) {
+        this.$forecastContainer.html(forecast.map(forecastDayTmpl).join(''));
     }
 
     _setInited() {
@@ -109,27 +156,34 @@ class Weather {
     }
 
     _getForecast() {
-
-        const cachedWeatherData = storage.get(WEATHER_STORAGE_KEY);
-
-        return cachedWeatherData
+        return storage.get(WEATHER_STORAGE_KEY)
             .then(cachedData => {
                 if (cachedData) {
                     console.log('return cached weather data');
                     return cachedData;
-                } else {
-                    const coordString = [this.latitude, this.longitude].join(',');
-                    const apiUrl = `${WEATHER_API_URL}?coord=${coordString}`;
-
-                    return $.ajax(apiUrl)
-                        .then(data => storage.set(WEATHER_STORAGE_KEY, data, WEATHER_STORAGE_TIME));
                 }
+
+                const coordString = [this.latitude, this.longitude].join(',');
+                const apiUrl = `${WEATHER_API_URL}?coord=${coordString}`;
+
+                return $.ajax(apiUrl)
+                    .then(data => storage.set(WEATHER_STORAGE_KEY, data, WEATHER_STORAGE_TIME));
             });
 
     }
 
     _getMystartData() {
-        return $.ajax(MYSTART_WEATHER_API);
+        return storage.get(MYSTART_STORAGE_KEY)
+            .then(cachedData => {
+                if (cachedData) {
+                    console.log('return cached mystart data');
+                    return cachedData;
+                }
+
+                return $.ajax(MYSTART_WEATHER_API)
+                    .then(data => storage.set(MYSTART_STORAGE_KEY, data, WEATHER_STORAGE_TIME));
+
+            });
     }
 
     _getConvertedTemp(temp) {
@@ -146,13 +200,6 @@ class Weather {
     }
 
     _getDate() {
-        const monthNames = [
-            "January", "February", "March",
-            "April", "May", "June", "July",
-            "August", "September", "October",
-            "November", "December"
-        ];
-        const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
         const d = new Date();
 

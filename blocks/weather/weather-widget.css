@@ -49,3 +49,59 @@
 .weather-widget__weather-status {
     text-transform: lowercase;
 }
+
+.weather-box {
+    position: absolute;
+    bottom: 174px;
+    background: black;
+    padding: 20px 40px;
+}
+
+.weather-box__current {
+    display: flex;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+}
+
+.weather-box__current-item {
+    width: 140px;
+}
+
+.weather-box__current-title {
+    font: 12px/20px montserratregular;
+    margin-bottom: 4px;
+}
+
+.weather-box__current-value {
+    font: 28px/28px montserratregular;
+}
+
+.weather-box__forecast {
+    display: flex;
+    padding: 24px 0;
+}
+
+.weather-box-forecast {
+    min-width: 140px;
+}
+
+.weather-box-forecast__day {
+    font: 12px/20px montserratregular;
+}
+
+.weather-box-forecast__temp {
+    display: flex;
+}
+
+.weather-box-forecast__min-temp {
+    display: inline-block;
+    width: 50%;
+    font: 24px/24px montserratregular;
+}
+
+.weather-box-forecast__max-temp {
+    display: inline-block;
+    width: 50%;
+    font: 24px/24px montserratregular;
+    color: #4e6ac8;
+}
