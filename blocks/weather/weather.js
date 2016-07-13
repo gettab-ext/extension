@@ -11,6 +11,7 @@ const POSITION_STORAGE_KEY = 'position-data';
 
 const WEATHER_API_URL = "http://gettab1.site:8210/w";
 const GEOCODE_API_URL = 'http://gettab1.site:8210/g';
+const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
 
 const WEATHER_STORAGE_TIME = 10 * 60 * 1000;
 const POSITION_STORAGE_TIME = 10 * 60 * 1000;
@@ -31,6 +32,27 @@ class Weather {
 
     _init() {
 
+
+
+    }
+
+    _loadDataMystart() {
+        Promise.resolve()
+            .then(() => this._getMystartData())
+            .then(data => {
+                this.latitude = data.location.latitude;
+                this.longitude = data.location.longitude;
+
+                this._renderWidget(
+                    data.now.feelsLike,
+                    data.location.city,
+                    data.forecast[0].shortDescription
+                );
+            });
+
+    }
+
+    _loadDataNative() {
         Promise.resolve()
             .then(() => this._getPosition())
             .then(position => {
@@ -42,14 +64,21 @@ class Weather {
                 const forecast = result[0];
                 const cityName = result[1];
 
-                this.$temp.html(this._getConvertedTemp(forecast.currently.apparentTemperature));
-                this.$status.html(forecast.currently.summary);
-                this.$city.html(cityName);
-                this.$time.html(this._getDate());
+                this._renderWidget(
+                    this._getConvertedTemp(forecast.currently.apparentTemperature),
+                    cityName,
+                    forecast.currently.summary
+                );
 
                 this._setInited();
             });
+    }
 
+    _renderWidget(currentTemp, cityName, weatherSummary) {
+        this.$temp.html(currentTemp);
+        this.$status.html(weatherSummary);
+        this.$city.html(cityName);
+        this.$time.html(this._getDate());
     }
 
     _setInited() {
@@ -97,6 +126,10 @@ class Weather {
                 }
             });
 
+    }
+
+    _getMystartData() {
+        return $.ajax(MYSTART_WEATHER_API);
     }
 
     _getConvertedTemp(temp) {
