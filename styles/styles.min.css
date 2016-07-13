@@ -376,7 +376,7 @@ body {
     position: relative
 }
 
-.bottom.wrapper, .top.wrapper {
+.top.wrapper {
     width: 100%;
     position: absolute;
     left: 0
@@ -389,12 +389,6 @@ body {
 
 .radio.active {
     background: url(../images/radio.png) 0 -14px
-}
-
-.bottom.wrapper {
-    height: 115px;
-    bottom: 0;
-    z-index: 10
 }
 
 .top.wrapper {
@@ -467,37 +461,6 @@ body {
 
 .top .topLeft .icon-logo {
     margin-left: 20px
-}
-
-.weatherWidget {
-    display: table;
-    margin: 0 auto;
-    cursor: pointer
-}
-
-.weatherWidget div {
-    padding: 0 20px;
-    float: left
-}
-
-.weatherWidget div:first-child {
-    font: 50px/56px montserratbold
-}
-
-.weatherWidget div:last-child {
-    border-left: 1px solid #fff
-}
-
-.weatherWidget div:last-child p:first-child {
-    font: 20px/28px montserratbold
-}
-
-.weatherWidget div:last-child p:last-child {
-    font: 20px/28px montserratregular
-}
-
-.weatherWidget div:last-child .weather {
-    font: 34px/28px artill_clean_icons-webfont
 }
 
 .leftcol {

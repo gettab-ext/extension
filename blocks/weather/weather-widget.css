@@ -1,0 +1,39 @@
+.bottom.wrapper {
+    bottom: 60px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    left: 0
+}
+
+.weather-widget {
+    display: flex;
+    cursor: pointer;
+}
+
+.weather-widget__temp {
+    font: 50px/56px montserratbold;
+    border-right: 1px solid #fff;
+    padding-right: 20px;
+    margin-right: 20px;
+}
+
+.weather-widget__text-data {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.weather-widget__city {
+    font: 20px/26px montserratbold;
+}
+
+.weather-widget__weather-icon {
+    font: 28px/24px artill_clean_icons-webfont
+}
+
+.weather-widget__time, .weather-widget__weather-status {
+    font: 14px/18px montserratregular;
+}
