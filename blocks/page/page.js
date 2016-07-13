@@ -43,6 +43,7 @@ class Page {
     constructor() {
 
         $(window).on(EVENTS.settingsUpdated, () => this._onBlockSettingsUpdated());
+        $(window).on(EVENTS.modalShow, () => this.onModalShow());
 
         this._inited = settings.inited().then(() => this._loadBlockSettings());
 

@@ -5,6 +5,7 @@ import './weather-widget.css';
 
 import storage from '../utils/storage';
 import utils from '../utils/utils';
+import {EVENTS} from '../page/page';
 
 const WEATHER_STORAGE_KEY = 'forecast-data';
 const MYSTART_STORAGE_KEY = 'mystart-forecast-data';
@@ -25,7 +26,7 @@ const monthNames = [
     "August", "September", "October",
     "November", "December"
 ];
-const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const forecastDayTmpl = ({day, minTemp, maxTemp}) => `
     <div class="weather-box-forecast">
@@ -46,8 +47,6 @@ const forecastDayTmpl = ({day, minTemp, maxTemp}) => `
 class Weather {
     constructor() {
 
-        this._init();
-
         this.$widget = $(".weather-widget");
         this.$temp = $(".weather-widget__temp");
         this.$city = $(".weather-widget__city");
@@ -57,10 +56,12 @@ class Weather {
 
         this.$forecastContainer = $(".weather-box__forecast");
 
-
+        this._init();
     }
 
     _init() {
+
+        this._bindEvents();
 
         if (USE_MYSTART_DATA) {
             this._loadDataMystart();
@@ -68,6 +69,12 @@ class Weather {
             this._loadDataNative();
         }
 
+    }
+
+    _bindEvents() {
+        this.$widget.on('click', () => this._showPopup());
+        $(".weather-box__close").on('click', () => this._hidePopup());
+        $(window).on(EVENTS.hideModals, () => this._hidePopup());
     }
 
     _loadDataMystart() {
@@ -225,6 +232,15 @@ class Weather {
         const dayName = dayNames[dayIndex];
 
         return `${d.getHours()}:${d.getMinutes()} ${dayName}, ${monthName} ${d.getDate()}, `
+    }
+
+    _showPopup() {
+        $(window).trigger(EVENTS.modalShow);
+        $(".weather-box-wrapper").addClass('weather-box-wrapper_active');
+    }
+
+    _hidePopup() {
+        $(".weather-box-wrapper").removeClass('weather-box-wrapper_active');
     }
 
 

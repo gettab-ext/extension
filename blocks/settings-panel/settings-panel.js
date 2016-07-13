@@ -1,4 +1,4 @@
-import page from '../page/page';
+import page, {EVENTS} from '../page/page';
 import './settings-panel.css';
 import settings from '../settings/settings';
 
@@ -29,6 +29,7 @@ class Settings {
     _bindHandlers() {
 
         $('#leftMenuSwitch').click( function(){
+            $(window).trigger(EVENTS.modalShow);
             $('.modal.active:not(.leftcol)').removeClass('active');
             $('.leftcol').toggleClass('active');
         });

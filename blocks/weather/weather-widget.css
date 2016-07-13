@@ -56,6 +56,16 @@
     left: 0;
     right: 0;
     z-index: 9;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+.weather-box-wrapper_active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 .weather-box {

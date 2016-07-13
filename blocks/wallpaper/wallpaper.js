@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import page, {EVENTS} from '../page/page';
+import {EVENTS} from '../page/page';
 import './wallpaper.css';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
@@ -58,7 +58,7 @@ class Background {
     }
 
     _showPanel() {
-        page.onModalShow();
+        $(window).trigger(EVENTS.modalShow);
         this.$settingPanel.addClass('gallery-box_active');
     }
 
