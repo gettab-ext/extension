@@ -3,11 +3,17 @@ import _ from 'lodash';
 import './weather-popup.css';
 import './weather-widget.css';
 
-const STORAGE_KEY = 'forecast-data';
+import storage from '../utils/storage';
+import utils from '../utils/utils';
+
+const WEATHER_STORAGE_KEY = 'forecast-data';
+const POSITION_STORAGE_KEY = 'position-data';
+
 const WEATHER_API_URL = "http://gettab1.site:8210/w";
 const GEOCODE_API_URL = 'http://gettab1.site:8210/g';
 
-const STORAGE_TIME = 10 * 60 * 1000;
+const WEATHER_STORAGE_TIME = 10 * 60 * 1000;
+const POSITION_STORAGE_TIME = 10 * 60 * 1000;
 
 class Weather {
     constructor() {
@@ -28,8 +34,8 @@ class Weather {
         Promise.resolve()
             .then(() => this._getPosition())
             .then(position => {
-                this.latitude = position.coords.latitude;
-                this.longitude = position.coords.longitude;
+                this.latitude = position.latitude;
+                this.longitude = position.longitude;
                 return Promise.all([this._getForecast(), this._getCityName()]);
             })
             .then(result => {
@@ -50,37 +56,47 @@ class Weather {
         this.$widget.addClass('weather-widget_inited');
     }
 
+
     _getPosition() {
-        return new Promise(resolve => {
-            var geoSuccess = (position) => {
-                resolve(position);
-            };
-            navigator.geolocation.getCurrentPosition(geoSuccess);
-        });
+
+        return storage.get(POSITION_STORAGE_KEY)
+            .then(position => {
+                console.log('position', position);
+                if (position) {
+                    console.log('return cached position data');
+                    return position;
+                } else {
+                    return new Promise(resolve => {
+                        var geoSuccess = (position) => {
+                            const coords = utils.cloneAsObject(position.coords);
+                            console.log('got position', position);
+                            storage.set(POSITION_STORAGE_KEY, coords, POSITION_STORAGE_TIME)
+                                .then(() => resolve(coords));
+                        };
+                        navigator.geolocation.getCurrentPosition(geoSuccess);
+                    });
+                }
+            });
     }
 
     _getForecast() {
 
-        if (localStorage.getItem(STORAGE_KEY)) {
-            const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-            const {timestamp} = data;
+        const cachedWeatherData = storage.get(WEATHER_STORAGE_KEY);
 
-            if ((Date.now() - timestamp) < STORAGE_TIME) {
-                console.log('return cached weather data');
-                return Promise.resolve(data.forecast);
-            }
-        }
+        return cachedWeatherData
+            .then(cachedData => {
+                if (cachedData) {
+                    console.log('return cached weather data');
+                    return cachedData;
+                } else {
+                    const coordString = [this.latitude, this.longitude].join(',');
+                    const apiUrl = `${WEATHER_API_URL}?coord=${coordString}`;
 
-        const coordString = [this.latitude, this.longitude].join(',');
-        const apiUrl = `${WEATHER_API_URL}?coord=${coordString}`;
+                    return $.ajax(apiUrl)
+                        .then(data => storage.set(WEATHER_STORAGE_KEY, data, WEATHER_STORAGE_TIME));
+                }
+            });
 
-        return $.ajax(apiUrl).then(data => {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                timestamp: Date.now(),
-                forecast: data
-            }));
-            return data;
-        });
     }
 
     _getConvertedTemp(temp) {
