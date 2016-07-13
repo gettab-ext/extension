@@ -57,6 +57,7 @@ class Weather {
 
         this.$forecastContainer = $(".weather-box__forecast");
 
+
     }
 
     _init() {
@@ -85,12 +86,18 @@ class Weather {
                 const forecast = data.forecast.map(item => {
                     return {
                         day: dayNames[(new Date(item.timeLocalStr)).getDay()],
-                        minTemp: item.temperatureLow,
-                        maxTemp: item.temperatureHigh
+                        minTemp: this._getConvertedTemp(item.temperatureLow, true),
+                        maxTemp: this._getConvertedTemp(item.temperatureHigh, true)
                     };
                 });
 
-                this._renderForecast(forecast);
+                this._renderPopup({
+                    feelsLike: this._getConvertedTemp(data.now.feelsLike, true),
+                    humidity: data.now.humidity,
+                    wind: data.now.windSpeed,
+                    rain: data.now.precipProbability,
+                    forecast
+                });
             });
 
     }
@@ -122,6 +129,15 @@ class Weather {
         this.$time.html(this._getDate());
 
         this._setInited();
+    }
+
+    _renderPopup({feelsLike, humidity, wind, rain, forecast}) {
+        $(".weather-box__current-feel .weather-box__current-value").html(feelsLike);
+        $(".weather-box__current-humidity .weather-box__current-value").html(`${humidity}%`);
+        $(".weather-box__current-wind .weather-box__current-value").html(wind);
+        $(".weather-box__current-rain .weather-box__current-value").html(rain);
+
+        this._renderForecast(forecast);
     }
 
     _renderForecast(forecast) {
@@ -186,8 +202,8 @@ class Weather {
             });
     }
 
-    _getConvertedTemp(temp) {
-        return `${Math.round(parseFloat(temp))}°C`;
+    _getConvertedTemp(temp, short) {
+        return `${Math.round(parseFloat(temp))}°${short ? '' : 'C'}`;
     }
 
     _getCityName() {
