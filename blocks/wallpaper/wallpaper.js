@@ -1,6 +1,7 @@
+import _ from 'lodash';
+
 import page, {EVENTS} from '../page/page';
 import './wallpaper.css';
-import _ from 'lodash';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
 

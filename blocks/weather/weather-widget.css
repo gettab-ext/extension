@@ -11,6 +11,14 @@
 .weather-widget {
     display: flex;
     cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+.weather-widget_inited {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .weather-widget__temp {
@@ -36,4 +44,8 @@
 
 .weather-widget__time, .weather-widget__weather-status {
     font: 14px/18px montserratregular;
+}
+
+.weather-widget__weather-status {
+    text-transform: lowercase;
 }
