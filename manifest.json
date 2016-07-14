@@ -1,0 +1,33 @@
+{
+   // "background": {
+   //    "page": "background.html",
+   //    "persistent": true
+   // },
+   // "browser_action": {
+   //    "default_icon": "images/icons/19.png",
+   //    "default_title": "New Tab"
+   // },
+   "chrome_url_overrides": {
+      "newtab": "html/index.html"
+   },
+   // "content_scripts": [ {
+   //    "js": [ "content-scripts/installed.js" ],
+   //    "matches": [ "*://*.chromeext.dev/*" ],
+   //    "run_at": "document_start"
+   // } ],
+   // defaults + dev server
+   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+   "description": "Customizable New Tab page Chrome extension.",
+   //add more
+   // "icons": {
+   //    "19": "images/icons/19.png"
+   // },
+   "manifest_version": 2,
+   "name": "iContent New Tab",
+   // "offline_enabled": true,
+   // "optional_permissions": [ "bookmarks", "management", "tabs", "topSites", "chrome://favicon/" ],
+   // "permissions": [ "alarms", "nativeMessaging", "storage", "unlimitedStorage", "webRequest", "webRequestBlocking" , "*://*.chromeext.dev/*"],
+   "permissions": ["tabs", "storage", "unlimitedStorage","*://*.chromeext.dev/*"],
+   // "short_name": "iContent",
+   "version": "0.0.1"
+}

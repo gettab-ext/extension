@@ -29,10 +29,12 @@ const utils = {
         var temp = (obj instanceof Array) ? [] : {};
         // ReSharper disable once MissingHasOwnPropertyInForeach
         for (var key in obj) {
-            temp[key] = cloneAsObject(obj[key]);
+            temp[key] = utils.cloneAsObject(obj[key]);
         }
         return temp;
-    }
+    },
+
+    noop: function() {}
 
 };
 
