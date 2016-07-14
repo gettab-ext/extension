@@ -31,41 +31,13 @@ const CUSTOM_APPS = [
     })
 ];
 
-const getAll = function(callback = utils.noop) {
-    chrome.permissions.contains(REQUIRED_PERMISSIONS, function(result) {
-
-        if (!result) {
-            callback('PERMISSION_ERROR', null);
-            return;
-        }
-
-        chrome.management.getAll(function(results) {
-            var apps = CUSTOM_APPS.concat();
-
-            for (var i = 0; i < results.length; i++) {
-                if (!results[i].isApp) {
-                    continue;
-                }
-
-                apps.push(makeIcons(results[i]));
-            }
-
-            callback(false, apps);
-        });
-    });
-};
-
 class Apps {
     constructor() {
 
         this.$panel = $(".apps");
 
-        this.init();
-
-    }
-
-    init() {
         this.bindEvents();
+
     }
 
     bindEvents() {
@@ -82,6 +54,88 @@ class Apps {
     hidePanel() {
         this.$panel.removeClass('apps_active');
     }
+
+    getAll(callback = utils.noop) {
+        chrome.permissions.contains(REQUIRED_PERMISSIONS, function(result) {
+
+            if (!result) {
+                callback('PERMISSION_ERROR', null);
+                return;
+            }
+
+            chrome.management.getAll(function(results) {
+                var apps = CUSTOM_APPS.concat();
+
+                for (var i = 0; i < results.length; i++) {
+                    if (!results[i].isApp) {
+                        continue;
+                    }
+
+                    apps.push(makeIcons(results[i]));
+                }
+
+                callback(false, apps);
+            });
+        });
+    }
+
+    findOne(id, callback) {
+        this.getAll(function(error, apps) {
+            if(error) {
+                callback(error, null);
+                return;
+            }
+
+            for(var i = 0; i < apps.length; ++i) {
+                if(apps[i].id === id) {
+                    callback(false, apps[i]);
+                    return;
+                }
+            }
+
+            // Not found
+            callback('NOT_FOUND', null);
+        });
+    }
+
+    launch(id, callback = utils.noop) {
+        this.findOne(id, function(error, app) {
+
+            if (error) {
+                callback(error, id);
+                return;
+            }
+
+            if (app.is_custom) {
+                tabs.create({ url: app.url, active: true }, function(error, tab) {
+                    callback(error, id);
+                });
+                return;
+            }
+
+            chrome.management.setEnabled(id, true, function() {
+                if (chrome.runtime.lastError) {
+                    callback(chrome.runtime.lastError, id);
+                    return;
+                }
+
+                chrome.management.launchApp(id, function() {
+                    callback(chrome.runtime.lastError || false, id);
+                });
+            });
+        });
+    }
+
+    render(error, apps) {
+        if (error) {
+            renderDisabled(error);
+        } else if(apps.length === 0) {
+            renderDisabled('NO_RESULTS');
+        } else {
+            renderEnabled(apps);
+        }
+    }
+
 }
 
 const apps = new Apps();

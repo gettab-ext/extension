@@ -18,6 +18,14 @@
     transform: translateX(100%);
 }
 
+.apps_permissions-required .apps__list {
+    display: none;
+}
+
+.apps_permissions-required .apps__permissions {
+    display: block;
+}
+
 .apps_active {
     transform: translateX(0);
 }
@@ -39,4 +47,28 @@
     text-align: center;
     font-size: 11px;
     cursor: pointer;
+    transition: background-color 0.2s ease-out;
+}
+
+.apps__close:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.apps__permissions-title {
+    font: 14px/20px montserratregular;
+    margin-top: 24px;
+}
+
+.apps__permissions__button {
+    background-color: rgba(65, 126, 183, 1);
+    text-align: center;
+    height: 52px;
+    font: 20px/52px montserratregular;
+    margin-top: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out;
+}
+
+.apps__permissions__button:hover {
+    background-color: #4CA8EC;
 }
