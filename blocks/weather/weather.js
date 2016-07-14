@@ -104,7 +104,8 @@ class Weather {
                 this._renderWidget(
                     this._getConvertedTemp(data.now.feelsLike),
                     data.location.city,
-                    data.forecast[0].shortDescription
+                    data.forecast[0].shortDescription,
+                    data.now.iconCode
                 );
 
                 const forecast = data.forecast.map(item => {
@@ -146,11 +147,12 @@ class Weather {
             });
     }
 
-    _renderWidget(currentTemp, cityName, weatherSummary) {
+    _renderWidget(currentTemp, cityName, weatherSummary, iconCode) {
         this.$temp.html(currentTemp);
         this.$status.html(weatherSummary);
         this.$city.html(cityName);
         this.$time.html(this._getDate());
+        this._setWidgetWeatherIcon(iconCode);
 
         this._setInited();
     }
@@ -162,6 +164,12 @@ class Weather {
         $(".weather-box__current-rain .weather-box__current-value").html(rain);
 
         this._renderForecast(forecast);
+    }
+
+    _setWidgetWeatherIcon(iconCode) {
+        this.$icon.css({
+            'background-image': `url('../images/weather/${iconCode}.png`
+        });
     }
 
     _renderForecast(forecast) {
@@ -185,7 +193,6 @@ class Weather {
                     return new Promise(resolve => {
                         var geoSuccess = (position) => {
                             const coords = utils.cloneAsObject(position.coords);
-                            console.log('got position', position);
                             storage.set(POSITION_STORAGE_KEY, coords, POSITION_STORAGE_TIME)
                                 .then(() => resolve(coords));
                         };
