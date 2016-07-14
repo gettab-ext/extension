@@ -69,12 +69,29 @@ class Weather {
             this._loadDataNative();
         }
 
+        this._startTick();
+
     }
 
     _bindEvents() {
         this.$widget.on('click', () => this._showPopup());
         $(".weather-box__close").on('click', () => this._hidePopup());
         $(window).on(EVENTS.hideModals, () => this._hidePopup());
+    }
+
+    _startTick() {
+        const tick = () => {
+            const date = this._getDate();
+
+            if (this._date !== date) {
+                this._date = date;
+                this.$time.html(date);
+            }
+
+            setTimeout(tick, 1000);
+        };
+
+        tick();
     }
 
     _loadDataMystart() {
@@ -223,7 +240,6 @@ class Weather {
     }
 
     _getDate() {
-
         const d = new Date();
 
         const monthIndex = d.getMonth();

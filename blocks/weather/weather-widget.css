@@ -35,15 +35,15 @@
 }
 
 .weather-widget__city {
-    font: 20px/26px montserratbold;
+    font: 20px/20px montserratbold;
 }
 
 .weather-widget__weather-icon {
-    font: 28px/24px artill_clean_icons-webfont
+    font: 28px/20px artill_clean_icons-webfont
 }
 
 .weather-widget__time, .weather-widget__weather-status {
-    font: 14px/18px montserratregular;
+    font: 12px/18px montserratregular;
 }
 
 .weather-widget__weather-status {
