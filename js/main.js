@@ -11,4 +11,5 @@ import '../blocks/search/search';
 import '../blocks/settings-panel/settings-panel';
 import '../blocks/wallpaper/wallpaper';
 import '../blocks/weather/weather';
+import '../blocks/apps/apps';
 

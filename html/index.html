@@ -27,7 +27,7 @@
     </div><!-- topLeft -->
 
     <div class="topRight">
-        <a href="#" class="btn" data-bind="visible: apps()" data-block="apps"><i class="icon icon-tmenu-apps"></i>Apps</a>
+        <a href="#" id="show-apps-button" class="btn" data-bind="visible: apps()" data-block="apps"><i class="icon icon-tmenu-apps"></i>Apps</a>
         <a href="#" class="btn" data-bind="visible: bookmarks()" data-block="bookmarks"><i class="icon icon-tmenu-bookmarks"></i>Bookmarks</a>
         <div class="btn-group">
             <a class="gallerySw" title="photo"><i class="icon icon-tmenu-photo"></i></a>
@@ -40,13 +40,13 @@
 
 <div class="bottom wrapper">
     <div class="weather-widget">
-        <div class="weather-widget__temp">18°C</div>
+        <div class="weather-widget__temp"></div>
         <div class="weather-widget__text-data">
             <div class="weather-widget__city">
-                Chernihiv
+                Earth
             </div>
             <div class="weather-widget__status">
-                <span class="weather-widget__time">15:09 Friday, June 3</span>
+                <span class="weather-widget__time"></span>
                 <span class="weather-widget__weather-icon"></span>
                 <span class="weather-widget__weather-status">cloudy</span>
             </div>
@@ -207,9 +207,21 @@
             </form>
         </div>
     </div>
+</div>
 
+<div class="apps-wrapper">
+    <div class="apps">
+        <div class="apps__title">
+            Apps
+        </div>
+        <div class="apps__close">
+            <i class="icon icon-window-close"></i>
+        </div>
+        <div class="apps__list">
 
-</div><!-- gallery_box -->
+        </div>
+    </div>
+</div>
 
 <script src="jquery.min.js"></script>
 <script src="knockout.js"></script>

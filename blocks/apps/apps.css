@@ -1,0 +1,42 @@
+.apps-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 454px;
+}
+
+.apps {
+    width: 100%;
+    height: 100%;
+    padding: 0 40px;
+    box-sizing: border-box;
+    position: relative;
+    background: rgba(0,0,0,0.9);
+    z-index: 10;
+    transition: transform 0.3s ease-out;
+    transform: translateX(100%);
+}
+
+.apps_active {
+    transform: translateX(0);
+}
+
+.apps__title {
+    font: 24px montserratregular;
+    padding-top: 36px;
+}
+
+.apps__close {
+    position: absolute;
+    right: 40px;
+    top: 20px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    line-height: 32px;
+    text-align: center;
+    font-size: 11px;
+    cursor: pointer;
+}
