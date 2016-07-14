@@ -1,9 +1,12 @@
 import _ from 'lodash';
+import path from 'path';
 
 import {EVENTS} from '../page/page';
 import './wallpaper.css';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
+
+const BASE_PATH = '../build/';
 
 const WALLPAPERS = [{
     "name": "Default",
@@ -20,7 +23,10 @@ const WALLPAPERS = [{
     "desc": "From a height",
     "path": "wallpapers/3.jpg",
     "thumb": "wallpapers/3_thumb.jpg"
-}];
+}].map(d => Object.assign(d, {
+    path: path.resolve(BASE_PATH, d.path),
+    thumb: path.resolve(BASE_PATH, d.thumb),
+}));
 
 const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
 const DEFAULT_WALLPAPPER = WALLPAPERS[0];
