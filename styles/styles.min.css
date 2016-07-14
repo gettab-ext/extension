@@ -544,7 +544,7 @@ body {
     transition: opacity .4s ease-in-out
 }
 
-.leftcol.active, .weather_box {
+.leftcol.active {
     transition: all .75s ease-in-out
 }
 
@@ -565,114 +565,12 @@ body {
     transform: translate(0, 0)
 }
 
-.weather_box {
-    position: absolute;
-    bottom: 150px;
-    left: 0;
-    z-index: 1;
-    width: 100%;
-    opacity: 0
-}
-
-.weather_box .wrapper {
-    width: 1280px;
-    margin: 0 auto;
-    position: relative;
-    background: #0c0d0f;
-    background: -moz-linear-gradient(top, #0c0d0f 0, #030201 100%);
-    background: -webkit-linear-gradient(top, #0c0d0f 0, #030201 100%);
-    background: linear-gradient(to bottom, #0c0d0f 0, #030201 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0c0d0f', endColorstr='#030201', GradientType=0);
-    padding: 0 35px
-}
-
-.tab_list li:not(:first-child), .weather_box .links ul li:not(:first-child) {
+.tab_list li:not(:first-child) {
     margin-left: 5px
 }
 
-.weather_box .wrapper .close {
-    right: 40px
-}
-
-.weather_box .wrapper > div {
-    clear: both;
-    display: table;
-    width: 100%;
-    padding: 25px 0
-}
-
-.weather_box .wrapper > div label {
-    font: 14px/14px montserratregular;
-    display: block;
-    padding-bottom: 10px
-}
-
-.weather_box .links a.btn, .weather_box .links ul li {
-    text-align: center;
-    cursor: pointer;
-    display: inline-block;
-    transition: all .4s ease-in-out
-}
-
-.weather_box .summary > div {
-    float: left;
-    font: 40px/28px montserratbold;
-    min-width: 140px;
-    padding-right: 20px
-}
-
-.weather_box .days > div {
-    width: 16.6%;
-    float: left;
-    font: 30px/28px montserratbold
-}
-
-.tab_list li, .weather_box .links a.btn, .weather_box .links ul li {
+.tab_list li {
     font: 14px/26px montserratregular
-}
-
-.weather_box .days > div span {
-    padding-left: 25px;
-    color: #4e6ac8
-}
-
-.weather_box .links ul {
-    float: left
-}
-
-.weather_box .links ul li {
-    border-radius: 15px;
-    width: 38px;
-    border: 1px solid rgba(255, 255, 255, .4)
-}
-
-.weather_box .links ul li.active, .weather_box .links ul li:hover {
-    border: 1px solid #fff;
-    transition: all .4s ease-in-out
-}
-
-.weather_box .links a.btn {
-    border-radius: 15px;
-    padding: 0 10px;
-    border: 1px solid rgba(255, 255, 255, .4);
-    float: right;
-    color: #fff;
-    text-decoration: none
-}
-
-.weather_box .links a.btn .icon {
-    margin-right: 10px
-}
-
-.weather_box .links a.btn:hover {
-    border: 1px solid #fff;
-    transition: all .4s ease-in-out
-}
-
-.weather_box.active {
-    z-index: 10;
-    opacity: 1;
-    transition: all .75s ease-in-out
 }
 
 .gallery_box .close {
