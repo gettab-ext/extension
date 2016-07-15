@@ -253,8 +253,10 @@ class Weather {
         const monthName = monthNames[monthIndex];
         const dayIndex = d.getDay();
         const dayName = dayNames[dayIndex];
+        const hours = d.getHours();
+        const minutes = String(d.getMinutes());
 
-        return `${d.getHours()}:${d.getMinutes()} ${dayName}, ${monthName} ${d.getDate()}, `
+        return `${hours}:${minutes.length === 1 ? '0' + minutes : minutes} ${dayName}, ${monthName} ${d.getDate()}, `
     }
 
     _showPopup() {
