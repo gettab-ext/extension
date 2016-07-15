@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'mystart-font';
-    src: url('/fonts/mystart-font.woff2?16748942') format('woff2');
+    font-family: 'icon-font';
+    src: url('/fonts/icon-font.woff2?16748942') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -38,7 +38,7 @@
     margin-right: 10px;
     display: inline-block;
     content: '\e821';
-    font-family: "mystart-font";
+    font-family: "icon-font";
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
@@ -46,9 +46,6 @@
     text-decoration: inherit;
     text-transform: none;
     vertical-align: baseline;
-    /* fix buttons height, for twitter bootstrap */
-    /*line-height: 1em;*/
-    /* Font smoothing. That was taken from TWBS */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -87,7 +84,7 @@
 .bookmarks__list ul.root > li.selected > div:before {
     display: inline-block;
     content: '\e812';
-    font-family: "mystart-font";
+    font-family: "icon-font";
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
@@ -132,7 +129,7 @@
     color: #A0AEBC;
     display: inline-block;
     content: '\e821';
-    font-family: "mystart-font";
+    font-family: "icon-font";
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
@@ -158,7 +155,7 @@
     color: #384757;
     display: inline-block;
     content: '\e812';
-    font-family: "mystart-font";
+    font-family: "icon-font";
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
@@ -166,9 +163,6 @@
     text-decoration: inherit;
     text-transform: none;
     vertical-align: baseline;
-    /* fix buttons height, for twitter bootstrap */
-    /*line-height: 1em;*/
-    /* Font smoothing. That was taken from TWBS */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
