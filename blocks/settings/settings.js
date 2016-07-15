@@ -2,6 +2,10 @@ import _ from 'lodash';
 
 const STORAGE_KEY = "userSettings";
 
+const DEFAULT_SETTINGS = {
+    'search_engine': 'yahoo'
+};
+
 class Settings {
     constructor() {
 
@@ -12,7 +16,7 @@ class Settings {
     _loadSettings() {
         return new Promise(resolve => {
             chrome.storage.local.get(STORAGE_KEY, items => {
-                this._settings = Object.assign({}, items[STORAGE_KEY]);
+                this._settings = Object.assign(DEFAULT_SETTINGS, items[STORAGE_KEY]);
                 resolve();
             });
         });

@@ -1,8 +1,17 @@
 import page from '../page/page';
+import utils from '../utils/utils';
+import settings from '../settings/settings';
+
 import './search.css';
 import './suggest.css';
 
 const SUGGEST_RESULT_COUNT = 5;
+const CAMPAIGN_ID = 'foo';
+
+const SEARCH_URLS = {
+    yahoo: ({q}) => `https://search.yahoo.com/search?p=${q}`,
+    bing: ({q}) => `http://www.bing.com/search?q=${q}`
+};
 
 class Search {
     constructor() {
@@ -17,24 +26,36 @@ class Search {
     }
 
     _bindHandlers() {
-        this._bindUpdateChecker();
+        this.$input.on('keypress', () => this._updateChecker());
 
-        $(this.$suggest).on('click', '.suggest-item', e => this._onSuggestItemClick(e));
+        this.$suggest.on('click', '.suggest-item', e => this._onSuggestItemClick(e));
+        $(".search__submit").on('click', () => this._onSubmitClick());
 
     }
 
     _bindUpdateChecker() {
-        setInterval(() => {
-            const currentVal = this.$input.val().replace(/(^\s+|\s+$)/g, '');
+        setInterval(() => this._updateChecker(), 200);
+    }
 
-            if (currentVal === this.val) {
-                return;
-            }
+    _updateChecker() {
+        const currentVal = this._getInputValue();
 
-            this.val = currentVal;
-            this._updateSuggest();
+        if (currentVal === this.val) {
+            return;
+        }
 
-        }, 200);
+        if (currentVal === '') {
+            this._hideSuggest();
+            return;
+        }
+
+        this.val = currentVal;
+        this._updateSuggest();
+    }
+
+    _onSubmitClick() {
+        this.val = this.$input.val().replace(/(^\s+|\s+$)/g, '');
+        this._doSearch(this.val);
     }
 
     _onSuggestItemClick(e) {
@@ -44,7 +65,7 @@ class Search {
         this.val = suggestVal;
 
         this._hideSuggest();
-        this._doSearch();
+        this._doSearch(suggestVal);
 
     }
 
@@ -77,6 +98,9 @@ class Search {
     }
 
     _showSuggest() {
+        if (this._getInputValue() === '') {
+            return;
+        }
         this.$suggest.removeClass('suggest_hidden');
     }
 
@@ -84,8 +108,18 @@ class Search {
         this.$suggest.addClass('suggest_hidden');
     }
 
-    _doSearch() {
-        console.log('Search', this.val);
+    _getInputValue() {
+        return this.$input.val().replace(/(^\s+|\s+$)/g, '');
+    }
+
+    _doSearch(query) {
+        const engine = settings.get('search_engine');
+
+        let url = SEARCH_URLS[engine]({
+            q: query
+        });
+
+        utils.openUrl(url);
     }
 
     _suggestItemTemplate(queryLength, {name}) {

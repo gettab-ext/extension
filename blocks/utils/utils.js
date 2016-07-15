@@ -1,3 +1,5 @@
+import tabs from './tabs';
+
 const utils = {
 
     loadBackgroundImage($elem, url, loadedClass, preloadClass) {
@@ -34,7 +36,18 @@ const utils = {
         return temp;
     },
 
-    noop: function() {}
+    noop: function() {},
+
+    openUrl: function(url) {
+        tabs.query({ active: true, lastFocusedWindow: true }, function(err, tabsData) {
+            if (!err && tabsData.length) {
+                tabs.update(tabsData[0].id, { active: true, url: url });
+            }
+            else {
+                tabs.create({ active: true, url: url });
+            }
+        });
+    }
 
 };
 

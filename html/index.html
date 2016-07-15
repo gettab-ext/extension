@@ -14,8 +14,10 @@
 <div id="searchForm">
     <form data-bind="submit: doSearch" data-block="search">
         <div class="searchLine">
-            <input type="text" name="search" placeholder="Search the web" data-bind='value: searchText, valueUpdate: "afterkeydown"'>
-            <button type="submit"><i class="icon icon-search-black"></i></button>
+            <input type="text" name="search" placeholder="Search the web" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="400">
+            <button type="submit" class="search__submit">
+                <i class="icon icon-search-black"></i>
+            </button>
             <div class="suggest"></div>
         </div>
     </form>
