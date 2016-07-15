@@ -1,5 +1,8 @@
 import page from '../page/page';
-import './search.css'
+import './search.css';
+import './suggest.css';
+
+const SUGGEST_RESULT_COUNT = 5;
 
 class Search {
     constructor() {
@@ -22,7 +25,7 @@ class Search {
 
     _bindUpdateChecker() {
         setInterval(() => {
-            const currentVal = this.$input.val();
+            const currentVal = this.$input.val().replace(/(^\s+|\s+$)/g, '');
 
             if (currentVal === this.val) {
                 return;
@@ -35,7 +38,7 @@ class Search {
     }
 
     _onSuggestItemClick(e) {
-        const suggestVal = $(e.target).data('val');
+        const suggestVal = $(e.currentTarget).data('val');
 
         this.$input.val(suggestVal);
         this.val = suggestVal;
@@ -51,8 +54,11 @@ class Search {
             return;
         }
 
-        this._getSuggest(this.val).then(suggested => {
-            const items = suggested.map(this._suggestItemTemplate).join('');
+        const queryLength = this.val.length;
+        const itemTemplate = this._suggestItemTemplate.bind(this, queryLength);
+
+        this._fetchSuggestions(this.val).then(suggested => {
+            const items = suggested.map(itemTemplate).join('');
 
             if (items.length === 0) {
                 this._hideSuggest();
@@ -82,16 +88,45 @@ class Search {
         console.log('Search', this.val);
     }
 
-    _suggestItemTemplate({name}) {
+    _suggestItemTemplate(queryLength, {name}) {
         return `
             <div class="suggest-item" data-val="${name}">
-                ${name}
+                <div class="suggest-item__matched">
+                    ${name.slice(0, queryLength)}
+                </div>
+                <div class="suggest-item__text">
+                    ${name.slice(queryLength, name.length)}
+                </div>
             </div>
         `;
     }
 
-    _getSuggest(query) {
-        return Promise.resolve([{name: 'There'}, {name: 'are'}, {name: 'many'}, {name: 'variations'}]);
+    _fetchSuggestions(query) {
+        if (query === '') {
+            return this._hideSuggest();
+        }
+
+        const getSuggestionsUrl = `https://www.mystart.com/api/get_alternative_searchterms/?q=${encodeURIComponent(query)}&limit=${SUGGEST_RESULT_COUNT}`;
+        const itemMapper = item => {
+            return {
+                name: item
+            };
+        };
+
+        return new Promise(resolve => {
+            $.getJSON(getSuggestionsUrl, (data) => {
+                if (typeof data !== 'object') {
+                    return resolve([]);
+                }
+                if (typeof data.searchresults !== 'object') {
+                    return resolve([]);
+                }
+                if (typeof data.searchresults.AlsoTryData !== 'object') {
+                    return resolve([]);
+                }
+                return resolve(data.searchresults.AlsoTryData.map(itemMapper));
+            });
+        });
     }
 
 }

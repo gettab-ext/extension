@@ -1,0 +1,34 @@
+.suggest {
+    position: absolute;
+    top: 57px;
+    left: 26px;
+    right: 57px;
+    background: white;
+    color: black;
+    z-index: 1;
+    border-top: 1px solid rgba(0,0,0,0.2);
+}
+
+.suggest_hidden {
+    display: none;
+}
+
+.suggest-item {
+    display: flex;
+    font: 18px/30px montserratregular;
+    padding: 0 8px;
+    -webkit-user-select: none;
+    color: #949494;
+    cursor: pointer;
+}
+
+.suggest-item:hover {
+    background-color: rgba(0,0,0,0.1);
+}
+
+.suggest-item__matched {
+    color: black;
+}
+
+.suggest-list {
+}

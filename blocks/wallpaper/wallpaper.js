@@ -16,7 +16,7 @@ const WALLPAPERS = [{
 }, {
     "name": "Peak",
     "desc": "Apple peak theme",
-    "path": "../wallpapers/2.jpg",
+    "path": "wallpapers/2.jpg",
     "thumb": "wallpapers/2_thumb.jpg"
 }, {
     "name": "Birdsview",

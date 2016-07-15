@@ -162,3 +162,14 @@
 .bodyBg_state_loaded {
     opacity: 1;
 }
+
+.bodyBg:after {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0) 200px), linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0, rgba(0, 0, 0, 0) 200px);
+    content: '';
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: block;
+    position: absolute;
+}
