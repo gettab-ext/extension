@@ -66,7 +66,7 @@ class Apps {
         $(".apps__permissions__button").on('click', () => permissions.request());
 
         $(".apps__list").on('click', '.app', e => {
-            const appId = $(e.target).data('app');
+            const appId = $(e.currentTarget).data('app');
             this.launch(appId);
         });
     }

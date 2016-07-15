@@ -11,14 +11,14 @@ class Permissions {
 
     }
 
-    hasAll(callback = utils.noop) {
+    _hasAll(callback = utils.noop) {
         chrome.permissions.contains(REQUIRED_PERMISSIONS, result => {
             callback(result);
         });
     }
 
     request(callback = utils.noop, noReload) {
-        this.hasAll(function(error, result) {
+        this._hasAll(function(error, result) {
             if (error || result) {
                 callback(error, result);
                 return;
