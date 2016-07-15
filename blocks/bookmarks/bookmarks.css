@@ -1,0 +1,106 @@
+.bookmarks-wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 454px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.bookmarks {
+    width: 100%;
+    height: 100%;
+    padding: 0 40px;
+    box-sizing: border-box;
+    position: relative;
+    background: rgba(0,0,0,0.9);
+    z-index: 10;
+    transition: transform 0.3s ease-out;
+    transform: translateX(100%);
+    pointer-events: auto;
+}
+
+.bookmarks_mode_permissions-required .bookmarks__list {
+    display: none;
+}
+
+.bookmarks_mode_permissions-required .bookmarks__permissions {
+    display: block;
+}
+
+.bookmarks_mode_no-bookmarks .bookmarks__list {
+    display: none;
+}
+
+.bookmarks_mode_no-bookmarks .bookmarks__no-bookmarks {
+    display: block;
+}
+
+.bookmarks_active {
+    transform: translateX(0);
+}
+
+.bookmarks__no-bookmarks {
+    font: 20px/52px montserratregular;
+    margin-top: 32px;
+    display: none;
+}
+
+.bookmarks__title {
+    font: 24px montserratregular;
+    padding-top: 36px;
+}
+
+.bookmarks__close {
+    position: absolute;
+    right: 40px;
+    top: 20px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    line-height: 32px;
+    text-align: center;
+    font-size: 11px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-out;
+}
+
+.bookmarks__close:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.bookmarks__permissions {
+    display: none;
+}
+
+.bookmarks__permissions-title {
+    font: 14px/20px montserratregular;
+    margin-top: 24px;
+}
+
+.bookmarks__permissions__button {
+    background-color: rgba(65, 126, 183, 1);
+    text-align: center;
+    height: 52px;
+    font: 20px/52px montserratregular;
+    margin-top: 32px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-out;
+}
+
+.bookmarks__permissions__button:hover {
+    background-color: #4CA8EC;
+}
+
+.bookmarks__list {
+    display: flex;
+    flex-wrap: wrap;
+    position: absolute;
+    right: 26px;
+    left: 40px;
+    top: 96px;
+    bottom: 40px;
+    overflow-y: scroll;
+}
