@@ -6,7 +6,6 @@
     position: relative;
     pointer-events: none;
     z-index: 1;
-    visibility: hidden;
 }
 
 .gallery-box_active {
@@ -14,7 +13,6 @@
     z-index: 11;
     pointer-events: auto;
     transition: opacity ease-out 0.7s;
-    visibility: visible;
 }
 
 .gallery-close {

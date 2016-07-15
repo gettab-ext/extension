@@ -2,3 +2,101 @@
     position: absolute;
     left: -9999em;
 }
+
+.leftcol {
+    width: 380px;
+    position: absolute;
+    z-index: 20;
+    background: rgba(0, 0, 0, .7);
+    transform: translate(-100%, 0);
+    transition: all .3s ease-in-out;
+    padding: 105px 40px 40px
+}
+
+.leftcol > div {
+    padding: 17px 0 17px 30px;
+    position: relative
+}
+
+.leftcol > div > label:first-child {
+    position: relative;
+    font: 16px/20px montserratregular;
+    display: block
+}
+
+.leftcol > div .radios, .leftcol > div a {
+    color: #949494;
+    font: 14px/20px montserratregular
+}
+
+.leftcol > div > label:first-child .icon {
+    margin-right: 10px;
+    position: absolute;
+    left: -30px;
+    top: 2px
+}
+
+.leftcol > div .radios {
+    padding-top: 5px
+}
+
+.leftcol > div .radios label {
+    display: inline-block;
+    padding-right: 15px
+}
+
+.leftcol > div .radios label .radio {
+    margin-right: 5px
+}
+
+.leftcol > div a {
+    text-decoration: none;
+    display: table
+}
+
+.leftcol > div .switcher, .leftcol > div .switcher span {
+    width: 36px;
+    height: 12px;
+    display: inline-block;
+    position: absolute
+}
+
+.leftcol > div a:first-of-type {
+    margin-top: 5px
+}
+
+.leftcol > div .switcher {
+    right: 0;
+    top: 22px
+}
+
+.leftcol > div .switcher span {
+    background: url(/images/lmenu_switch.png);
+    left: 0;
+    top: 0;
+    opacity: 1;
+    transition: opacity .2s ease-in-out
+}
+
+.leftcol > div .switcher span.active {
+    background: url(/images/lmenu_switch.png) 0 -12px;
+    opacity: 0;
+    transition: opacity .2s ease-in-out
+}
+
+.leftcol > div .switcher input[type=checkbox] {
+    position: absolute;
+    left: -9em
+}
+
+.leftcol > div .switcher.active span {
+    opacity: 0
+}
+
+.leftcol > div .switcher.active span.active {
+    opacity: 1
+}
+
+.leftcol.active {
+    transform: translate(0, 0)
+}

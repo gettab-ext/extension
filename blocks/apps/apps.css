@@ -5,6 +5,7 @@
     bottom: 0;
     width: 454px;
     overflow: hidden;
+    pointer-events: none;
 }
 
 .apps {
@@ -17,6 +18,7 @@
     z-index: 10;
     transition: transform 0.3s ease-out;
     transform: translateX(100%);
+    pointer-events: auto;
 }
 
 .apps_mode_permissions-required .apps__list {

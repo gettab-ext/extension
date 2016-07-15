@@ -4,6 +4,7 @@ var path = require('path');
 
 var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var dir_js = path.resolve(__dirname, 'js');
 var dir_html = path.resolve(__dirname, 'html');
@@ -27,7 +28,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.css$/,
-                loader: "style-loader!css-loader"
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
             },
             {
                 loader: 'babel-loader',
@@ -57,7 +58,10 @@ module.exports = {
             }
         ]),
         // Avoid publishing files when compilation fails
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new ExtractTextPlugin("style.css", {
+            allChunks: true
+        })
     ],
     stats: {
         // Nice colored output

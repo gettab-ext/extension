@@ -1,6 +1,5 @@
 import page, {EVENTS} from '../page/page';
 import './settings-panel.css';
-import settings from '../settings/settings';
 
 class Settings {
     constructor() {
