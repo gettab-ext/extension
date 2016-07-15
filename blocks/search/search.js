@@ -89,13 +89,18 @@ class Search {
     }
 
     _suggestItemTemplate(queryLength, {name}) {
+        const matched = name.slice(0, queryLength);
+        let rest = name.slice(queryLength, name.length);
+        if (rest.match(/^\s/)) {
+            rest = `&nbsp;${rest.slice(1, name.length)}`;
+        }
         return `
             <div class="suggest-item" data-val="${name}">
                 <div class="suggest-item__matched">
-                    ${name.slice(0, queryLength)}
+                    ${matched}
                 </div>
                 <div class="suggest-item__text">
-                    ${name.slice(queryLength, name.length)}
+                    ${rest}
                 </div>
             </div>
         `;
