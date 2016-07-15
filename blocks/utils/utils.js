@@ -1,4 +1,5 @@
 import tabs from './tabs';
+import windows from './windows';
 
 const utils = {
 
@@ -47,6 +48,34 @@ const utils = {
                 tabs.create({ active: true, url: url });
             }
         });
+    },
+
+    openLinkFromEvent: function(e, url) {
+        url = url || e.delegateTarget.href;
+
+        // Middle-click + Shift = new tab w/ focus
+        if (e.which === 2 && e.shiftKey)
+            tabs.create({ active: true, url: url });
+
+        // Middle-click = new tab w/o focus
+        else if(e.which === 2)
+            tabs.create({ active: false, url: url });
+
+        // Left-click + Shift + Ctrl = new tab w/ focus
+        else if(e.which === 1 && e.shiftKey && e.ctrlKey)
+            tabs.create({ active: true, url: url });
+
+        // Left-click + Shift = new window w/ focus
+        else if(e.which === 1 && e.shiftKey)
+            windows.create({ focused: true, url: url });
+
+        // Left-click + Ctrl = new tab w/o focus
+        else if(e.which === 1 && e.ctrlKey)
+            tabs.create({ active: false, url: url });
+
+        // Left-click = same tab
+        else if(e.which === 1)
+            utils.openUrl(url);
     }
 
 };

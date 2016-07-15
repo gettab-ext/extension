@@ -1,0 +1,219 @@
+@font-face {
+    font-family: 'mystart-font';
+    src: url('/fonts/mystart-font.woff2?16748942') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.bookmarks__list ul.root {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    color: black;
+    text-shadow: none;
+}
+.bookmarks__list ul.root > li {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: auto;
+}
+.bookmarks__list ul.root > li > div {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 46px;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: inherit;
+    color: #fff;
+    text-shadow: none;
+    cursor: pointer;
+}
+.bookmarks__list ul.root > li > div:before {
+    margin-right: 10px;
+    display: inline-block;
+    content: '\e821';
+    font-family: "mystart-font";
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    speak: none;
+    text-decoration: inherit;
+    text-transform: none;
+    vertical-align: baseline;
+    /* fix buttons height, for twitter bootstrap */
+    /*line-height: 1em;*/
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.bookmarks__list ul.root > li:nth-child(3n+1) > div {
+    background-color: #76ac65;
+}
+.bookmarks__list ul.root > li:nth-child(3n+2) > div {
+    background-color: #62b3d9;
+}
+.bookmarks__list ul.root > li:nth-child(3n+3) > div {
+    background-color: #e0bd71;
+}
+.bookmarks__list ul.root > li > ul {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 48px;
+    bottom: 0;
+    background-color: white;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.bookmarks__list ul.root > li > ul::-webkit-scrollbar {
+    width: 10px;
+}
+.bookmarks__list ul.root > li > ul::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.25);
+    background-clip: padding-box;
+}
+.bookmarks__list ul.root > li > ul:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.bookmarks__list ul.root > li.selected > div:before {
+    display: inline-block;
+    content: '\e812';
+    font-family: "mystart-font";
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    speak: none;
+    text-decoration: inherit;
+    text-transform: none;
+    vertical-align: baseline;
+    /* fix buttons height, for twitter bootstrap */
+    /*line-height: 1em;*/
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.bookmarks__list ul.root > li.selected > ul {
+    overflow-y: auto;
+    padding-right: 10px;
+}
+.bookmarks__list ul.folder > li.folder > div {
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    padding-left: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    -webkit-transition: margin-left 0.2s;
+    -moz-transition: margin-left 0.2s;
+    -o-transition: margin-left 0.2s;
+    transition: margin-left 0.2s;
+    margin-left: 0;
+}
+.bookmarks__list ul.folder > li.folder > div:hover {
+    margin-left: 10px;
+}
+.bookmarks__list ul.folder > li.folder > div:before {
+    width: 16px;
+    margin-right: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #A0AEBC;
+    display: inline-block;
+    content: '\e821';
+    font-family: "mystart-font";
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    speak: none;
+    text-decoration: inherit;
+    text-transform: none;
+    vertical-align: baseline;
+    /* fix buttons height, for twitter bootstrap */
+    /*line-height: 1em;*/
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.bookmarks__list ul.folder > li.folder > ul {
+    margin-left: 26px;
+    overflow: hidden;
+    height: 0;
+}
+.bookmarks__list ul.folder > li.folder.selected > div {
+    font-weight: 600;
+}
+.bookmarks__list ul.folder > li.folder.selected > div:before {
+    color: #384757;
+    display: inline-block;
+    content: '\e812';
+    font-family: "mystart-font";
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    speak: none;
+    text-decoration: inherit;
+    text-transform: none;
+    vertical-align: baseline;
+    /* fix buttons height, for twitter bootstrap */
+    /*line-height: 1em;*/
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.bookmarks__list ul.folder > li.folder.selected > ul {
+    height: auto;
+}
+.bookmarks__list ul.folder > li.item > a {
+    display: block;
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    padding-left: 36px;
+    background: transparent no-repeat;
+    background-position: 10px center, 6px center;
+    color: #000;
+    text-shadow: none;
+    -webkit-transition: margin-left 0.2s;
+    -moz-transition: margin-left 0.2s;
+    -o-transition: margin-left 0.2s;
+    transition: margin-left 0.2s;
+    margin-left: 0;
+}
+.bookmarks__list ul.folder > li.item > a:active,
+.bookmarks__list ul.folder > li.item > a:focus,
+.bookmarks__list ul.folder > li.item > a:hover,
+.bookmarks__list ul.folder > li.item > a:visited {
+    color: #000;
+    text-decoration: none;
+}
+.bookmarks__list ul.folder > li.item > a:hover {
+    margin-left: 10px;
+}
+.bookmarks__list ul.folder:empty::after {
+    display: block;
+    content: 'Empty folder';
+    height: 28px;
+    line-height: 28px;
+    font-size: 12px;
+    color: #888;
+    text-shadow: none;
+    cursor: default;
+    font-style: italic;
+    padding-left: 10px;
+}
