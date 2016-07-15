@@ -33,7 +33,7 @@ const tabs = {
         });
     },
 
-    onUpdate: home.noop()
+    onUpdate: utils.noop()
 
 };
 

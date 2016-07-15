@@ -27,7 +27,8 @@
    // "offline_enabled": true,
    // "optional_permissions": [ "bookmarks", "management", "tabs", "topSites", "chrome://favicon/" ],
    // "permissions": [ "alarms", "nativeMessaging", "storage", "unlimitedStorage", "webRequest", "webRequestBlocking" , "*://*.chromeext.dev/*"],
-   "permissions": ["tabs", "storage", "unlimitedStorage","*://*.chromeext.dev/*"],
+   "optional_permissions": [ "bookmarks", "management", "tabs", "topSites", "chrome://favicon/" ],
+   "permissions": [ "alarms", "nativeMessaging", "storage", "unlimitedStorage", "webRequest", "webRequestBlocking", "*://*.mystart.com/*" ],
    // "short_name": "iContent",
    "version": "0.0.1"
 }

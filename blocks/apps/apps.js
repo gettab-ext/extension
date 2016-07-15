@@ -1,8 +1,12 @@
-/* global chrome, $ */
+/* global chrome */
+
 import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
+import permissions from '../utils/permissions';
+import tabs from '../utils/tabs';
 
 import './apps.css';
+import './app.css';
 
 const REQUIRED_PERMISSIONS = {
     permissions: [ 'management' ],
@@ -31,19 +35,40 @@ const CUSTOM_APPS = [
     })
 ];
 
+const appTmpl = ({appId, iconUrl, title}) => `
+    <div class="app" data-app="${appId}">
+        <div class="app__icon" style="background-image: url('${iconUrl}')"></div>
+        <div class="app__title">
+            ${title}
+        </div>
+    </div>
+`;
+
+const TAB_ICON_SIZE = 128;
+
 class Apps {
     constructor() {
 
         this.$panel = $(".apps");
+        this.$appList = $(".apps__list");
 
         this.bindEvents();
 
+        this.getAll((error, apps) => this.render(error, apps));
     }
 
     bindEvents() {
+
         $("#show-apps-button").on('click', () => this.showPanel());
         $(".apps__close").on('click', () => this.hidePanel());
         $(window).on(EVENTS.hideModals, () => this.hidePanel());
+
+        $(".apps__permissions__button").on('click', () => permissions.request());
+
+        $(".apps__list").on('click', '.app', e => {
+            const appId = $(e.target).data('app');
+            this.launch(appId);
+        });
     }
 
     showPanel() {
@@ -128,14 +153,56 @@ class Apps {
 
     render(error, apps) {
         if (error) {
-            renderDisabled(error);
+            this.renderDisabled(error);
         } else if(apps.length === 0) {
-            renderDisabled('NO_RESULTS');
+            this.renderDisabled('NO_RESULTS');
         } else {
-            renderEnabled(apps);
+            this.renderEnabled(apps);
         }
     }
 
+    renderDisabled(error) {
+
+        if (error === 'PERMISSION_ERROR') {
+            this.$panel.addClass('apps_mode_permissions-required');
+        }
+        if (error === 'NO_RESULTS') {
+            this.$panel.addClass('apps_mode_no-apps');
+        }
+
+    }
+
+    renderEnabled(apps) {
+
+        const appsHtml = apps.map(app => this.renderApp(app)).join('');
+        this.$appList.html(appsHtml);
+
+    }
+
+    renderApp(app) {
+        const iconIndex = this.getBestIcon(app.icons);
+
+        return appTmpl({
+            appId: app.id,
+            title: app.name || app.shortName,
+            iconUrl: (app.icons[iconIndex].url + (app.enabled ? '' : '?grayscale=true'))
+        });
+    }
+
+    getBestIcon(icons) {
+        if (!icons || icons.length === 0) {
+            return -1;
+        }
+
+        var bestI = 0;
+        for(var i = 0; i < icons.length; ++i) {
+            if (Math.abs(icons[i].size - TAB_ICON_SIZE) < Math.abs(icons[bestI].size - TAB_ICON_SIZE)) {
+                bestI = i;
+            }
+        }
+
+        return bestI;
+    }
 }
 
 const apps = new Apps();
