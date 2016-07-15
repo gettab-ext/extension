@@ -6,7 +6,7 @@ import './wallpaper.css';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
 
-const BASE_PATH = '../build/';
+const BASE_PATH = './';
 
 const WALLPAPERS = [{
     "name": "Default",

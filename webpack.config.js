@@ -7,13 +7,13 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var dir_js = path.resolve(__dirname, 'js');
-var dir_html = path.resolve(__dirname, 'html');
 var dir_styles = path.resolve(__dirname, 'styles');
 var dir_build = path.resolve(__dirname, 'build');
 var dir_images = path.resolve(__dirname, 'images');
 var dir_fonts = path.resolve(__dirname, 'fonts');
 var dir_libs = path.resolve(__dirname, 'libs');
 var dir_wallpapers = path.resolve(__dirname, 'wallpapers');
+var dir_html = path.resolve(__dirname, 'html');
 
 module.exports = {
     entry: path.resolve(dir_js, 'main.js'),
@@ -55,6 +55,8 @@ module.exports = {
             }, {
                 from: dir_wallpapers,
                 to: 'wallpapers'
+            }, {
+                from: path.resolve(__dirname, 'etc', 'manifest.json')
             }
         ]),
         // Avoid publishing files when compilation fails
