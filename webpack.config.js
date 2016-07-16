@@ -28,7 +28,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+                loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader")
             },
             {
                 loader: 'babel-loader',
@@ -71,4 +71,6 @@ module.exports = {
     },
     // Create Sourcemaps for the bundle
     devtool: 'source-map',
+
+    postcss: [require('postcss-nested')]
 };

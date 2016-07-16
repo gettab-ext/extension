@@ -14,7 +14,8 @@
 <div id="searchForm">
     <form data-bind="submit: doSearch" data-block="search">
         <div class="searchLine">
-            <input type="text" name="search" placeholder="Search the web" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="400">
+            <input type="text" name="search" placeholder="Search the web" autocomplete="off" autocorrect="off"
+                   autocapitalize="off" spellcheck="false" maxlength="400">
             <button type="submit" class="search__submit">
                 <i class="icon icon-search-black"></i>
             </button>
@@ -39,7 +40,9 @@
 
 <div class="top wrapper">
     <div class="topLeft">
-        <a class="btn" id="leftMenuSwitch"><i class="icon icon-tmenu-menu"></i></a>
+        <a class="open-settings-panel" id="leftMenuSwitch">
+            <i class="icon icon-tmenu-menu"></i>
+        </a>
         <i class="icon icon-logo" data-bind="visible: logo()"></i>
     </div><!-- topLeft -->
 
@@ -77,77 +80,105 @@
     </div>
 </div><!-- .bottom.wrapper -->
 
-<div class="leftcol-wrapper">
-<div class="leftcol modal">
-    <div>
-        <label><i class="icon icon-lmenu-logo"></i>Logo</label>
-        <label data-bind="css: {'switcher': true, 'active': logo}" data-toggle="logo" class="switcher">
-            <span></span>
-            <span class="active"></span>
-            <input type="checkbox" name="logo" data-bind="checked: logo">
-        </label>
-    </div>
-    <div>
-        <label><i class="icon icon-lmenu-greetings"></i>Greetings</label>
-        <label data-bind="css: {'switcher': true, 'active': greetings}" data-toggle="greetings" class="switcher">
-            <span></span>
-            <span class="active"></span>
-            <input type="checkbox" name="greetings" data-bind="checked: greetings">
-        </label>
-    </div>
-    <div>
-        <label><i class="icon icon-lmenu-search"></i>Search</label>
-
-        <div class="radios">
-            <label for="se01"><span data-bind="css: {'radio': true, 'active': (search()=='google')}"><input type="radio" name="search" value="google" id="se01" data-bind="checked: search"></span>Google</label>
-            <label for="se02"><span data-bind="css: {'radio': true, 'active': (search()=='yandex')}"><input type="radio" name="search" value="yandex" id="se02" data-bind="checked: search"></span>Yandex</label>
-            <label for="se03"><span data-bind="css: {'radio': true, 'active': (search()=='yahoo')}"><input type="radio" name="search" value ="yahoo" id="se03" data-bind="checked: search"></span>Yahoo</label>
+<div class="settings-panel-wrapper">
+    <div class="settings-panel">
+        <div class="settings-panel__list">
+            <div class="settings-item settings-item_item_search" data-setting="search">
+                <div class="settings-item__icon"><i class="icon icon-lmenu-search"></i></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Search</div>
+                    <div class="settings-item__radio-buttons">
+                        <div class="settings-item__radio-button">Yahoo</div>
+                        <div class="settings-item__radio-button">Bing</div>
+                    </div>
+                </div>
+            </div>
+            <div class="settings-item settings-item_item_logo" data-setting="logo">
+                <div class="settings-item__icon"><i class="icon icon-lmenu-logo"></i></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Logo</div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
+            <div class="settings-item settings-item_item_most-visited" data-setting="most-visited">
+                <div class="settings-item__icon"><i class="icon icon-lmenu-most-visited"></i></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title"></div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
+            <!--<div class="settings-item" data-setting="recently-closed">-->
+            <!--<div class="settings-item__icon"><i class="icon icon-lmenu-recently-closed"></i></div>-->
+            <!--<div class="settings-item__title"></div>-->
+            <!--<div class="settings-item__toggle"></div>-->
+            <!--</div>-->
+            <div class="settings-item settings-item_item_music" data-setting="music">
+                <div class="settings-item__icon"><i class="icon icon-lmenu-music"></i></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Music</div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
+            <div class="settings-item settings-item_item_todo" data-setting="todo">
+                <div class="settings-item__icon"></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Todo list</div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
+            <div class="settings-item settings-item_item_apps" data-setting="apps">
+                <div class="settings-item__icon"><i class="icon icon-lmenu-apps"></i></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Apps</div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
+            <div class="settings-item settings-item_item_bookmarks" data-setting="bookmarks">
+                <div class="settings-item__icon"><i class="icon icon-lmenu-bookmarks"></i></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Bookmarks</div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
+            <div class="settings-item settings-item_item_greeting" data-setting="greeting">
+                <div class="settings-item__icon"><i class="icon icon-lmenu-greetings"></i></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Greeting</div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
+            <!--<div class="settings-item settings-item_item_clock" data-setting="clock">-->
+            <!--<div class="settings-item__icon"></div>-->
+            <!--<div class="settings-item__content">-->
+            <!--<div class="settings-item__title"></div>-->
+            <!--</div>-->
+            <!--<div class="settings-item__toggle"></div>-->
+            <!--</div>-->
+            <div class="settings-item settings-item_item_weather" data-setting="weather">
+                <div class="settings-item__icon"></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Weather</div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
+        </div>
+        <div class="settings-panel-info">
+            <div class="settings-panel-info__name">
+                © GetTabMedia 2016
+            </div>
+            <div class="settings-panel-info__links">
+                <a href="#" class="settings-panel-info__link">
+                    Contact
+                </a>
+                <a href="#" class="settings-panel-info__link">
+                    Privacy
+                </a>
+                <a href="#" class="settings-panel-info__link">
+                    Terms
+                </a>
+            </div>
         </div>
     </div>
-    <div>
-        <label><i class="icon icon-lmenu-apps"></i>Apps</label>
-        <label data-bind="css: {'switcher': true, 'active': apps}" data-toggle="apps" class="switcher">
-            <span></span>
-            <span class="active"></span>
-            <input type="checkbox" name="apps" data-bind="checked: apps">
-        </label>
-    </div>
-    <div>
-        <label><i class="icon icon-lmenu-bookmarks"></i>Bookmarks</label>
-        <label data-bind="css: {'switcher': true, 'active': bookmarks}" data-toggle="bookmarks" class="switcher">
-            <span></span>
-            <span class="active"></span>
-            <input type="checkbox" name="bookmarks" data-bind="checked: bookmarks">
-        </label>
-    </div>
-    <div>
-        <label><i class="icon icon-lmenu-most-visited"></i>Most Visited</label>
-        <label data-bind="css: {'switcher': true, 'active': mostVisited}" data-toggle="most-visited" class="switcher">
-            <span></span>
-            <span class="active"></span>
-            <input type="checkbox" name="mostVisited" data-bind="checked: mostVisited">
-        </label>
-        <a href="#">Restore all</a>
-        <a href="#">Clear all</a>
-    </div>
-    <div>
-        <label><i class="icon icon-lmenu-recently-closed"></i>Recently closed</label>
-        <label data-bind="css: {'switcher': true, 'active': recentlyClosed}" data-toggle="recently-closed" class="switcher">
-            <span></span>
-            <span class="active"></span>
-            <input type="checkbox" name="recentlyClosed" data-bind="checked: recentlyClosed">
-        </label>
-        <a href="#">Clear all</a>
-    </div>
-    <div>
-        <label><i class="icon icon-lmenu-music"></i>Music</label>
-        <label data-bind="css: {'switcher': true, 'active': music}" data-toggle="music" class="switcher">
-            <span></span>
-            <span class="active"></span>
-            <input type="checkbox" name="music" data-bind="checked: music">
-        </label>
-    </div>
-</div>
 </div>
 
 <div class="weather-box-wrapper">
@@ -223,9 +254,12 @@
             <h2>Open new tab with</h2>
             <form action="" name="gallerySettings">
                 <p>
-                    <label for="gal01"><span class="radio"><input id="gal01" name="r01" type="radio"></span>Random image from library</label>
-                    <label for="gal02"><span class="radio"><input id="gal02" name="r01" type="radio"></span>Random image from favorites</label>
-                    <label for="gal03"><span class="radio"><input id="gal03" name="r01" type="radio"></span>Only my image</label>
+                    <label for="gal01"><span class="radio"><input id="gal01" name="r01" type="radio"></span>Random image
+                        from library</label>
+                    <label for="gal02"><span class="radio"><input id="gal02" name="r01" type="radio"></span>Random image
+                        from favorites</label>
+                    <label for="gal03"><span class="radio"><input id="gal03" name="r01" type="radio"></span>Only my
+                        image</label>
                 </p>
             </form>
         </div>
