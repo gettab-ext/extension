@@ -1,6 +1,7 @@
 /* global chrome */
 import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
+import CONST from '../utils/constants';
 
 import './bookmarks.css';
 import './bookmarks-copy.css';
@@ -9,8 +10,6 @@ const REQUIRED_PERMISSIONS = {
     permissions: ['bookmarks'],
     origins: ['chrome://favicon/']
 };
-
-const DEFAULT_ICON = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAArklEQVR4XqWQQQqDQAxFf1zY21k3XsAeoHgYu7NasV5QqM5mUlACw5RMWvrh7T6Pn2TMjH/IEGSaJtYgIoRIQsFurKrqg2VZMI4jI04s8P7obJsTICmKM4bhIRJ9QSplWaLvB04s8ADiW4975/m5s64vdN2df1pQ15cQ6SkLojjnQqSnC4hgYAiOUAJbYCA9/YkW9hOJdOwFIOT5SQWg1AJG295MvFcETXOlbxHBG8Vy2fHIq9l6AAAAAElFTkSuQmCC';
 
 const makeNode = (tree) => {
     var isDir = tree.children && typeof tree.children === 'object';
@@ -100,7 +99,7 @@ var generateTree = function(tree) {
         li.addClass('item');
 
         var a = $('<a>').text(tree.title); {
-            a.css('background-image', 'url(' + (tree.icon || DEFAULT_ICON) + '), url(../images/icons/favicon-bg-24.png)');
+            a.css('background-image', 'url(' + (tree.icon || CONST.defaultFavIcon) + '), url(../images/icons/favicon-bg-24.png)');
             a.css('background-size', '16px 16px, 24px 24px');
             a.attr({
                 href:  tree.url,
@@ -227,7 +226,7 @@ class Bookmarks {
         this.$panel.removeClass('bookmarks_active');
     }
 
-    getAll(callback = home.noop) {
+    getAll(callback = utils.noop) {
         chrome.permissions.contains(REQUIRED_PERMISSIONS, function(result) {
             if(!result) {
                 callback('PERMISSION_ERROR');

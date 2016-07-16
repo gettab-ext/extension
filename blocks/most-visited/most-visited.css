@@ -1,0 +1,77 @@
+.most-visited {
+    display: flex;
+    font: 12px/16px montserratregular;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.most-visited_mode_permissions-required .most-visited__permissions {
+    display: block;
+}
+
+.most-visited_mode_permissions-required .most-visited__list {
+    display: none;
+}
+
+.most-visited_mode_no-sites .most-visited__no-sites {
+    display: block;
+}
+
+.most-visited_mode_no-sites .most-visited__list {
+    display: none;
+}
+
+.most-visited__title {
+    margin-right: 10px;
+    white-space: nowrap;
+}
+
+.most-visited__permissions {
+    display: none;
+    text-decoration: underline;
+    cursor: pointer;
+    color: rgba(255,255,255,0.8);
+    transition: color 0.3s ease-out;
+}
+
+.most-visited__permissions:hover {
+    color: white;
+}
+
+.most-visited__no-sites {
+    display: none;
+    color: rgba(255,255,255,0.8);
+}
+
+.most-visited__list {
+    display: flex;
+}
+
+.most-visited-item {
+    max-width: 160px;
+    overflow: hidden;
+    color: white !important;
+    display: flex;
+    -webkit-filter: brightness(80%);
+    transition: -webkit-filter 0.3s ease-out;
+    margin-right: 12px;
+    text-decoration: none !important;
+}
+
+.most-visited-item:hover {
+    -webkit-filter: brightness(100%);
+}
+
+.most-visited-item__title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.most-visited-item__icon {
+    width: 16px;
+    height: 16px;
+    background-size: cover;
+    flex-shrink: 0;
+    margin-right: 4px;
+}

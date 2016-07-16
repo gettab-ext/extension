@@ -13,4 +13,5 @@ import '../blocks/wallpaper/wallpaper';
 import '../blocks/weather/weather';
 import '../blocks/apps/apps';
 import '../blocks/bookmarks/bookmarks';
+import '../blocks/most-visited/most-visited';
 
