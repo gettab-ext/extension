@@ -23,6 +23,7 @@ class Search {
 
         this._bindHandlers();
         this._hideSuggest();
+        this._bindUpdateChecker();
     }
 
     _bindHandlers() {
