@@ -6,6 +6,10 @@ const DEFAULT_SETTINGS = {
     'search_engine': 'yahoo'
 };
 
+export const SETTING_KEYS = {
+    searchEngine: 'search_engine'
+};
+
 class Settings {
     constructor() {
 

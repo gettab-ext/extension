@@ -31,7 +31,6 @@ class Storage {
         return new Promise(resolve => {
             chrome.storage.local.get(key, value => {
                 const item = value[key];
-                console.log('get', key, value, item, item && item.timestamp < Date.now());
 
                 if (!item) {
                     resolve(undefined);
@@ -54,7 +53,6 @@ class Storage {
                     timestamp: ttl ? (Date.now() + ttl) : undefined
                 }
             };
-            console.log('storage set', obj);
             chrome.storage.local.set(obj, () => resolve(value));
         });
     }

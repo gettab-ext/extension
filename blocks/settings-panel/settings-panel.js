@@ -1,5 +1,14 @@
 import page, {EVENTS} from '../page/page';
+import settings, {SETTING_KEYS} from '../settings/settings';
+
 import './settings-panel.css';
+
+const RADIO_BUTTONS_MAP = {
+    'search': SETTING_KEYS.searchEngine
+};
+const ALWAYS_ON_BLOCKS = new Set(['search']);
+
+const RADIO_ACTIVE_CLASS = 'settings-item__radio-button_active';
 
 class Settings {
     constructor() {
@@ -7,6 +16,7 @@ class Settings {
 
         this.$panel = $(".settings-panel");
         this.$settings = $(".settings-item");
+        this.settingsArray = Array.from(this.$settings);
 
         this._bindEvents();
         this._loadSettingsState();
@@ -14,9 +24,16 @@ class Settings {
 
     _loadSettingsState() {
         page.inited().then(() => {
-            Array.from(this.$settings).forEach(toggle => {
-                const blockName = $(toggle).data('setting');
-                this._changeToggleState(blockName, page.isBlockVisible(blockName));
+            this.settingsArray.forEach(settingElem => {
+                const blockName = $(settingElem).data('setting');
+
+                if (RADIO_BUTTONS_MAP[blockName]) {
+                    this._setRadioOption(blockName, settings.get(RADIO_BUTTONS_MAP[blockName]))
+                }
+
+                if (!ALWAYS_ON_BLOCKS.has(blockName)) {
+                    this._changeToggleState(blockName, page.isBlockVisible(blockName));
+                }
             });
         });
     }
@@ -25,12 +42,21 @@ class Settings {
         $(".open-settings-panel").on('click', () => this._showPanel());
         $(window).on(EVENTS.hideModals, () => this._hidePanel());
 
-        this.$settings.on('click', e => {
-            const setting = $(e.currentTarget).data('setting');
+        this.settingsArray.forEach(settingElem => {
+            const $setting = $(settingElem);
+            const setting = $setting.data('setting');
 
-            this._changeToggleState(setting);
-            page.toggleBlockVisibility(setting);
+            if (ALWAYS_ON_BLOCKS.has(setting)) {
+                return;
+            }
+            $setting.on('click', () => {
+                this._changeToggleState(setting);
+                page.toggleBlockVisibility(setting);
+            });
         });
+
+        $(".settings-item__radio-button").on('click', e => this._onRadioButtonClick(e));
+
     }
 
     _changeToggleState(setting, state) {
@@ -38,6 +64,30 @@ class Settings {
             .filter(`[data-setting='${setting}']`)
             .find('.settings-item__toggle')
             .toggleClass('settings-item__toggle_active', state);
+    }
+
+    _setRadioOption(setting, radioOption) {
+        const $radioButtons = this.$settings
+            .filter(`[data-setting='${setting}']`)
+            .find(`.settings-item__radio-button`);
+
+        $radioButtons.removeClass(RADIO_ACTIVE_CLASS);
+        $radioButtons.filter(`[data-radio='${radioOption}']`).addClass(RADIO_ACTIVE_CLASS);
+    }
+
+    _onRadioButtonClick(e) {
+        const $radio = $(e.currentTarget);
+        const $setting = $radio.parents('.settings-item');
+        const setting = $setting.data('setting');
+        const radioValue = $radio.data('radio');
+
+        $setting
+            .find(`.settings-item__radio-button`)
+            .removeClass(RADIO_ACTIVE_CLASS);
+
+        $radio.addClass(RADIO_ACTIVE_CLASS);
+
+        settings.set(RADIO_BUTTONS_MAP[setting], radioValue);
     }
 
     _showPanel() {
@@ -48,7 +98,6 @@ class Settings {
     _hidePanel() {
         this.$panel.removeClass("settings-panel_active");
     }
-
 
 }
 

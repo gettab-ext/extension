@@ -1,12 +1,10 @@
-import page from '../page/page';
 import utils from '../utils/utils';
-import settings from '../settings/settings';
+import settings, {SETTING_KEYS} from '../settings/settings';
 
 import './search.css';
 import './suggest.css';
 
 const SUGGEST_RESULT_COUNT = 5;
-const CAMPAIGN_ID = 'foo';
 
 const SEARCH_URLS = {
     yahoo: ({q}) => `https://search.yahoo.com/search?p=${q}`,
@@ -114,7 +112,7 @@ class Search {
     }
 
     _doSearch(query) {
-        const engine = settings.get('search_engine');
+        const engine = settings.get(SETTING_KEYS.searchEngine);
 
         let url = SEARCH_URLS[engine]({
             q: query
