@@ -86,6 +86,14 @@ class Page {
         this._onBlockSettingsUpdated();
     }
 
+    toggleBlockVisibility(blockName) {
+        if (this.isBlockVisible(blockName)) {
+            this.setBlockVisibility(blockName, false);
+        } else {
+            this.setBlockVisibility(blockName, true);
+        }
+    }
+
     getBlockElem(blockName) {
         return $(`[data-block="${blockName}"]`);
     }

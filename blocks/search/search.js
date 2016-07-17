@@ -15,7 +15,7 @@ const SEARCH_URLS = {
 
 class Search {
     constructor() {
-        this.$elem = page.getBlockElem('search');
+        this.$elem = $(".search");
         this.$input = $("input", this.$elem);
         this.$suggest = $(".suggest", this.$elem);
 

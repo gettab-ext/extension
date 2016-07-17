@@ -6,8 +6,7 @@ class Settings {
         this.$elem = $('.leftcol');
 
         this.$panel = $(".settings-panel");
-
-        this._$togglers = $(".leftcol label[data-toggle]").toArray().map(e => $(e));
+        this.$settings = $(".settings-item");
 
         this._bindEvents();
         this._loadSettingsState();
@@ -15,53 +14,42 @@ class Settings {
 
     _loadSettingsState() {
         page.inited().then(() => {
-            this._$togglers.forEach($toggle => {
-                const blockName = $toggle.data('toggle');
-
-                if (page.isBlockVisible(blockName)) {
-                    $toggle.addClass('active');
-                } else {
-                    $toggle.removeClass('active');
-                }
+            Array.from(this.$settings).forEach(toggle => {
+                const blockName = $(toggle).data('setting');
+                this._changeToggleState(blockName, page.isBlockVisible(blockName));
             });
         });
     }
 
     _bindEvents() {
+        $(".open-settings-panel").on('click', () => this._showPanel());
+        $(window).on(EVENTS.hideModals, () => this._hidePanel());
 
-        $(".open-settings-panel").on('click', () => this.showPanel());
-        $(window).on(EVENTS.hideModals, () => this.hidePanel());
+        this.$settings.on('click', e => {
+            const setting = $(e.currentTarget).data('setting');
 
-        this._$togglers.forEach($toggle => {
-            const toggleContainer$ = $toggle.parent();
-            toggleContainer$.on('click', () => this._onToggleClick($toggle));
+            this._changeToggleState(setting);
+            page.toggleBlockVisibility(setting);
         });
-
     }
 
-    showPanel() {
+    _changeToggleState(setting, state) {
+        this.$settings
+            .filter(`[data-setting='${setting}']`)
+            .find('.settings-item__toggle')
+            .toggleClass('settings-item__toggle_active', state);
+    }
+
+    _showPanel() {
         $(window).trigger(EVENTS.modalShow);
         this.$panel.addClass("settings-panel_active");
     }
 
-    hidePanel() {
-        console.log('remove Class');
+    _hidePanel() {
         this.$panel.removeClass("settings-panel_active");
     }
 
-    _onToggleClick($toggle) {
-        const blockName = $toggle.data('toggle');
 
-        if (page.isBlockVisible(blockName)) {
-            $toggle.removeClass('active');
-            page.setBlockVisibility(blockName, false);
-        } else {
-            $toggle.addClass('active');
-            page.setBlockVisibility(blockName, true);
-        }
-
-        return false;
-    }
 }
 
 window.blocks.settings = new Settings();

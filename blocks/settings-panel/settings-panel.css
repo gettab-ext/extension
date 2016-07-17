@@ -210,6 +210,11 @@
         font-family: montserratregular, sans-serif;
         color: rgba(255,255,255,0.8);
         margin-right: 14px;
+        transition: color 0.2s ease-out;
+
+        &:hover {
+            color: white;
+        }
 
         &:before {
             content: '\e822';
