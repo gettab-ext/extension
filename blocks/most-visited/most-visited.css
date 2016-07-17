@@ -1,6 +1,8 @@
 .most-visited {
     display: flex;
-    font: 12px/16px montserratregular;
+    font-size: 12px;
+    line-height: 16px;
+    font-family: montserratregular, sans-serif;
     justify-content: center;
     margin-top: 16px;
 }

@@ -96,7 +96,9 @@
 }
 
 .gallery-tab-list__button {
-    font: 14px/26px montserratregular;
+    font-size: 14px;
+    line-height: 26px;
+    font-family: montserratregular, sans-serif;
     border-radius: 15px;
     transition: border-color .4s ease-in-out, background-color .4s ease-in-out;
     cursor: pointer;

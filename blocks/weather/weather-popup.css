@@ -50,12 +50,16 @@
 }
 
 .weather-box__current-title {
-    font: 14px/20px montserratregular;
+    font-size: 14px;
+    line-height: 20px;
+    font-family: montserratregular, sans-serif;
     margin-bottom: 4px;
 }
 
 .weather-box__current-value {
-    font: 40px/40px montserratregular;
+    font-size: 40px;
+    line-height: 40px;
+    font-family: montserratregular, sans-serif;
 }
 
 .weather-box__forecast {
@@ -74,7 +78,9 @@
 }
 
 .weather-box-forecast__day {
-    font: 14px/14px montserratregular;
+    font-size: 14px;
+    line-height: 14px;
+    font-family: montserratregular, sans-serif;
     margin-bottom: 10px;
 }
 
@@ -85,13 +91,17 @@
 .weather-box-forecast__min-temp {
     display: inline-block;
     width: 50%;
-    font: 30px/30px montserratregular;
+    font-size: 30px;
+    line-height: 30px;
+    font-family: montserratregular, sans-serif;
 }
 
 .weather-box-forecast__max-temp {
     display: inline-block;
     width: 50%;
-    font: 30px/30px montserratregular;
+    font-size: 30px;
+    line-height: 30px;
+    font-family: montserratregular, sans-serif;
     color: #4e6ac8;
 }
 
@@ -106,7 +116,9 @@
 }
 
 .weather-box__unit-button {
-    font: 14px/24px montserratregular;
+    font-size: 14px;
+    line-height: 24px;
+    font-family: montserratregular, sans-serif;
     border-radius: 13px;
     transition: border-color .4s ease-in-out, background-color .4s ease-in-out;
     cursor: pointer;

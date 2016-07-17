@@ -15,7 +15,7 @@
     box-sizing: border-box;
     position: relative;
     background: rgba(0,0,0,0.9);
-    z-index: 10;
+    z-index: 11;
     transition: transform 0.3s ease-out;
     transform: translateX(100%);
     pointer-events: auto;
@@ -42,13 +42,16 @@
 }
 
 .bookmarks__no-bookmarks {
-    font: 20px/52px montserratregular;
+    font-size: 20px;
+    line-height: 52px;
+    font-family: montserratregular, sans-serif;
     margin-top: 32px;
     display: none;
 }
 
 .bookmarks__title {
-    font: 24px montserratregular;
+    font-size: 24px;
+    font-family: montserratregular, sans-serif;
     padding-top: 36px;
 }
 
@@ -76,7 +79,9 @@
 }
 
 .bookmarks__permissions-title {
-    font: 14px/20px montserratregular;
+    font-size: 14px;
+    line-height: 20px;
+    font-family: montserratregular, sans-serif;
     margin-top: 24px;
 }
 
@@ -84,7 +89,9 @@
     background-color: rgba(65, 126, 183, 1);
     text-align: center;
     height: 52px;
-    font: 20px/52px montserratregular;
+    font-size: 20px;
+    line-height: 52px;
+    font-family: montserratregular, sans-serif;
     margin-top: 32px;
     cursor: pointer;
     transition: background-color 0.3s ease-out;

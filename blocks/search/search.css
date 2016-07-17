@@ -21,12 +21,16 @@
     box-sizing: border-box;
     padding: 0 32px;
     color: #949494;
-    font: 18px/57px montserratregular
+    font-size: 18px;
+    line-height: 57px;
+    font-family: montserratregular, sans-serif;
 }
 
 #searchForm .searchLine input[type-text]::-webkit-input-placeholder {
     color: #949494;
-    font: 18px/57px montserratregular
+    font-size: 18px;
+    line-height: 57px;
+    font-family: montserratregular, sans-serif;
 }
 
 #searchForm .searchLine button {
@@ -57,7 +61,9 @@
 
 #searchForm p {
     text-align: center;
-    font: 12px/28px montserratregular;
+    font-size: 12px;
+    line-height: 28px;
+    font-family: montserratregular, sans-serif;
     padding-top: 10px
 }
 

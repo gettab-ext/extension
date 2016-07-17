@@ -14,6 +14,7 @@
     opacity: 0;
     transition: opacity 0.3s ease-out;
     pointer-events: none;
+    -webkit-user-select: none;
 }
 
 .weather-widget_inited {
@@ -22,7 +23,9 @@
 }
 
 .weather-widget__temp {
-    font: 50px/56px montserratbold;
+    font-size: 50px;
+    line-height: 56px;
+    font-family: montserratbold, sans-serif;
     border-right: 1px solid #fff;
     padding-right: 20px;
     margin-right: 20px;
@@ -35,7 +38,9 @@
 }
 
 .weather-widget__city {
-    font: 20px/20px montserratbold;
+    font-size: 20px;
+    line-height: 20px;
+    font-family: montserratbold, sans-serif;
 }
 
 .weather-widget__weather-icon {
@@ -52,7 +57,9 @@
 }
 
 .weather-widget__time, .weather-widget__weather-status {
-    font: 12px/18px montserratregular;
+    font-size: 12px;
+    line-height: 18px;
+    font-family: montserratregular, sans-serif;
 }
 
 .weather-widget__weather-status {

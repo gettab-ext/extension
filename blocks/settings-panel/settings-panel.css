@@ -1,5 +1,7 @@
 .open-settings-panel {
-    font: 14px/34px montserratregular;
+    font-size: 14px;
+    line-height: 34px;
+    font-family: montserratregular, sans-serif;
     color: #fff;
     text-decoration: none;
     border-radius: 17px;
@@ -83,6 +85,7 @@
     &__title {
         font-size: 16px;
         font-family: montserratregular, sans-serif;
+        -webkit-user-select: none;
     }
 
     &__toggle {
@@ -125,5 +128,28 @@
         &_active:before {
             content: '\e823';
         }
+    }
+}
+
+.settings-panel-info {
+    position: absolute;
+    bottom: 0;
+    padding: 0 40px 40px;
+
+    &__links {
+        display: none;
+    }
+
+    &__name {
+        font-size: 12px;
+        font-family: montserratregular, sans-serif;
+        margin-bottom: 16px;
+    }
+
+    &__link {
+        display: inline-block;
+        margin-right: 16px;
+        color: rgba(255,255,255,0.5);
+        font-family: montserratregular, sans-serif;
     }
 }

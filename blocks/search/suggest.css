@@ -15,7 +15,9 @@
 
 .suggest-item {
     display: flex;
-    font: 18px/30px montserratregular;
+    font-size: 18px;
+    line-height: 30px;
+    font-family: montserratregular, sans-serif;
     padding: 0 8px;
     -webkit-user-select: none;
     color: #949494;
