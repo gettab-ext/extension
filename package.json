@@ -29,6 +29,10 @@
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "lodash": "^4.13.1",
-    "postcss-nested": "^1.0.0"
+    "postcss-import": "^8.1.2",
+    "postcss-mixins": "^5.0.0",
+    "postcss-nested": "^1.0.0",
+    "postcss-nested-ancestors": "0.0.1",
+    "postcss-simple-vars": "^3.0.0"
   }
 }

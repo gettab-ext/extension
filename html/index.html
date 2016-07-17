@@ -58,7 +58,7 @@
         <div class="btn-group">
             <a class="gallerySw" title="photo"><i class="icon icon-tmenu-photo"></i></a>
             <a class="" title="volume" data-bind="visible: music()"><i class="icon icon-tmenu-volume"></i></a>
-            <a class="" title="windows"><i class="icon icon-tmenu-windows"></i></a>
+            <a id="open-todo" class="" title="windows"><i class="icon icon-tmenu-windows"></i></a>
             <a class="" title="fav"><i class="icon icon-tmenu-fav"></i></a>
         </div>
     </div><!-- topRight -->
@@ -271,9 +271,7 @@
         <div class="apps__title">
             Apps
         </div>
-        <div class="apps__close">
-            <i class="icon icon-window-close"></i>
-        </div>
+        <div class="apps__close"></div>
         <div class="apps__permissions">
             <div class="apps__permissions-title">
                 Extension requires additional permissions to display your apps in this panel
@@ -312,6 +310,24 @@
         </div>
         <div class="bookmarks__list">
 
+        </div>
+    </div>
+</div>
+
+<div class="todo-wrapper">
+    <div class="todo">
+        <div class="todo-header">
+            <div class="todo-header__title">
+                Task List
+            </div>
+            <div class="todo-header__completed"></div>
+            <div class="todo-header__close"></div>
+        </div>
+        <div class="todo-list">
+
+        </div>
+        <div class="todo-input">
+            <input class="todo-input__input" placeholder="Enter new task">
         </div>
     </div>
 </div>

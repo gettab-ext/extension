@@ -72,5 +72,17 @@ module.exports = {
     // Create Sourcemaps for the bundle
     devtool: 'source-map',
 
-    postcss: [require('postcss-nested')]
+    postcss:  function (webpack) {
+        return [
+            require('postcss-nested-ancestors'),
+            require('postcss-import')({
+                addDependencyTo: webpack
+            }),
+            require('postcss-mixins'),
+            require('postcss-nested'),
+            require('postcss-simple-vars')
+        ];
+    }
+
+
 };

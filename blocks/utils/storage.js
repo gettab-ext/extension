@@ -1,7 +1,5 @@
 /* global chrome */
 
-const TTL_PREFIX = 'timestamp';
-
 if (!chrome.storage) {
     chrome.storage = {
         local: {

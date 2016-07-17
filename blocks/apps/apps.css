@@ -1,3 +1,5 @@
+@import "../page/buttons.css";
+
 .apps-wrapper {
     position: absolute;
     right: 0;
@@ -53,22 +55,10 @@
 }
 
 .apps__close {
+    @mixin close-button;
     position: absolute;
     right: 40px;
     top: 20px;
-    width: 32px;
-    height: 32px;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 50%;
-    line-height: 32px;
-    text-align: center;
-    font-size: 11px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-out;
-}
-
-.apps__close:hover {
-    background-color: rgba(255,255,255,0.1);
 }
 
 .apps__permissions {
