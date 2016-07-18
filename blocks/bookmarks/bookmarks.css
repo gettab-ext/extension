@@ -95,6 +95,7 @@
     margin-top: 32px;
     cursor: pointer;
     transition: background-color 0.3s ease-out;
+    -webkit-user-select: none;
 }
 
 .bookmarks__permissions__button:hover {

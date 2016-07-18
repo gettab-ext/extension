@@ -19,7 +19,7 @@
             <button type="submit" class="search__submit">
                 <i class="icon icon-search-black"></i>
             </button>
-            <div class="suggest"></div>
+            <div class="suggest suggest_hidden"></div>
         </div>
     </form>
 
@@ -57,8 +57,8 @@
         </a>
         <div class="btn-group">
             <a class="gallerySw" title="Wallpapers"><i class="icon icon-tmenu-photo"></i></a>
-            <a class="" title="Music" data-bind="visible: music()"><i class="icon icon-tmenu-volume"></i></a>
-            <a id="open-todo" class="" title="Todo List"><i class="icon icon-tmenu-windows"></i></a>
+            <!--<a class="" title="Music" data-bind="visible: music()"><i class="icon icon-tmenu-volume"></i></a>-->
+            <a id="open-todo" class="" data-block="todo" title="Todo List"><i class="icon icon-tmenu-windows"></i></a>
             <!--<a class="" title="fav"><i class="icon icon-tmenu-fav"></i></a>-->
         </div>
     </div><!-- topRight -->
@@ -114,13 +114,13 @@
                 <!--<div class="settings-item__title"></div>-->
                 <!--<div class="settings-item__toggle"></div>-->
             <!--</div>-->
-            <div class="settings-item settings-item_item_music" data-setting="music">
-                <div class="settings-item__icon"><i class="icon icon-lmenu-music"></i></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">Music</div>
-                </div>
-                <div class="settings-item__toggle"></div>
-            </div>
+            <!--<div class="settings-item settings-item_item_music" data-setting="music">-->
+                <!--<div class="settings-item__icon"><i class="icon icon-lmenu-music"></i></div>-->
+                <!--<div class="settings-item__content">-->
+                    <!--<div class="settings-item__title">Music</div>-->
+                <!--</div>-->
+                <!--<div class="settings-item__toggle"></div>-->
+            <!--</div>-->
             <div class="settings-item settings-item_item_todo" data-setting="todo">
                 <div class="settings-item__icon"><i class="icon icon-tmenu-windows"></i></div>
                 <div class="settings-item__content">

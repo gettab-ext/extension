@@ -2,6 +2,7 @@
 import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import CONST from '../utils/constants';
+import permissions from '../utils/permissions';
 
 import './bookmarks.css';
 import './bookmarks-copy.css';
@@ -215,6 +216,7 @@ class Bookmarks {
         $(".bookmarks__close").on('click', () => this.hidePanel());
         $(window).on(EVENTS.hideModals, () => this.hidePanel());
 
+        $(".bookmarks__permissions__button").on('click', () => permissions.request());
     }
 
     showPanel() {

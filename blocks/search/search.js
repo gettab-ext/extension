@@ -151,9 +151,7 @@ class Search {
                 if (!data || !data.result) {
                     return resolve([]);
                 }
-                return resolve(data.result.map(name => {
-                    return {name};
-                }));
+                return resolve(data.result);
             });
         });
     }
