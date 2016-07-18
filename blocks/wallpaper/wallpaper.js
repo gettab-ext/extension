@@ -1,14 +1,21 @@
 import _ from 'lodash';
-import path from 'path';
 
 import {EVENTS} from '../page/page';
 import './wallpaper.css';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
 
-const BASE_PATH = './';
+const EMBED_BASE_PATH = './';
+const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
 
-const WALLPAPERS = [{
+const pathResolver = function(basePath, wp) {
+    return Object.assign(wp, {
+        path: `${basePath}/${wp.path}`,
+        thumb: `${basePath}/${wp.thumb}`,
+    });
+};
+
+const EMBED_WALLPAPERS = [{
     "name": "Default",
     "desc": "Dark mountain theme",
     "path": "wallpapers/1.jpg",
@@ -23,14 +30,11 @@ const WALLPAPERS = [{
     "desc": "From a height",
     "path": "wallpapers/3.jpg",
     "thumb": "wallpapers/3_thumb.jpg"
-}].map(d => Object.assign(d, {
-    path: path.resolve(BASE_PATH, d.path),
-    thumb: path.resolve(BASE_PATH, d.thumb),
-}));
+}].map(pathResolver.bind({}, EMBED_BASE_PATH));
 
 const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
 const FAV_STORAGE_KEY = 'wallpaper_fav_storage';
-const DEFAULT_WALLPAPPER = WALLPAPERS[0];
+const DEFAULT_WALLPAPER = EMBED_WALLPAPERS[0];
 
 const wallpaperThumbTmpl = ({name, path, thumb}) => (`
     <div class="wallpaper-thumb" data-name="${name}" style="background-image: url('${thumb}') ">
@@ -47,9 +51,12 @@ class Background {
         this.$wallpaperListContainer = $("#scroller_base");
         this.$settingPanel = $('.gallery-box');
 
+        this.wallpapers = EMBED_WALLPAPERS;
+
         this._bindEvents();
         this._renderWallpaperList();
         this._loadWallpaperSettings();
+        this._loadRemoteWallpapers();
     }
 
     _bindEvents() {
@@ -89,20 +96,20 @@ class Background {
     }
 
     _renderWallpaperList() {
-        const wallpaperListHtml = WALLPAPERS.map(wallpaperThumbTmpl).join('');
+        const wallpaperListHtml = this.wallpapers.map(wallpaperThumbTmpl).join('');
         this.$wallpaperListContainer.html(wallpaperListHtml);
     }
 
     _loadWallpaperSettings() {
         settings.inited().then(() => {
-            const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPPER;
+            const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
             this._loadWallpaper(wallpaperData.path);
         });
     }
 
     _setWallpaper(wallpaperName) {
 
-        const wallpaperData = _.find(WALLPAPERS, {
+        const wallpaperData = _.find(this.wallpapers, {
             name: wallpaperName
         });
 
@@ -113,6 +120,15 @@ class Background {
 
     _loadWallpaper(wallpaperPath) {
         utils.loadBackgroundImage(this.$wallpaperContainer, wallpaperPath, 'bodyBg_state_loaded', 'bodyBg_state_loading');
+    }
+
+    _loadRemoteWallpapers() {
+        $.getJSON(`${CONFIG_URL}?rnd=${Math.random() * 1000}`).then(response => {
+            this.wallpapers = this.wallpapers.concat(
+                response.list.map(pathResolver.bind({}, response.basePath))
+            );
+            this._renderWallpaperList();
+        });
     }
 
     _onThumbClick(e) {

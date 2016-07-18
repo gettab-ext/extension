@@ -63,6 +63,7 @@
     -webkit-filter: brightness(85%);
     transition: -webkit-filter 0.3s ease-out;
     position: relative;
+    flex-shrink: 0;
 }
 
 .wallpaper-thumb:hover {
