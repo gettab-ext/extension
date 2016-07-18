@@ -29,11 +29,14 @@ const WALLPAPERS = [{
 }));
 
 const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
+const FAV_STORAGE_KEY = 'wallpaper_fav_storage';
 const DEFAULT_WALLPAPPER = WALLPAPERS[0];
 
 const wallpaperThumbTmpl = ({name, path, thumb}) => (`
     <div class="wallpaper-thumb" data-name="${name}" style="background-image: url('${thumb}') ">
-        <div class="wallpaper-thumb__fav"><div class="icon icon-add-favorites"></div></div>
+        <!--<div class="wallpaper-thumb__fav">-->
+            <!--<div class="icon icon-add-favorites"></div>-->
+        <!--</div>-->
     </div>
 `);
 
@@ -45,7 +48,7 @@ class Background {
         this.$settingPanel = $('.gallery-box');
 
         this._bindEvents();
-        this._fillWallpaperList();
+        this._renderWallpaperList();
         this._loadWallpaperSettings();
     }
 
@@ -61,6 +64,8 @@ class Background {
         this.$wallpaperListContainer.on('click', '.wallpaper-thumb', e => this._onThumbClick(e));
         $(".gallery-close", this.$settingPanel).click(() => this._hidePanel());
         $(window).on(EVENTS.hideModals, () => this._hidePanel());
+
+        $(".wallpaper-thumb__fav").on('click', e => this._onFavClick(e));
     }
 
     _showPanel() {
@@ -83,9 +88,8 @@ class Background {
         this.$settingPanel.find('.gallery-tab#' + tabId).addClass('active');
     }
 
-    _fillWallpaperList() {
+    _renderWallpaperList() {
         const wallpaperListHtml = WALLPAPERS.map(wallpaperThumbTmpl).join('');
-
         this.$wallpaperListContainer.html(wallpaperListHtml);
     }
 
@@ -115,6 +119,27 @@ class Background {
         const wallpaperName = $(e.target).data('name');
         this._setWallpaper(wallpaperName);
     }
+
+    _onFavClick(e) {
+        const wallpaperName = $(e.currentTarget)
+            .closest('.wallpaper-thumb')
+            .data('name');
+
+    }
+
+    _addToFavList(wallpaperName) {
+
+    }
+
+    _removeFromFavList(wallpaperName) {
+
+    }
+
+    _renderFavList() {
+
+    }
+
+
 
 }
 

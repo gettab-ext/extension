@@ -18,3 +18,12 @@ html {
     top: 0;
     bottom: 0;
 }
+
+.topRight {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+
+    &_inited {
+        opacity: 1;
+    }
+}

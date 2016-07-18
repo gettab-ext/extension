@@ -26,6 +26,7 @@ class Search {
 
     _bindHandlers() {
         this.$input.on('keypress', () => this._updateChecker());
+        this.$input.on('blur', () => this._hideSuggest());
 
         this.$suggest.on('click', '.suggest-item', e => this._onSuggestItemClick(e));
         $(".search__submit").on('click', () => this._onSubmitClick());

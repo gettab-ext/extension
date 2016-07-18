@@ -48,6 +48,8 @@ class Page {
         this._inited = settings.inited().then(() => this._loadBlockSettings());
 
         this._bindCommonEvents();
+
+        $(".topRight").addClass('topRight_inited');
     }
 
     _loadBlockSettings() {

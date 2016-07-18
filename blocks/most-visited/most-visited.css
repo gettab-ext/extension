@@ -5,6 +5,12 @@
     font-family: montserratregular, sans-serif;
     justify-content: center;
     margin-top: 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+
+    &_inited {
+        opacity: 1;
+    }
 }
 
 .most-visited_mode_permissions-required .most-visited__permissions {

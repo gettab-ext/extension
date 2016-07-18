@@ -49,6 +49,7 @@ class MostVisited {
         } else {
             this.renderEnabled(mostVisited);
         }
+        this.$block.addClass('most-visited_inited');
     }
 
     renderDisabled(error) {
