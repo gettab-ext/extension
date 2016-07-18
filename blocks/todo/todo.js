@@ -73,7 +73,7 @@ class Todo {
         // $('#main').toggle(todos.length > 0);
         // $('#toggle-all').prop('checked', this.getActiveTodos().length === 0);
         // this.renderFooter();
-        this.$input.focus();
+        // this.$input.focus();
         storage.set(STORAGE_KEY, this.todos);
     }
 

@@ -30,7 +30,6 @@ class Search {
 
         this.$suggest.on('click', '.suggest-item', e => this._onSuggestItemClick(e));
         $(".search__submit").on('click', () => this._onSubmitClick());
-
     }
 
     _bindUpdateChecker() {
