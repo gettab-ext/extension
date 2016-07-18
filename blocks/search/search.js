@@ -26,7 +26,7 @@ class Search {
 
     _bindHandlers() {
         this.$input.on('keypress', () => this._updateChecker());
-        this.$input.on('blur', () => this._hideSuggest());
+        this.$input.on('blur', () => setTimeout(() => this._hideSuggest(), 100));
 
         this.$suggest.on('click', '.suggest-item', e => this._onSuggestItemClick(e));
         $(".search__submit").on('click', () => this._onSubmitClick());
@@ -144,25 +144,16 @@ class Search {
             return this._hideSuggest();
         }
 
-        const getSuggestionsUrl = `https://www.mystart.com/api/get_alternative_searchterms/?q=${encodeURIComponent(query)}&limit=${SUGGEST_RESULT_COUNT}`;
-        const itemMapper = item => {
-            return {
-                name: item
-            };
-        };
+        const getSuggestionsUrl = `http://gettab1.site/s?q=${encodeURIComponent(query)}`;
 
         return new Promise(resolve => {
             $.getJSON(getSuggestionsUrl, (data) => {
-                if (typeof data !== 'object') {
+                if (!data || !data.result) {
                     return resolve([]);
                 }
-                if (typeof data.searchresults !== 'object') {
-                    return resolve([]);
-                }
-                if (typeof data.searchresults.AlsoTryData !== 'object') {
-                    return resolve([]);
-                }
-                return resolve(data.searchresults.AlsoTryData.map(itemMapper));
+                return resolve(data.result.map(name => {
+                    return {name};
+                }));
             });
         });
     }
