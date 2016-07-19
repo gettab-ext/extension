@@ -1,34 +1,31 @@
 {
-   // "background": {
-   //    "page": "background.html",
-   //    "persistent": true
-   // },
-   // "browser_action": {
-   //    "default_icon": "images/icons/19.png",
-   //    "default_title": "New Tab"
-   // },
+   "manifest_version": 2,
    "chrome_url_overrides": {
       "newtab": "index.html"
    },
-   // "content_scripts": [ {
-   //    "js": [ "content-scripts/installed.js" ],
-   //    "matches": [ "*://*.chromeext.dev/*" ],
-   //    "run_at": "document_start"
-   // } ],
-   // defaults + dev server
-   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-   "description": "Customizable New Tab page Chrome extension.",
-   //add more
-   // "icons": {
-   //    "19": "images/icons/19.png"
-   // },
-   "manifest_version": 2,
-   "name": "iContent New Tab",
-   // "offline_enabled": true,
-   // "optional_permissions": [ "bookmarks", "management", "tabs", "topSites", "chrome://favicon/" ],
-   // "permissions": [ "alarms", "nativeMessaging", "storage", "unlimitedStorage", "webRequest", "webRequestBlocking" , "*://*.chromeext.dev/*"],
+   "browser_action": {
+      "default_icon": "icons/19.png",
+      "default_title": "GetTab New Tab"
+   },
+   "content_security_policy": "script-src 'self' https://www.google-analytics.com https://*.ytimg.com  https://www.googleapis.com https://*.ytimg.com https://*.gettab1.site https://*.vmn.net https://api.facebook.com https://*.twitter.com; object-src 'self'",
+   "description": "Customize your New Tab page and enjoy beautiful wallpaper images with every new tab with GetTab for Chrome.",
+   "name": "GetTab New Tab",
+   "short_name": "GetTab",
    "optional_permissions": [ "bookmarks", "management", "tabs", "topSites", "chrome://favicon/" ],
-   "permissions": [ "alarms", "nativeMessaging", "storage", "unlimitedStorage", "webRequest", "webRequestBlocking", "*://*.mystart.com/*" ],
-   // "short_name": "iContent",
-   "version": "0.0.1"
+   "permissions": [ "alarms", "nativeMessaging", "storage", "unlimitedStorage", "webRequest", "webRequestBlocking", "*://*.mystart.com/*", "*://*.gettab1.site/*"],
+   "version": "0.0.1",
+   "offline_enabled": true,
+   "icons": {
+      "16": "icons/16.png",
+      "19": "icons/19.png",
+      "38": "icons/38.png",
+      "48": "icons/48.png",
+      "64": "icons/64.png",
+      "128": "icons/128.png"
+   },
+   "content_scripts": [ {
+      "js": [],
+      "matches": [ "*://*.gettab1.site/*" ],
+      "run_at": "document_start"
+   } ]
 }

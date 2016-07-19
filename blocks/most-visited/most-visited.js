@@ -11,7 +11,7 @@ const REQUIRED_PERMISSIONS = {
     origins: [ 'chrome://favicon/' ]
 };
 
-const LINK_COUNT = 4;
+const LINK_COUNT = 3;
 
 const mostVisitedItem = ({title, href, icon}) => `
     <a href="${href}" class="most-visited-item">
