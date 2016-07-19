@@ -222,16 +222,16 @@
     </div>
 </div>
 
-<div class="gallery-box">
+<div class="gallery-box gallery-box_active">
     <span class="gallery-close"><i class="icon icon-window-close"></i></span>
     <div class="gallery-tab-list">
         <div data-tab="tb1" class="gallery-tab-list__button active">Library</div>
         <div data-tab="tb2" class="gallery-tab-list__button">Favorites</div>
-        <!--<div data-tab="tb3" class="gallery-tab-list__button">My image</div>-->
+        <div data-tab="tb3" class="gallery-tab-list__button">My image</div>
         <!--<div data-tab="tb4" class="gallery-tab-list__button">Settings</div>-->
     </div>
     <div class="window_list">
-        <div id="tb1" class="gallery-tab active">
+        <div id="tb1" class="gallery-tab">
             <div class="gallery">
 
                 <ul id="scroller_base">
@@ -243,12 +243,34 @@
             <h2>You don`t have any favorites yet!</h2>
             <p>Like photos to add them to your favorites</p>
         </div>
-        <div id="tb3" class="gallery-tab">
-            <div id="dropbox">
-                <h2>Drag and drop</h2>
-                <p>Your image here to upload (<i class="icon icon-file-image"></i>JPG, PNG & BMP)</p>
+        <div id="tb3" class="gallery-tab active gallery-tab_tab_dropbox">
 
-                <p style="padding-top: 25px;">Or <a class="btn" data-tab="tb1">Browse your library</a></p>
+            <div class="dropbox">
+                <div class="dropbox__title">
+                    Drag and drop
+                </div>
+                <div class="dropbox__subtitle">
+                    Your image here to upload (<i class="icon icon-file-image"></i>JPG, PNG & BMP)
+                </div>
+                <div class="dropbox__browse-wrapper">
+                    Or
+                    <div class="dropbox__browse">
+                        Browse your library
+                        <input type="file" name="userupload" id="userupload" class="dropbox__browse-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="user-wallpaper">
+                <div class="user-wallpaper__thumb-container"></div>
+                <div class="user-wallpaper__controls">
+                    <div class="user-wallpaper__replace">
+                        Replace
+                    </div>
+                    <div class="user-wallpaper__delete">
+                        Delete
+                    </div>
+                </div>
             </div>
 
         </div>

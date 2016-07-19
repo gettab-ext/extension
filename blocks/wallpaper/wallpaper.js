@@ -1,11 +1,15 @@
 import _ from 'lodash';
 
 import {EVENTS} from '../page/page';
-import './wallpaper.css';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
 
-const EMBED_BASE_PATH = './';
+import './wallpaper.css';
+import './bg.css';
+import './dropbox.css';
+import './dropbox';
+
+const EMBEDED_BASE_PATH = './';
 const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
 
 const pathResolver = function(basePath, wp) {
@@ -15,7 +19,7 @@ const pathResolver = function(basePath, wp) {
     });
 };
 
-const EMBED_WALLPAPERS = [{
+const EMBEDED_WALLPAPERS = [{
     "name": "Default",
     "desc": "Dark mountain theme",
     "path": "wallpapers/1.jpg",
@@ -30,13 +34,14 @@ const EMBED_WALLPAPERS = [{
     "desc": "From a height",
     "path": "wallpapers/3.jpg",
     "thumb": "wallpapers/3_thumb.jpg"
-}].map(pathResolver.bind({}, EMBED_BASE_PATH));
+}].map(pathResolver.bind({}, EMBEDED_BASE_PATH));
 
 const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
 const FAV_STORAGE_KEY = 'wallpaper_fav_storage';
-const DEFAULT_WALLPAPER = EMBED_WALLPAPERS[0];
+const DEFAULT_WALLPAPER = EMBEDED_WALLPAPERS[0];
+export const USER_WALLPAPER_STORAGE_KEY = 'user_wallpaper_setting';
 
-const wallpaperThumbTmpl = ({name, path, thumb}) => (`
+export const wallpaperThumbTmpl = ({name, path, thumb}) => (`
     <div class="wallpaper-thumb" data-name="${name}" style="background-image: url('${thumb}') ">
         <!--<div class="wallpaper-thumb__fav">-->
             <!--<div class="icon icon-add-favorites"></div>-->
@@ -44,14 +49,14 @@ const wallpaperThumbTmpl = ({name, path, thumb}) => (`
     </div>
 `);
 
-class Background {
+class Wallpaper {
 
     constructor() {
         this.$wallpaperContainer = $(".bodyBg");
         this.$wallpaperListContainer = $("#scroller_base");
         this.$settingPanel = $('.gallery-box');
 
-        this.wallpapers = EMBED_WALLPAPERS;
+        this.wallpapers = EMBEDED_WALLPAPERS;
 
         this._bindEvents();
         this._renderWallpaperList();
@@ -103,12 +108,17 @@ class Background {
     _loadWallpaperSettings() {
         settings.inited().then(() => {
             const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
-            this._loadWallpaper(wallpaperData.path);
+
+            if (!wallpaperData.userWallpaper) {
+                this._loadWallpaper(wallpaperData.path);
+            } else {
+                const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
+                this._loadWallpaper(userWallpaperData);
+            }
         });
     }
 
     _setWallpaper(wallpaperName) {
-
         const wallpaperData = _.find(this.wallpapers, {
             name: wallpaperName
         });
@@ -116,6 +126,13 @@ class Background {
         this._loadWallpaper(wallpaperData.path);
 
         settings.set(WALLPAPERS_STORAGE_KEY, wallpaperData);
+    }
+
+    setUserWallpaper() {
+        this._loadWallpaper(settings.get(USER_WALLPAPER_STORAGE_KEY));
+        settings.set(WALLPAPERS_STORAGE_KEY, {
+            userWallpaper: true
+        });
     }
 
     _loadWallpaper(wallpaperPath) {
@@ -155,8 +172,7 @@ class Background {
 
     }
 
-
-
 }
 
-window.blocks.background = new Background();
+const wallpaper = new Wallpaper();
+export default wallpaper;

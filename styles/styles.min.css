@@ -2,11 +2,11 @@
     background-image: url(../images/icons_set.png)
 }
 
-#dropbox .message, article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block
 }
 
-#dropbox, #dropbox .preview, header, html {
+header, html {
     position: relative
 }
 
@@ -224,53 +224,6 @@ a:hover {
 header {
     background: url(../images/filedrop//background_tile_1.jpg);
     padding: 75px
-}
-
-#dropbox {
-    border-radius: 10px;
-    border: 2px dashed rgba(255, 255, 255, .4);
-    margin: 80px auto 30px;
-/ / min-height: 290 px;
-    overflow: hidden;
-    padding-bottom: 25px;
-    max-width: 990px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .3) inset, 0 -3px 2px rgba(0, 0, 0, .1)
-}
-
-#dropbox .message {
-    font-size: 11px;
-    text-align: center;
-    padding-top: 160px
-}
-
-#dropbox .message i {
-    color: #ccc;
-    font-size: 10px
-}
-
-#dropbox:before {
-    border-radius: 3px 3px 0 0
-}
-
-#dropbox .preview {
-    width: 245px;
-    height: 215px;
-    float: left;
-    margin: 55px 0 0 60px;
-    text-align: center
-}
-
-#dropbox .preview img {
-    max-width: 240px;
-    max-height: 180px;
-    border: 3px solid #fff;
-    display: block;
-    box-shadow: 0 0 2px #000
-}
-
-#dropbox .imageHolder {
-    display: inline-block;
-    position: relative
 }
 
 #dropbox .uploaded {
@@ -528,14 +481,6 @@ body {
 
 #tb3 {
     padding-top: 0
-}
-
-#tb3 #dropbox {
-    padding-top: 30px
-}
-
-#tb3 #dropbox .preview {
-    height: 175px !important
 }
 
 #tb4 label:not(:first-child) {

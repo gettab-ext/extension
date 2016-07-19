@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 const STORAGE_KEY = "userSettings";
 
 const DEFAULT_SETTINGS = {
@@ -12,7 +10,6 @@ export const SETTING_KEYS = {
 
 class Settings {
     constructor() {
-
         this._inited = this._loadSettings();
 
     }

@@ -130,11 +130,11 @@
     opacity: 0;
     transition: opacity 0.3s ease-out;
     text-align: center;
-}
 
-.gallery-tab.active {
-    opacity: 1;
-    z-index: 2;
+    &.active {
+        opacity: 1;
+        z-index: 2;
+    }
 }
 
 .window_list {
@@ -144,35 +144,4 @@
 
 #dropbox {
     margin-top: 20px;
-}
-
-.bodyBg {
-    position: absolute;
-    display: block;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transition: background-image 0.5s ease-out, -webkit-filter 0.6s ease-out, opacity 0.5s ease-out;
-    background-size: cover;
-    opacity: 0;
-}
-
-.bodyBg_state_loading {
-    -webkit-filter: grayscale(0.8);
-}
-
-.bodyBg_state_loaded {
-    opacity: 1;
-}
-
-.bodyBg:after {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0, rgba(0, 0, 0, 0) 200px), linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0, rgba(0, 0, 0, 0) 200px);
-    content: '';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: block;
-    position: absolute;
 }
