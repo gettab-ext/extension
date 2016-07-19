@@ -59,10 +59,14 @@ class DropboxTab {
     }
 
     readerEvent(f) {
-        var reader = new FileReader();
-        reader.onloadstart = this.loadStart();
-        reader.onload = this.load.bind(this, f);
-        reader.readAsDataURL(f);
+        try {
+            var reader = new FileReader();
+            reader.onloadstart = this.loadStart();
+            reader.onload = this.load.bind(this, f);
+            reader.readAsDataURL(f);
+        } catch (e) {
+            console.warn(e);
+        }
     }
 
     onUserWallpaperLoad(image) {
@@ -76,6 +80,7 @@ class DropboxTab {
     load(file, e) {
         const img = e.target.result;
         const type = file.type.split('/');
+        this.$elem.removeClass('dropbox_state_preloading');
 
         if (!file.type.match('image.*') ||
             type[0] !== 'image' ||
@@ -85,9 +90,10 @@ class DropboxTab {
         }
 
         getImageElem(img, imageElem => {
-            if (imageElem.width < 1024 || imageElem.height < 600) {
-                return this.renderError(ERROR_CODES.smallImage);
-            }
+            // FIXME: обработка ошибок
+            // if (imageElem.width < 1024 || imageElem.height < 600) {
+            //     return this.renderError(ERROR_CODES.smallImage);
+            // }
 
             this.onUserWallpaperLoad(img);
         });
