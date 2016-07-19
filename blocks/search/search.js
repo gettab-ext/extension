@@ -5,6 +5,7 @@ import './search.css';
 import './suggest.css';
 
 const SUGGEST_RESULT_COUNT = 5;
+const SUGGESTION_DELAY = 0;
 
 const SEARCH_URLS = {
     yahoo: ({q}) => `https://search.yahoo.com/search?p=${q}`,
@@ -18,18 +19,49 @@ class Search {
         this.$suggest = $(".suggest", this.$elem);
 
         this.val = '';
+        this.selectedSuggestionIndex = null;
 
         this._bindHandlers();
         this._hideSuggest();
-        this._bindUpdateChecker();
+        // this._bindUpdateChecker();
     }
 
     _bindHandlers() {
-        this.$input.on('keypress', () => this._updateChecker());
         this.$input.on('blur', () => setTimeout(() => this._hideSuggest(), 100));
 
         this.$suggest.on('click', '.suggest-item', e => this._onSuggestItemClick(e));
         $(".search__submit").on('click', () => this._onSubmitClick());
+
+        let timeout;
+        this.$input.keydown(e => {
+            switch (e.which) {
+                case 27: // Escape
+                    this._hideSuggest();
+                    break;
+
+                case 38: // Up
+                    this._changeSelectedSuggestion('up');
+                    e.preventDefault();
+                    break;
+
+                case 40: // Down
+                    this._changeSelectedSuggestion('down');
+                    e.preventDefault();
+                    break;
+
+                case 37: // left
+                    break;
+
+                default: // Typeahead
+                    if (timeout !== null)
+                        clearTimeout(timeout);
+
+                    timeout = setTimeout(() => {
+                        timeout = null;
+                        this._updateChecker();
+                    }, SUGGESTION_DELAY);
+            }
+        });
     }
 
     _bindUpdateChecker() {
@@ -77,8 +109,11 @@ class Search {
         const queryLength = this.val.length;
         const itemTemplate = this._suggestItemTemplate.bind(this, queryLength);
 
+        this.cachedVal = this.val;
+
         this._fetchSuggestions(this.val).then(suggested => {
             const items = suggested.map(itemTemplate).join('');
+            this.suggestions = suggested;
 
             if (items.length === 0) {
                 this._hideSuggest();
@@ -92,6 +127,8 @@ class Search {
                     ${items}
                 </div>
             `;
+
+            this.selectedSuggestionIndex = -1;
             this.$suggest.html(suggestHtml);
         });
     }
@@ -105,6 +142,39 @@ class Search {
 
     _hideSuggest() {
         this.$suggest.addClass('suggest_hidden');
+    }
+
+    _isSuggestVisible() {
+        return !this.$suggest.hasClass('suggest_hidden');
+    }
+
+    _looseSelectedSuggestion() {
+        this._hideSuggest();
+    }
+
+    _changeSelectedSuggestion(direction) {
+        if (direction === 'up') {
+            if (this.selectedSuggestionIndex === 0) {
+                this.$input.val(this.cachedVal);
+                this._looseSelectedSuggestion();
+            } else {
+                this.selectedSuggestionIndex -= 1;
+                this._updateSelectedSuggestion();
+            }
+        } else {
+            if (!this._isSuggestVisible()) {
+                this._showSuggest();
+                this.selectedSuggestionIndex = 0;
+                this._updateSelectedSuggestion();
+            } else {
+                if (this.selectedSuggestionIndex === (this.suggestions.length - 1)) {
+                    return;
+                } else {
+                    this.selectedSuggestionIndex += 1;
+                    this._updateSelectedSuggestion();
+                }
+            }
+        }
     }
 
     _getInputValue() {
@@ -154,6 +224,16 @@ class Search {
                 return resolve(data.result);
             });
         });
+    }
+
+    _updateSelectedSuggestion() {
+        const $items = this.$suggest.find(".suggest-item");
+        $items.removeClass("suggest-item_selected");
+        const $item = $($items[this.selectedSuggestionIndex]);
+        const value = $item.data('val');
+
+        this.$input.val(value);
+        $item.addClass("suggest-item_selected");
     }
 
 }
