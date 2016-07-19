@@ -11,7 +11,7 @@
 }
 
 #searchForm .searchLine {
-    display: table;
+    display: flex;
     border-radius: 29px;
     position: relative;
 }
