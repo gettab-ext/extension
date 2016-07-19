@@ -15,5 +15,6 @@ import '../blocks/apps/apps';
 import '../blocks/bookmarks/bookmarks';
 import '../blocks/most-visited/most-visited';
 import '../blocks/todo/todo';
+import '../blocks/music/music';
 
 

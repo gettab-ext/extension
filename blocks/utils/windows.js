@@ -16,9 +16,14 @@ var windows = {
     },
 
     update: function(windowId, updateInfo, callback = noop) {
-        chrome.windows.update(windowId, updateInfo, function(wd) {
-            callback(false, wd);
-        });
+        try {
+            chrome.windows.update(windowId, updateInfo, function(wd) {
+                callback(false, wd);
+            });
+        } catch (e) {
+            console.log(e);
+            callback(true, null);
+        }
     }
 
 };
