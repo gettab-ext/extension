@@ -23,9 +23,8 @@
       "64": "icons/64.png",
       "128": "icons/128.png"
    },
-   "content_scripts": [ {
-      "js": [],
-      "matches": [ "*://*.gettab1.site/*" ],
-      "run_at": "document_start"
-   } ]
+   "background": {
+      "page": "background.html",
+      "persistent": true
+   }
 }

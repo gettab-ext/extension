@@ -28,6 +28,12 @@ const BLOCKS_DEFAULT = {
     },
     'music': {
         visible: true
+    },
+    'weather': {
+        visible: true
+    },
+    'todo': {
+        visible: true
     }
 };
 

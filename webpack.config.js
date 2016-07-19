@@ -7,19 +7,16 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var dir_js = path.resolve(__dirname, 'js');
-var dir_styles = path.resolve(__dirname, 'styles');
 var dir_build = path.resolve(__dirname, 'build');
-var dir_images = path.resolve(__dirname, 'images');
-var dir_fonts = path.resolve(__dirname, 'fonts');
-var dir_libs = path.resolve(__dirname, 'libs');
-var dir_wallpapers = path.resolve(__dirname, 'wallpapers');
-var dir_html = path.resolve(__dirname, 'html');
 
 module.exports = {
-    entry: path.resolve(dir_js, 'main.js'),
+    entry: {
+        main: path.resolve(dir_js, 'main.js'),
+        background: path.resolve(dir_js, 'background.js')
+    },
     output: {
         path: dir_build,
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     devServer: {
         contentBase: dir_build,
@@ -40,23 +37,26 @@ module.exports = {
         // Simply copies the files over
         new CopyWebpackPlugin([
             {
-                from: dir_html // to: output.path
+                from: path.resolve(__dirname, 'html') // to: output.path
             }, {
-                from: dir_styles,
+                from: path.resolve(__dirname, 'styles'),
                 to: 'styles'
             }, {
-                from: dir_images,
+                from: path.resolve(__dirname, 'images'),
                 to: 'images'
             }, {
-                from: dir_fonts,
+                from: path.resolve(__dirname, 'fonts'),
                 to: 'fonts'
             }, {
-                from: dir_libs // to: output.path
+                from: path.resolve(__dirname, 'libs') // to: output.path
             }, {
-                from: dir_wallpapers,
+                from: path.resolve(__dirname, 'wallpapers'),
                 to: 'wallpapers'
             }, {
                 from: path.resolve(__dirname, 'etc', 'manifest.json')
+            }, {
+                from: path.resolve(__dirname, 'icons'),
+                to: 'icons'
             }
         ]),
         // Avoid publishing files when compilation fails
