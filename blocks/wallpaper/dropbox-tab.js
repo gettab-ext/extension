@@ -7,8 +7,12 @@ const ERROR_CODES = {
     wrongType: 'wrong_type',
     smallImage: 'small_image'
 };
+const STATES_CLASSES = {
+    userWallpaper: 'dropbox-gallery-tab_state_user-wallpaper',
+    dropbox: 'dropbox-gallery-tab_state_dropbox'
+};
 
-const isBigImg = (img, callback) => {
+const getImageElem = (img, callback) => {
     var i = new Image();
     i.src = img;
 
@@ -17,10 +21,13 @@ const isBigImg = (img, callback) => {
     };
 };
 
-class Dropbox {
+class DropboxTab {
     constructor() {
 
+        this.$tab = $(".dropbox-gallery-tab");
         this.$elem = $(".dropbox");
+        this.$userThumbContainer = $(".user-wallpaper__thumb-container");
+
         this.bindEvents();
         this.renderInitialState();
     }
@@ -28,6 +35,16 @@ class Dropbox {
     bindEvents() {
         $('.dropbox__browse-input').on("change", e => {
             this.readerEvent(e.target.files[0]);
+        });
+
+        this.$tab.on('click', '.wallpaper-thumb_mod_user', () => {
+            wallpaper.setUserWallpaper();
+        });
+        $(".user-wallpaper__replace").on('click', () => {
+            this.renderDropboxState();
+        });
+        $(".user-wallpaper__delete").on('click', () => {
+            this.deleteUserWallpaper();
         });
     }
 
@@ -50,7 +67,10 @@ class Dropbox {
 
     onUserWallpaperLoad(image) {
         settings.set(USER_WALLPAPER_STORAGE_KEY, image)
-            .then(() => wallpaper.setUserWallpaper());
+            .then(() => {
+                wallpaper.setUserWallpaper();
+                this.renderHaveImageState();
+            });
     }
 
     load(file, e) {
@@ -64,7 +84,7 @@ class Dropbox {
             return this.renderError(ERROR_CODES.wrongType);
         }
 
-        isBigImg(img, imageElem => {
+        getImageElem(img, imageElem => {
             if (imageElem.width < 1024 || imageElem.height < 600) {
                 return this.renderError(ERROR_CODES.smallImage);
             }
@@ -86,12 +106,27 @@ class Dropbox {
     renderHaveImageState() {
         const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
         const userWallpaperThumb = wallpaperThumbTmpl({
-            thumb: userWallpaperData
+            thumb: userWallpaperData,
+            mod: 'user'
         });
+        this.$userThumbContainer.html(userWallpaperThumb);
 
+        this.$tab.removeClass(STATES_CLASSES.dropbox);
+        this.$tab.addClass(STATES_CLASSES.userWallpaper);
+    }
+
+    renderDropboxState() {
+        this.$tab.addClass(STATES_CLASSES.dropbox);
+        this.$tab.removeClass(STATES_CLASSES.userWallpaper);
+    }
+
+    deleteUserWallpaper() {
+        settings.set(USER_WALLPAPER_STORAGE_KEY, '');
+        wallpaper.setDefaultWallpaper();
+        this.renderDropboxState();
     }
 
 }
 
-const dropbox = new Dropbox();
-export default dropbox;
+const dropboxTab = new DropboxTab();
+export default dropboxTab;

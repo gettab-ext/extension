@@ -1,3 +1,18 @@
+.dropbox-gallery-tab {
+
+    &_state_dropbox {
+        .user-wallpaper {
+            display: none;
+        }
+    }
+
+    &_state_user-wallpaper {
+        .dropbox {
+            display: none;
+        }
+    }
+}
+
 .dropbox {
     border-radius: 10px;
     border: 2px dashed rgba(255, 255, 255, .2);
@@ -60,6 +75,47 @@
         height: 28px;
         width: 168px;
         z-index: 1;
+    }
+}
+
+.user-wallpaper {
+    margin-top: 12px;
+
+    &__thumb-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__controls {
+        display: flex;
+        justify-content: center;
+        margin-top: 8px;
+    }
+
+    &__replace, &__delete {
+        color: rgba(255,255,255,0.6);
+        transition: color 0.1s ease-out;
+        cursor: pointer;
+        margin: 0 8px;
+        -webkit-user-select: none;
+
+        &:hover {
+            color: white
+        }
+        &:before {
+            font-family: 'icon-font';
+            font-size: 13px;
+            line-height: 21px;
+            display: inline-block;
+        }
+    }
+
+    &__replace:before {
+        content: "\e80a";
+    }
+
+    &__delete:before {
+        content: "\e828";
     }
 
 }

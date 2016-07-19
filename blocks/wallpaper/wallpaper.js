@@ -3,11 +3,12 @@ import _ from 'lodash';
 import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
+import dropboxTab from './dropbox-tab';
 
 import './wallpaper.css';
 import './bg.css';
-import './dropbox.css';
-import './dropbox';
+import './dropbox-tab.css';
+import './dropbox-tab';
 
 const EMBEDED_BASE_PATH = './';
 const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
@@ -38,11 +39,11 @@ const EMBEDED_WALLPAPERS = [{
 
 const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
 const FAV_STORAGE_KEY = 'wallpaper_fav_storage';
-const DEFAULT_WALLPAPER = EMBEDED_WALLPAPERS[0];
+export const DEFAULT_WALLPAPER = EMBEDED_WALLPAPERS[0];
 export const USER_WALLPAPER_STORAGE_KEY = 'user_wallpaper_setting';
 
-export const wallpaperThumbTmpl = ({name, path, thumb}) => (`
-    <div class="wallpaper-thumb" data-name="${name}" style="background-image: url('${thumb}') ">
+export const wallpaperThumbTmpl = ({name, path, thumb, mod}) => (`
+    <div class="wallpaper-thumb wallpaper-thumb_mod_${mod}" data-name="${name}" style="background-image: url('${thumb}') ">
         <!--<div class="wallpaper-thumb__fav">-->
             <!--<div class="icon icon-add-favorites"></div>-->
         <!--</div>-->
@@ -83,6 +84,7 @@ class Wallpaper {
     _showPanel() {
         $(window).trigger(EVENTS.modalShow);
         this.$settingPanel.addClass('gallery-box_active');
+        dropboxTab.renderInitialState();
     }
 
     _hidePanel() {
@@ -133,6 +135,10 @@ class Wallpaper {
         settings.set(WALLPAPERS_STORAGE_KEY, {
             userWallpaper: true
         });
+    }
+
+    setDefaultWallpaper() {
+        this._setWallpaper(DEFAULT_WALLPAPER.name);
     }
 
     _loadWallpaper(wallpaperPath) {

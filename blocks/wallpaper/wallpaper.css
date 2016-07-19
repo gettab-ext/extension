@@ -64,6 +64,11 @@
     transition: -webkit-filter 0.3s ease-out;
     position: relative;
     flex-shrink: 0;
+    background-size: cover;
+
+    &_mod_user {
+        margin-right: 0;
+    }
 }
 
 .wallpaper-thumb:hover {
@@ -140,8 +145,4 @@
 .window_list {
     position: relative;
     height: 268px;
-}
-
-#dropbox {
-    margin-top: 20px;
 }
