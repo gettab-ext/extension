@@ -65,11 +65,12 @@ class Wallpaper {
         this.$settingPanel = $('.gallery-box');
 
         this.wallpapers = EMBEDED_WALLPAPERS;
+        this.currentWallpaperName = undefined;
 
         this._bindEvents();
+        this._loadRemoteWallpapers();
         this._renderWallpaperList();
         this._loadWallpaperSettings();
-        this._loadRemoteWallpapers();
     }
 
     _bindEvents() {
@@ -89,6 +90,16 @@ class Wallpaper {
 
         $(`.wp-settings__item[data-item='${SETTINGS_OPTIONS.pictureOfTheDay}']`).on('click', () => {
             this.setPictureOfTheDay();
+        });
+
+        $(`.wp-settings__item[data-item='${SETTINGS_OPTIONS.random}']`).on('click', () => {
+            this.setRandomLibraryImage();
+        });
+
+        $(`.wp-settings__item[data-item='${SETTINGS_OPTIONS.myImage}']`).on('click', () => {
+            if (!this.userWallpaper) {
+                this._setWallpaper(this.currentWallpaperName);
+            }
         });
     }
 
@@ -122,14 +133,18 @@ class Wallpaper {
         settings.inited().then(() => {
             const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
 
+            console.log('wallpaperData', wallpaperData);
+
             if (wallpaperData.userWallpaper) {
                 const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
+                this.userWallpaper = true;
                 this._loadWallpaper(userWallpaperData);
             } else if (wallpaperData.pictureOfTheDay) {
                 this._loadWallpaper(PICTURE_OF_THE_DAY_PATH);
             } else if (wallpaperData.randomFromLibrary) {
-                this._getRandomWallpaper();
+                this._loadRandomWallpaperFromLib();
             } else {
+                this.currentWallpaperName = wallpaperData.name;
                 this._loadWallpaper(wallpaperData.path);
             }
         });
@@ -139,13 +154,14 @@ class Wallpaper {
         const wallpaperData = _.find(this.wallpapers, {
             name: wallpaperName
         });
-
+        this.currentWallpaperName = wallpaperName;
         this._loadWallpaper(wallpaperData.path);
 
         settings.set(WALLPAPERS_STORAGE_KEY, wallpaperData);
     }
 
     setUserWallpaper() {
+        this.userWallpaper = true;
         this._loadWallpaper(settings.get(USER_WALLPAPER_STORAGE_KEY));
         settings.set(WALLPAPERS_STORAGE_KEY, {
             userWallpaper: true
@@ -164,14 +180,20 @@ class Wallpaper {
     }
 
     setRandomLibraryImage() {
-        this._getRandomWallpaper();
+        this._loadRandomWallpaper();
         settings.set(WALLPAPERS_STORAGE_KEY, {
             randomFromLibrary: true
         });
     }
 
-    _getRandomWallpaper() {
-        this._setWallpaper(_.sample(this.wallpapers).name);
+    _loadRandomWallpaperFromLib() {
+        this.wallpaperLibraryPromise.then(() => this._loadRandomWallpaper());
+    }
+
+    _loadRandomWallpaper() {
+        const randomWallpaper = _.sample(this.wallpapers);
+        this._loadWallpaper(randomWallpaper.path);
+        this.currentWallpaperName = randomWallpaper.name;
     }
 
     _loadWallpaper(wallpaperPath) {
@@ -179,11 +201,14 @@ class Wallpaper {
     }
 
     _loadRemoteWallpapers() {
-        this.remoteWallpapers = Promise.race()
-        $.getJSON(`${CONFIG_URL}?rnd=${Math.random() * 1000}`).then(response => {
-            this.wallpapers = this.wallpapers.concat(
-                response.list.map(pathResolver.bind({}, response.basePath))
+        const wallpaperLoader = () => new Promise(r => $.getJSON(`${CONFIG_URL}?rnd=${Math.random() * 1000}`).then(r));
+
+        this.wallpaperLibraryPromise = Promise.race([utils.wait(1000), wallpaperLoader()]).then(result => {
+            const remoteLibrary = (result
+                ? result.list.map(pathResolver.bind({}, result .basePath))
+                : []
             );
+            this.wallpapers = this.wallpapers.concat(remoteLibrary);
             this._renderWallpaperList();
         });
     }
