@@ -12,6 +12,13 @@ import './dropbox-tab';
 
 const EMBEDED_BASE_PATH = './';
 const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
+const PICTURE_OF_THE_DAY_PATH = 'http://gettab1.site/wp/wp.png';
+
+const SETTINGS_OPTIONS = {
+    random: 'random',
+    pictureOfTheDay: 'picture-of-the-day',
+    myImage: 'my-image'
+};
 
 const pathResolver = function(basePath, wp) {
     return Object.assign(wp, {
@@ -79,6 +86,10 @@ class Wallpaper {
         $(window).on(EVENTS.hideModals, () => this._hidePanel());
 
         $(".wallpaper-thumb__fav").on('click', e => this._onFavClick(e));
+
+        $(`.wp-settings__item[data-item='${SETTINGS_OPTIONS.pictureOfTheDay}']`).on('click', () => {
+            this.setPictureOfTheDay();
+        });
     }
 
     _showPanel() {
@@ -111,11 +122,15 @@ class Wallpaper {
         settings.inited().then(() => {
             const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
 
-            if (!wallpaperData.userWallpaper) {
-                this._loadWallpaper(wallpaperData.path);
-            } else {
+            if (wallpaperData.userWallpaper) {
                 const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
                 this._loadWallpaper(userWallpaperData);
+            } else if (wallpaperData.pictureOfTheDay) {
+                this._loadWallpaper(PICTURE_OF_THE_DAY_PATH);
+            } else if (wallpaperData.randomFromLibrary) {
+                this._getRandomWallpaper();
+            } else {
+                this._loadWallpaper(wallpaperData.path);
             }
         });
     }
@@ -141,11 +156,30 @@ class Wallpaper {
         this._setWallpaper(DEFAULT_WALLPAPER.name);
     }
 
+    setPictureOfTheDay() {
+        this._loadWallpaper(PICTURE_OF_THE_DAY_PATH);
+        settings.set(WALLPAPERS_STORAGE_KEY, {
+            pictureOfTheDay: true
+        });
+    }
+
+    setRandomLibraryImage() {
+        this._getRandomWallpaper();
+        settings.set(WALLPAPERS_STORAGE_KEY, {
+            randomFromLibrary: true
+        });
+    }
+
+    _getRandomWallpaper() {
+        this._setWallpaper(_.sample(this.wallpapers).name);
+    }
+
     _loadWallpaper(wallpaperPath) {
         utils.loadBackgroundImage(this.$wallpaperContainer, wallpaperPath, 'bodyBg_state_loaded', 'bodyBg_state_loading');
     }
 
     _loadRemoteWallpapers() {
+        this.remoteWallpapers = Promise.race()
         $.getJSON(`${CONFIG_URL}?rnd=${Math.random() * 1000}`).then(response => {
             this.wallpapers = this.wallpapers.concat(
                 response.list.map(pathResolver.bind({}, response.basePath))

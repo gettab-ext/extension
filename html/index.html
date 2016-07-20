@@ -43,7 +43,7 @@
         <a class="open-settings-panel" id="leftMenuSwitch">
             <i class="icon icon-tmenu-menu"></i>
         </a>
-        <i class="icon icon-logo" data-bind="visible: logo()"></i>
+        <i class="icon icon-logo" data-block="logo"></i>
     </div><!-- topLeft -->
 
     <div class="topRight">
@@ -93,13 +93,13 @@
                     </div>
                 </div>
             </div>
-            <!--<div class="settings-item settings-item_item_logo" data-setting="logo">-->
-                <!--<div class="settings-item__icon"><i class="icon icon-lmenu-logo"></i></div>-->
-                <!--<div class="settings-item__content">-->
-                    <!--<div class="settings-item__title">Logo</div>-->
-                <!--</div>-->
-                <!--<div class="settings-item__toggle"></div>-->
-            <!--</div>-->
+            <div class="settings-item settings-item_item_logo" data-setting="logo">
+                <div class="settings-item__icon"><i class="icon icon-lmenu-logo"></i></div>
+                <div class="settings-item__content">
+                    <div class="settings-item__title">Logo</div>
+                </div>
+                <div class="settings-item__toggle"></div>
+            </div>
             <div class="settings-item settings-item_item_most-visited" data-setting="most-visited">
                 <div class="settings-item__icon"><i class="icon icon-lmenu-most-visited"></i></div>
                 <div class="settings-item__content">
@@ -228,7 +228,7 @@
         <div data-tab="tb1" class="gallery-tab-list__button active">Library</div>
         <!--<div data-tab="tb2" class="gallery-tab-list__button">Favorites</div>-->
         <div data-tab="tb3" class="gallery-tab-list__button">My image</div>
-        <!--<div data-tab="tb4" class="gallery-tab-list__button">Settings</div>-->
+        <div data-tab="tb4" class="gallery-tab-list__button">Settings</div>
     </div>
     <div class="window_list">
         <div id="tb1" class="gallery-tab active">
@@ -277,16 +277,26 @@
         </div>
         <div id="tb4" class="gallery-tab">
             <h2>Open new tab with</h2>
-            <form action="" name="gallerySettings">
-                <p>
-                    <label for="gal01"><span class="radio"><input id="gal01" name="r01" type="radio"></span>Random image
-                        from library</label>
-                    <label for="gal02"><span class="radio"><input id="gal02" name="r01" type="radio"></span>Random image
-                        from favorites</label>
-                    <label for="gal03"><span class="radio"><input id="gal03" name="r01" type="radio"></span>Only my
-                        image</label>
-                </p>
-            </form>
+            <div class="wp-settings">
+                <div class="wp-settings__item" data-item="random">
+                    <div class="wp-settings__radio"></div>
+                    <div class="wp-settings__item-title">
+                        Random image from library
+                    </div>
+                </div>
+                <div class="wp-settings__item" data-item="picture-of-the-day">
+                    <div class="wp-settings__radio"></div>
+                    <div class="wp-settings__item-title">
+                        Picture of the day
+                    </div>
+                </div>
+                <div class="wp-settings__item" data-item="my-image">
+                    <div class="wp-settings__item-title">
+                        Only my image
+                    </div>
+                    <div class="wp-settings__radio"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
