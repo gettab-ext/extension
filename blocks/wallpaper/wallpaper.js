@@ -4,21 +4,16 @@ import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
 import dropboxTab from './dropbox-tab';
+import './dropbox-tab';
 
 import './wallpaper.css';
 import './bg.css';
 import './dropbox-tab.css';
-import './dropbox-tab';
+import './settings-tab.css';
 
 const EMBEDED_BASE_PATH = './';
 const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
 const PICTURE_OF_THE_DAY_PATH = 'http://gettab1.site/wp/wp.png';
-
-const SETTINGS_OPTIONS = {
-    random: 'random',
-    pictureOfTheDay: 'picture-of-the-day',
-    myImage: 'my-image'
-};
 
 const pathResolver = function(basePath, wp) {
     return Object.assign(wp, {
@@ -57,12 +52,24 @@ export const wallpaperThumbTmpl = ({name, path, thumb, mod}) => (`
     </div>
 `);
 
+const getSettingOption = (option) => {
+    return $(`.wp-settings__item[data-item='${option}']`);
+};
+const setOptionActive = ($option) => {
+    $option.addClass('wp-settings__item_active');
+};
+
 class Wallpaper {
 
     constructor() {
         this.$wallpaperContainer = $(".bodyBg");
         this.$wallpaperListContainer = $("#scroller_base");
         this.$settingPanel = $('.gallery-box');
+        this.$settingOptions = {
+            random: getSettingOption('random'),
+            pictureOfTheDay: getSettingOption('picture-of-the-day'),
+            myImage: getSettingOption('my-image')
+        };
 
         this.wallpapers = EMBEDED_WALLPAPERS;
         this.currentWallpaperName = undefined;
@@ -88,18 +95,21 @@ class Wallpaper {
 
         $(".wallpaper-thumb__fav").on('click', e => this._onFavClick(e));
 
-        $(`.wp-settings__item[data-item='${SETTINGS_OPTIONS.pictureOfTheDay}']`).on('click', () => {
+        this.$settingOptions.pictureOfTheDay.on('click', () => {
             this.setPictureOfTheDay();
+            setOptionActive(this.$settingOptions.pictureOfTheDay);
         });
 
-        $(`.wp-settings__item[data-item='${SETTINGS_OPTIONS.random}']`).on('click', () => {
+        this.$settingOptions.random.on('click', () => {
             this.setRandomLibraryImage();
+            setOptionActive(this.$settingOptions.random);
         });
 
-        $(`.wp-settings__item[data-item='${SETTINGS_OPTIONS.myImage}']`).on('click', () => {
+        this.$settingOptions.myImage.on('click', () => {
             if (!this.userWallpaper) {
                 this._setWallpaper(this.currentWallpaperName);
             }
+            setOptionActive(this.$settingOptions.myImage);
         });
     }
 
@@ -169,7 +179,7 @@ class Wallpaper {
     }
 
     setDefaultWallpaper() {
-        this._setWallpaper(DEFAULT_WALLPAPER.name);
+        this._setWallpaper(this.currentWallpaperName || DEFAULT_WALLPAPER.name);
     }
 
     setPictureOfTheDay() {

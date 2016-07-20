@@ -146,24 +146,3 @@
     position: relative;
     height: 268px;
 }
-
-.wp-settings {
-    display: flex;
-    justify-content: center;
-
-    &__item {
-        margin: 0 16px;
-    }
-
-    &__item-title {
-        font-size: 14px;
-        font-family: montserratregular, sans-serif;
-        color: rgba(255,255,255,0.6);
-        transition: color 0.1s ease-out;
-        cursor: pointer;
-
-        &:hover {
-            color: white;
-        }
-    }
-}

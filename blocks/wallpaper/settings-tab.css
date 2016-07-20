@@ -1,0 +1,30 @@
+.wp-settings {
+    display: flex;
+    justify-content: center;
+
+    &__item {
+        margin: 0 16px;
+        display: flex;
+    }
+
+    &__radio {
+        @mixin radio-button;
+        &_active {
+            @mixin radio-button_active;
+        }
+    }
+
+    &__item-title {
+        font-size: 14px;
+        font-family: montserratregular, sans-serif;
+        color: rgba(255,255,255,0.6);
+        transition: color 0.1s ease-out;
+        cursor: pointer;
+        line-height: 20px;
+        margin-left: 4px;
+
+        &:hover {
+            color: white;
+        }
+    }
+}

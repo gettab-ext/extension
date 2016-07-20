@@ -23,5 +23,35 @@
         top: 10px;
         left: 10px;
     }
-
 }
+
+@define-mixin radio-button {
+    font-size: 14px;
+    font-family: montserratregular, sans-serif;
+    color: rgba(255,255,255,0.8);
+    transition: color 0.2s ease-out;
+
+    &:hover {
+        color: white;
+    }
+
+    &:before {
+        content: '\e822';
+        display: inline-block;
+        font-family: "icon-font";
+        vertical-align: baseline;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    &_active:before {
+        content: '\e823';
+    }
+}
+
+@define-mixin radio-button_active {
+    &:before {
+        content: '\e823';
+    }
+}
+
+

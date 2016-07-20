@@ -1,3 +1,5 @@
+@import "../page/buttons.css";
+
 .open-settings-panel {
     font-size: 14px;
     line-height: 34px;
@@ -82,12 +84,6 @@
         top: -2px;
     }
 
-    &__title {
-        font-size: 16px;
-        font-family: montserratregular, sans-serif;
-        -webkit-user-select: none;
-    }
-
     &__toggle {
         background: url(/images/lmenu_switch.png);
         width: 36px;
@@ -106,27 +102,17 @@
     }
 
     &__radio-button {
-        font-size: 14px;
-        font-family: montserratregular, sans-serif;
-        color: rgba(255,255,255,0.8);
+        @mixin radio-button;
         margin-right: 14px;
-        transition: color 0.2s ease-out;
-
-        &:hover {
-            color: white;
-        }
+        font-size: 16px;
+        font-family: montserratregular, sans-serif;
+        -webkit-user-select: none;
 
         &:before {
-            content: '\e822';
-            display: inline-block;
-            font-family: "icon-font";
-            vertical-align: baseline;
-            -webkit-font-smoothing: antialiased;
             margin-right: 4px;
         }
-
-        &_active:before {
-            content: '\e823';
+        &_active {
+            @mixin radio-button_active;
         }
     }
 }
