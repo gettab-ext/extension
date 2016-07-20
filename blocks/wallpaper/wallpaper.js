@@ -4,6 +4,7 @@ import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
 import dropboxTab from './dropbox-tab';
+import Fetcher from '../utils/fetcher';
 import './dropbox-tab';
 
 import './wallpaper.css';
@@ -12,7 +13,10 @@ import './dropbox-tab.css';
 import './settings-tab.css';
 
 const EMBEDED_BASE_PATH = './';
+
 const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
+const CONFIG_TTL = 15 * 1000;
+const CONFIG_TIMEOUT = 1000;
 const PICTURE_OF_THE_DAY_PATH = 'http://gettab1.site/wp/wp.png';
 
 const pathResolver = function(basePath, wp) {
@@ -56,6 +60,7 @@ const getSettingOption = (option) => {
     return $(`.wp-settings__item[data-item='${option}']`);
 };
 const setOptionActive = ($option) => {
+    $(`.wp-settings__item`).removeClass('wp-settings__item_active');
     $option.addClass('wp-settings__item_active');
 };
 
@@ -73,6 +78,13 @@ class Wallpaper {
 
         this.wallpapers = EMBEDED_WALLPAPERS;
         this.currentWallpaperName = undefined;
+
+        this.configFetcher = new Fetcher({
+            url: CONFIG_URL,
+            ttl: CONFIG_TTL,
+            timeout: CONFIG_TIMEOUT,
+            nocache: true
+        });
 
         this._bindEvents();
         this._loadRemoteWallpapers();
@@ -143,24 +155,34 @@ class Wallpaper {
         settings.inited().then(() => {
             const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
 
-            console.log('wallpaperData', wallpaperData);
-
             if (wallpaperData.userWallpaper) {
+
                 const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
                 this.userWallpaper = true;
                 this._loadWallpaper(userWallpaperData);
+                setOptionActive(this.$settingOptions.myImage);
+
             } else if (wallpaperData.pictureOfTheDay) {
+
                 this._loadWallpaper(PICTURE_OF_THE_DAY_PATH);
+                setOptionActive(this.$settingOptions.pictureOfTheDay);
+
             } else if (wallpaperData.randomFromLibrary) {
+
                 this._loadRandomWallpaperFromLib();
+                setOptionActive(this.$settingOptions.random);
+
             } else {
+
                 this.currentWallpaperName = wallpaperData.name;
                 this._loadWallpaper(wallpaperData.path);
+                setOptionActive(this.$settingOptions.myImage);
+
             }
         });
     }
 
-    _setWallpaper(wallpaperName) {
+    _setWallpaper(wallpaperName = DEFAULT_WALLPAPER.name) {
         const wallpaperData = _.find(this.wallpapers, {
             name: wallpaperName
         });
@@ -211,9 +233,7 @@ class Wallpaper {
     }
 
     _loadRemoteWallpapers() {
-        const wallpaperLoader = () => new Promise(r => $.getJSON(`${CONFIG_URL}?rnd=${Math.random() * 1000}`).then(r));
-
-        this.wallpaperLibraryPromise = Promise.race([utils.wait(1000), wallpaperLoader()]).then(result => {
+        this.wallpaperLibraryPromise = this.configFetcher.get().then(result => {
             const remoteLibrary = (result
                 ? result.list.map(pathResolver.bind({}, result .basePath))
                 : []

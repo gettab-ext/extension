@@ -1,3 +1,5 @@
+@import "../page/buttons.css";
+
 .wp-settings {
     display: flex;
     justify-content: center;
@@ -9,7 +11,8 @@
 
     &__radio {
         @mixin radio-button;
-        &_active {
+
+        ^&__item_active & {
             @mixin radio-button_active;
         }
     }

@@ -30,6 +30,8 @@
     font-family: montserratregular, sans-serif;
     color: rgba(255,255,255,0.8);
     transition: color 0.2s ease-out;
+    -webkit-user-select: none;
+    cursor: pointer;
 
     &:hover {
         color: white;
