@@ -55,7 +55,7 @@ class Page {
 
         this._bindCommonEvents();
 
-        $(".topRight").addClass('topRight_inited');
+        $(".top-right").addClass('top-right_inited');
     }
 
     _loadBlockSettings() {

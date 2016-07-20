@@ -15,8 +15,8 @@ const WEATHER_API_URL = "http://gettab1.site/w";
 const GEOCODE_API_URL = 'http://gettab1.site/g';
 const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
 
-const WEATHER_STORAGE_TIME = 30 * 1000;
-const POSITION_STORAGE_TIME = 10 * 60 * 1000;
+const WEATHER_STORAGE_TIME = 15 * 60 * 1000;
+const POSITION_STORAGE_TIME = 15 * 60 * 1000;
 
 const USE_MYSTART_DATA = true;
 

@@ -16,7 +16,7 @@ const EMBEDED_BASE_PATH = './';
 
 const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
 const CONFIG_TTL = 5 * 60 * 1000;
-const CONFIG_TIMEOUT = 10 * 60 * 1000;
+const CONFIG_FETCH_TIMEOUT = 1000;
 const PICTURE_OF_THE_DAY_PATH = 'http://gettab1.site/wp/wp.png';
 
 const pathResolver = function(basePath, wp) {
@@ -82,7 +82,7 @@ class Wallpaper {
         this.configFetcher = new Fetcher({
             url: CONFIG_URL,
             ttl: CONFIG_TTL,
-            timeout: CONFIG_TIMEOUT,
+            timeout: CONFIG_FETCH_TIMEOUT,
             nocache: true
         });
 
@@ -93,7 +93,7 @@ class Wallpaper {
     }
 
     _bindEvents() {
-        $('.gallerySw').click(() => this._showPanel());
+        $('#open-wallpapers').click(() => this._showPanel());
 
         $(".gallery-tab-list__button").click(e => {
             const $tabButton = $(e.target);
