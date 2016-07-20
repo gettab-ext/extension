@@ -27,7 +27,13 @@ class Search {
     }
 
     _bindHandlers() {
-        this.$input.on('blur', () => setTimeout(() => this._hideSuggest(), 100));
+        this.$input.on('focus', () => {
+            this.$elem.addClass('search_focused');
+        });
+        this.$input.on('blur', () => {
+            this.$elem.removeClass('search_focused');
+            setTimeout(() => this._hideSuggest(), 100);
+        });
 
         this.$suggest.on('click', '.suggest-item', e => this._onSuggestItemClick(e));
         $(".search__submit").on('click', () => this._onSubmitClick());

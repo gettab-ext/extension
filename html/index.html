@@ -12,13 +12,15 @@
 <body>
 <div class="bodyBg"></div>
 <div id="searchForm">
-    <form data-bind="submit: doSearch" class="search">
-        <div class="searchLine">
-            <input type="text" name="search" placeholder="Search the web" autocomplete="off" autocorrect="off"
-                   autocapitalize="off" spellcheck="false" maxlength="400" autofocus>
-            <button type="submit" class="search__submit">
-                <i class="icon icon-search-black"></i>
-            </button>
+    <form class="search">
+        <div class="search__wrapper">
+            <div class="search__line">
+                <input class="search__input" type="text" name="search" placeholder="Search the web" autocomplete="off" autocorrect="off"
+                       autocapitalize="off" spellcheck="false" maxlength="400" autofocus>
+                <button class="search__submit" type="submit">
+                    <i class="icon icon-search-black"></i>
+                </button>
+            </div>
             <div class="suggest suggest_hidden"></div>
         </div>
     </form>

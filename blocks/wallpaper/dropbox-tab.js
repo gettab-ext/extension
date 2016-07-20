@@ -27,13 +27,14 @@ class DropboxTab {
         this.$tab = $(".dropbox-gallery-tab");
         this.$elem = $(".dropbox");
         this.$userThumbContainer = $(".user-wallpaper__thumb-container");
+        this.$fileInput = $('.dropbox__browse-input');
 
         this.bindEvents();
         this.renderInitialState();
     }
 
     bindEvents() {
-        $('.dropbox__browse-input').on("change", e => {
+        this.$fileInput.on("change", e => {
             this.readerEvent(e.target.files[0]);
         });
 
@@ -41,9 +42,11 @@ class DropboxTab {
             wallpaper.setUserWallpaper();
         });
         $(".user-wallpaper__replace").on('click', () => {
+            this.$fileInput.val('');
             this.renderDropboxState();
         });
         $(".user-wallpaper__delete").on('click', () => {
+            this.$fileInput.val('');
             this.deleteUserWallpaper();
         });
     }
