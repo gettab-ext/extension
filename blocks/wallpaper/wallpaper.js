@@ -15,8 +15,8 @@ import './settings-tab.css';
 const EMBEDED_BASE_PATH = './';
 
 const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
-const CONFIG_TTL = 15 * 1000;
-const CONFIG_TIMEOUT = 1000;
+const CONFIG_TTL = 5 * 60 * 1000;
+const CONFIG_TIMEOUT = 10 * 60 * 1000;
 const PICTURE_OF_THE_DAY_PATH = 'http://gettab1.site/wp/wp.png';
 
 const pathResolver = function(basePath, wp) {

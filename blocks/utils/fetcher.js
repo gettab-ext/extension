@@ -6,16 +6,17 @@ class Fetcher {
         this.url = url;
         this.ttl = ttl;
         this.timeout = timeout;
-        this.storageKey = `fetcher__${url}`;
         this.nocache = nocache;
+
+        this.storageKey = `fetcher__${url}`;
     }
 
     /**
      * @returns {Promise}
      */
-    get() {
+    get(passCache = false) {
         return storage.get(this.storageKey).then(stored => {
-            if (stored) {
+            if (stored && !passCache) {
                 return stored;
             }
             const getter = new Promise(resolve => {

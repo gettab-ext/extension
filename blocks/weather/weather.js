@@ -4,18 +4,18 @@ import './weather-popup.css';
 import './weather-widget.css';
 
 import storage from '../utils/storage';
+import Fetcher from '../utils/fetcher';
 import utils from '../utils/utils';
 import {EVENTS} from '../page/page';
 
 const WEATHER_STORAGE_KEY = 'forecast-data';
-const MYSTART_STORAGE_KEY = 'mystart-forecast-data';
 const POSITION_STORAGE_KEY = 'position-data';
 
-const WEATHER_API_URL = "http://gettab1.site:8210/w";
-const GEOCODE_API_URL = 'http://gettab1.site:8210/g';
+const WEATHER_API_URL = "http://gettab1.site/w";
+const GEOCODE_API_URL = 'http://gettab1.site/g';
 const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
 
-const WEATHER_STORAGE_TIME = 10 * 60 * 1000;
+const WEATHER_STORAGE_TIME = 30 * 1000;
 const POSITION_STORAGE_TIME = 10 * 60 * 1000;
 
 const USE_MYSTART_DATA = true;
@@ -55,6 +55,11 @@ class Weather {
         this.$status = $(".weather-widget__weather-status");
 
         this.$forecastContainer = $(".weather-box__forecast");
+
+        this.myStartFetcher = new Fetcher({
+            url: MYSTART_WEATHER_API,
+            ttl: WEATHER_STORAGE_TIME,
+        });
 
         this._init();
     }
@@ -220,17 +225,7 @@ class Weather {
     }
 
     _getMystartData() {
-        return storage.get(MYSTART_STORAGE_KEY)
-            .then(cachedData => {
-                if (cachedData) {
-                    console.log('return cached mystart data');
-                    return cachedData;
-                }
-
-                return $.ajax(MYSTART_WEATHER_API)
-                    .then(data => storage.set(MYSTART_STORAGE_KEY, data, WEATHER_STORAGE_TIME));
-
-            });
+        return this.myStartFetcher.get();
     }
 
     _getConvertedTemp(temp, short) {
