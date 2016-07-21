@@ -12,6 +12,33 @@ const SEARCH_URLS = {
     bing: ({q}) => `http://www.bing.com/search?q=${q}`
 };
 
+const suggestTimeout = 500;
+
+const suggestProviders = {
+    bing(query) {
+        const url = 'https://api.bing.com/osjson.aspx?JsonType=callback&JsonCallback=?';
+        return $.getJSON(url, {
+            query: query
+        }).then(data => data && data[1] && data[1].slice(0, SUGGEST_RESULT_COUNT));
+    },
+    google(query) {
+        const url = `https://suggestqueries.google.com/complete/search?output=firefox&q=${query}`;
+        return $.ajax({
+            url,
+            dataType: 'jsonp'
+        }).then(data => data && data[1] && data[1].slice(0, SUGGEST_RESULT_COUNT));
+    },
+    yahoo(query) {
+        const url = `https://search.yahoo.com/sugg/gossip/gossip-us-ura/?output=sd1&command=${query}&nresults=${SUGGEST_RESULT_COUNT}&callback=?`;
+        return $.ajax({
+            url,
+            dataType: 'jsonp'
+        }).then(data => data && data.r && data.r.map(r => r.k));
+    }
+};
+
+const DEFAULT_SUGGEST_ENGINE = 'google';
+
 class Search {
     constructor() {
         this.$elem = $(".search");
@@ -197,7 +224,7 @@ class Search {
         utils.openUrl(url);
     }
 
-    _suggestItemTemplate(queryLength, {name}) {
+    _suggestItemTemplate(queryLength, name) {
         const matched = name.slice(0, queryLength);
         let rest = name.slice(queryLength, name.length);
         if (rest.match(/^\s/)) {
@@ -220,15 +247,9 @@ class Search {
             return this._hideSuggest();
         }
 
-        const getSuggestionsUrl = `http://gettab1.site/s?q=${encodeURIComponent(query)}`;
-
         return new Promise(resolve => {
-            $.getJSON(getSuggestionsUrl, (data) => {
-                if (!data || !data.result) {
-                    return resolve([]);
-                }
-                return resolve(data.result);
-            });
+            suggestProviders[DEFAULT_SUGGEST_ENGINE](query)
+                .then(data => resolve(data));
         });
     }
 
