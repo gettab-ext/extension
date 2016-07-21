@@ -34,6 +34,7 @@
 .most-visited__title {
     margin-right: 10px;
     white-space: nowrap;
+    color: rgba(255,255,255,0.9);
 }
 
 .most-visited__permissions {
@@ -60,7 +61,7 @@
 .most-visited-item {
     max-width: 160px;
     overflow: hidden;
-    color: white !important;
+    color: rgba(255,255,255,0.9) !important;
     display: flex;
     -webkit-filter: brightness(80%);
     transition: -webkit-filter 0.3s ease-out;
