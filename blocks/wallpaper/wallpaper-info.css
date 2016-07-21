@@ -1,0 +1,78 @@
+.wallpaper-name-wrapper {
+    position: absolute;
+    bottom: 40px;
+    width: 100%;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+}
+
+.wallpaper-name {
+    font-size: 14px;
+    font-family: montserratregular;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: color 0.2s ease-out;
+    pointer-events: auto;
+    -webkit-user-select: none;
+
+    &:hover {
+        color: white;
+    }
+}
+
+.wallpaper-desc-popup {
+    width: 700px;
+    background-color: rgba(0,0,0,0.9);
+    margin: auto;
+    padding: 25px 40px;
+    z-index: 11;
+    position: relative;
+    pointer-events: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+
+    &_visible {
+        opacity: 1;
+    }
+
+    &-wrapper {
+        position: absolute;
+        bottom: 80px;
+        width: 100%;
+        pointer-events: none;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+    .ya-share2__list {
+        display: flex;
+    }
+
+    .ya-share2__link, &__button {
+        display: block;
+        min-width: 40px;
+        height: 26px;
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 13px;
+        transition: background-color 0.1s ease-out;
+        line-height: 26px;
+        box-sizing: border-box;
+        padding: 0 13px;
+        font-family: montserratregular;
+        -webkit-user-select: none;
+
+        &:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+    }
+
+    .ya-share2__title {
+        display: none;
+    }
+
+}
+

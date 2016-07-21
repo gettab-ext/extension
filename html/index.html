@@ -11,362 +11,386 @@
 </head>
 <body class="page">
 <div class="bodyBg"></div>
-<div id="searchForm">
-    <form class="search search_focused">
-        <div class="search__wrapper">
-            <div class="search__line">
-                <input class="search__input" type="text" name="search" placeholder="Search the web" autocomplete="off" autocorrect="off"
-                       autocapitalize="off" spellcheck="false" maxlength="400" autofocus>
-                <button class="search__submit" type="submit">
-                    <i class="icon icon-search-black"></i>
-                </button>
+<div class="page-content">
+    <div id="searchForm">
+        <form class="search search_focused">
+            <div class="search__wrapper">
+                <div class="search__line">
+                    <input class="search__input" type="text" name="search" placeholder="Search the web"
+                           autocomplete="off" autocorrect="off"
+                           autocapitalize="off" spellcheck="false" maxlength="400" autofocus>
+                    <button class="search__submit" type="submit">
+                        <i class="icon icon-search-black"></i>
+                    </button>
+                </div>
+                <div class="suggest suggest_hidden"></div>
             </div>
-            <div class="suggest suggest_hidden"></div>
-        </div>
-    </form>
+        </form>
 
-    <div class="most-visited" data-block="most-visited">
-        <div class="most-visited__title">
-            Most visited:
+        <div class="most-visited" data-block="most-visited">
+            <div class="most-visited__title">
+                Most visited:
+            </div>
+            <div class="most-visited__permissions">
+                Additional permissions required »
+            </div>
+            <div class="most-visited__no-sites">
+                No results.
+            </div>
+            <div class="most-visited__list"></div>
         </div>
-        <div class="most-visited__permissions">
-            Additional permissions required »
-        </div>
-        <div class="most-visited__no-sites">
-            No results.
-        </div>
-        <div class="most-visited__list"></div>
+
     </div>
 
-</div>
+    <div class="top wrapper">
+        <div class="topLeft">
+            <a class="open-settings-panel" id="leftMenuSwitch">
+                <i class="icon icon-tmenu-menu"></i>
+            </a>
+            <i class="icon icon-logo" data-block="logo"></i>
+        </div><!-- topLeft -->
 
-<div class="top wrapper">
-    <div class="topLeft">
-        <a class="open-settings-panel" id="leftMenuSwitch">
-            <i class="icon icon-tmenu-menu"></i>
-        </a>
-        <i class="icon icon-logo" data-block="logo"></i>
-    </div><!-- topLeft -->
-
-    <div class="top-right">
-        <div href="#" id="show-apps-button" class="top-right-btn" data-block="apps">
-            Apps
-        </div>
-        <div href="#" id="show-bookmarks-button" class="top-right-btn" data-block="bookmarks">
-            Bookmarks
-        </div>
-        <div class="top-right__button-group">
-            <div id="open-wallpapers" class="top-right-btn" title="Wallpapers"></div>
-            <div id="open-music" class="top-right-btn button-group__btn" title="Music" data-block="music"></div>
-            <div id="open-todo" class="top-right-btn button-group__btn" title="Todo List" data-block="todo"></div>
-        </div>
-    </div><!-- topRight -->
-</div><!-- .top.wrapper -->
-
-<div class="bottom wrapper">
-    <div class="weather-widget" data-block="weather">
-        <div class="weather-widget__temp"></div>
-        <div class="weather-widget__text-data">
-            <div class="weather-widget__city">
-                Earth
+        <div class="top-right">
+            <div href="#" id="show-apps-button" class="top-right-btn" data-block="apps">
+                Apps
             </div>
-            <div class="weather-widget__status">
-                <span class="weather-widget__time"></span>
-                <span class="weather-widget__weather-icon"></span>
-                <span class="weather-widget__weather-status">cloudy</span>
+            <div href="#" id="show-bookmarks-button" class="top-right-btn" data-block="bookmarks">
+                Bookmarks
+            </div>
+            <div class="top-right__button-group">
+                <div id="open-wallpapers" class="top-right-btn" title="Wallpapers"></div>
+                <div id="open-music" class="top-right-btn button-group__btn" title="Music" data-block="music"></div>
+                <div id="open-todo" class="top-right-btn button-group__btn" title="Todo List" data-block="todo"></div>
+            </div>
+        </div><!-- topRight -->
+    </div><!-- .top.wrapper -->
+
+    <div class="bottom-wrapper">
+        <div class="weather-widget" data-block="weather">
+            <div class="weather-widget__temp"></div>
+            <div class="weather-widget__text-data">
+                <div class="weather-widget__city">
+                    Earth
+                </div>
+                <div class="weather-widget__status">
+                    <span class="weather-widget__time"></span>
+                    <span class="weather-widget__weather-icon"></span>
+                    <span class="weather-widget__weather-status">cloudy</span>
+                </div>
             </div>
         </div>
-    </div>
-</div><!-- .bottom.wrapper -->
+    </div><!-- .bottom.wrapper -->
 
-<div class="settings-panel-wrapper">
-    <div class="settings-panel">
-        <div class="settings-panel__list">
-            <div class="settings-item settings-item_item_search" data-setting="search">
-                <div class="settings-item__icon"><i class="icon icon-lmenu-search"></i></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">Search</div>
-                    <div class="settings-item__radio-buttons">
-                        <div data-radio="yahoo" class="settings-item__radio-button">Yahoo</div>
-                        <div data-radio="bing" class="settings-item__radio-button">Bing</div>
+    <div class="settings-panel-wrapper">
+        <div class="settings-panel">
+            <div class="settings-panel__list">
+                <div class="settings-item settings-item_item_search" data-setting="search">
+                    <div class="settings-item__icon"><i class="icon icon-lmenu-search"></i></div>
+                    <div class="settings-item__content">
+                        <div class="settings-item__title">Search</div>
+                        <div class="settings-item__radio-buttons">
+                            <div data-radio="yahoo" class="settings-item__radio-button">Yahoo</div>
+                            <div data-radio="bing" class="settings-item__radio-button">Bing</div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="settings-item settings-item_item_logo" data-setting="logo">
-                <div class="settings-item__icon"><i class="icon icon-lmenu-logo"></i></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">Logo</div>
-                </div>
-                <div class="settings-item__toggle"></div>
-            </div>
-            <div class="settings-item settings-item_item_most-visited" data-setting="most-visited">
-                <div class="settings-item__icon"><i class="icon icon-lmenu-most-visited"></i></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">
-                        Most Visited
+                <div class="settings-item settings-item_item_logo" data-setting="logo">
+                    <div class="settings-item__icon"><i class="icon icon-lmenu-logo"></i></div>
+                    <div class="settings-item__content">
+                        <div class="settings-item__title">Logo</div>
                     </div>
+                    <div class="settings-item__toggle"></div>
                 </div>
-                <div class="settings-item__toggle"></div>
-            </div>
-            <!--<div class="settings-item" data-setting="recently-closed">-->
+                <div class="settings-item settings-item_item_most-visited" data-setting="most-visited">
+                    <div class="settings-item__icon"><i class="icon icon-lmenu-most-visited"></i></div>
+                    <div class="settings-item__content">
+                        <div class="settings-item__title">
+                            Most Visited
+                        </div>
+                    </div>
+                    <div class="settings-item__toggle"></div>
+                </div>
+                <!--<div class="settings-item" data-setting="recently-closed">-->
                 <!--<div class="settings-item__icon"><i class="icon icon-lmenu-recently-closed"></i></div>-->
                 <!--<div class="settings-item__title"></div>-->
                 <!--<div class="settings-item__toggle"></div>-->
-            <!--</div>-->
-            <div class="settings-item settings-item_item_music" data-setting="music">
-                <div class="settings-item__icon"><i class="icon icon-lmenu-music"></i></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">Music</div>
+                <!--</div>-->
+                <div class="settings-item settings-item_item_music" data-setting="music">
+                    <div class="settings-item__icon"><i class="icon icon-lmenu-music"></i></div>
+                    <div class="settings-item__content">
+                        <div class="settings-item__title">Music</div>
+                    </div>
+                    <div class="settings-item__toggle"></div>
                 </div>
-                <div class="settings-item__toggle"></div>
-            </div>
-            <div class="settings-item settings-item_item_todo" data-setting="todo">
-                <div class="settings-item__icon"><i class="icon icon-tmenu-windows"></i></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">Todo list</div>
+                <div class="settings-item settings-item_item_todo" data-setting="todo">
+                    <div class="settings-item__icon"><i class="icon icon-tmenu-windows"></i></div>
+                    <div class="settings-item__content">
+                        <div class="settings-item__title">Todo list</div>
+                    </div>
+                    <div class="settings-item__toggle"></div>
                 </div>
-                <div class="settings-item__toggle"></div>
-            </div>
-            <div class="settings-item settings-item_item_apps" data-setting="apps">
-                <div class="settings-item__icon"><i class="icon icon-lmenu-apps"></i></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">Apps</div>
+                <div class="settings-item settings-item_item_apps" data-setting="apps">
+                    <div class="settings-item__icon"><i class="icon icon-lmenu-apps"></i></div>
+                    <div class="settings-item__content">
+                        <div class="settings-item__title">Apps</div>
+                    </div>
+                    <div class="settings-item__toggle"></div>
                 </div>
-                <div class="settings-item__toggle"></div>
-            </div>
-            <div class="settings-item settings-item_item_bookmarks" data-setting="bookmarks">
-                <div class="settings-item__icon"><i class="icon icon-lmenu-bookmarks"></i></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">Bookmarks</div>
+                <div class="settings-item settings-item_item_bookmarks" data-setting="bookmarks">
+                    <div class="settings-item__icon"><i class="icon icon-lmenu-bookmarks"></i></div>
+                    <div class="settings-item__content">
+                        <div class="settings-item__title">Bookmarks</div>
+                    </div>
+                    <div class="settings-item__toggle"></div>
                 </div>
-                <div class="settings-item__toggle"></div>
-            </div>
-            <!--<div class="settings-item settings-item_item_greeting" data-setting="greeting">-->
+                <!--<div class="settings-item settings-item_item_greeting" data-setting="greeting">-->
                 <!--<div class="settings-item__icon"><i class="icon icon-lmenu-greetings"></i></div>-->
                 <!--<div class="settings-item__content">-->
-                    <!--<div class="settings-item__title">Greeting</div>-->
+                <!--<div class="settings-item__title">Greeting</div>-->
                 <!--</div>-->
                 <!--<div class="settings-item__toggle"></div>-->
-            <!--</div>-->
-            <!--<div class="settings-item settings-item_item_clock" data-setting="clock">-->
-            <!--<div class="settings-item__icon"></div>-->
-            <!--<div class="settings-item__content">-->
-            <!--<div class="settings-item__title"></div>-->
-            <!--</div>-->
-            <!--<div class="settings-item__toggle"></div>-->
-            <!--</div>-->
-            <div class="settings-item settings-item_item_weather" data-setting="weather">
-                <div class="settings-item__icon"></div>
-                <div class="settings-item__content">
-                    <div class="settings-item__title">Weather</div>
+                <!--</div>-->
+                <!--<div class="settings-item settings-item_item_clock" data-setting="clock">-->
+                <!--<div class="settings-item__icon"></div>-->
+                <!--<div class="settings-item__content">-->
+                <!--<div class="settings-item__title"></div>-->
+                <!--</div>-->
+                <!--<div class="settings-item__toggle"></div>-->
+                <!--</div>-->
+                <div class="settings-item settings-item_item_weather" data-setting="weather">
+                    <div class="settings-item__icon"></div>
+                    <div class="settings-item__content">
+                        <div class="settings-item__title">Weather</div>
+                    </div>
+                    <div class="settings-item__toggle"></div>
                 </div>
-                <div class="settings-item__toggle"></div>
             </div>
-        </div>
-        <div class="settings-panel-info">
-            <div class="settings-panel-info__name">
-                © GetTabMedia 2016
-            </div>
-            <div class="settings-panel-info__links">
-                <a href="mailto:gettab.contact@gmail.com" class="settings-panel-info__link">
-                    gettab.contact@gmail.com
-                </a>
-                <div>
-                    <a href="http://gettab.info/privacy.html" class="settings-panel-info__link">
-                        Privacy
+            <div class="settings-panel-info">
+                <div class="settings-panel-info__name">
+                    © GetTabMedia 2016
+                </div>
+                <div class="settings-panel-info__links">
+                    <a href="mailto:gettab.contact@gmail.com" class="settings-panel-info__link">
+                        gettab.contact@gmail.com
                     </a>
-                    <a href="http://gettab.info/terms.html" class="settings-panel-info__link">
-                        Terms
-                    </a>
+                    <div>
+                        <a href="http://gettab.info/privacy.html" class="settings-panel-info__link">
+                            Privacy
+                        </a>
+                        <a href="http://gettab.info/terms.html" class="settings-panel-info__link">
+                            Terms
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="weather-box-wrapper">
-    <div class="weather-box">
-        <div class="weather-box__close">╳</div>
-        <div class="weather-box__current">
-            <div class="weather-box__current-item weather-box__current-feel">
-                <div class="weather-box__current-title">Feels Like</div>
-                <div class="weather-box__current-value">22</div>
+    <div class="weather-box-wrapper">
+        <div class="weather-box">
+            <div class="weather-box__close">╳</div>
+            <div class="weather-box__current">
+                <div class="weather-box__current-item weather-box__current-feel">
+                    <div class="weather-box__current-title">Feels Like</div>
+                    <div class="weather-box__current-value">22</div>
+                </div>
+                <div class="weather-box__current-item weather-box__current-humidity">
+                    <div class="weather-box__current-title">Humidity</div>
+                    <div class="weather-box__current-value">38</div>
+                </div>
+                <div class="weather-box__current-item weather-box__current-wind">
+                    <div class="weather-box__current-title">Wind (km/h)</div>
+                    <div class="weather-box__current-value">11</div>
+                </div>
+                <div class="weather-box__current-item weather-box__current-rain">
+                    <div class="weather-box__current-title">Rain (mm)</div>
+                    <div class="weather-box__current-value">0</div>
+                </div>
             </div>
-            <div class="weather-box__current-item weather-box__current-humidity">
-                <div class="weather-box__current-title">Humidity</div>
-                <div class="weather-box__current-value">38</div>
-            </div>
-            <div class="weather-box__current-item weather-box__current-wind">
-                <div class="weather-box__current-title">Wind (km/h)</div>
-                <div class="weather-box__current-value">11</div>
-            </div>
-            <div class="weather-box__current-item weather-box__current-rain">
-                <div class="weather-box__current-title">Rain (mm)</div>
-                <div class="weather-box__current-value">0</div>
-            </div>
-        </div>
-        <div class="weather-box__forecast"></div>
-        <!--<div class="weather-box__settings">-->
+            <div class="weather-box__forecast"></div>
+            <!--<div class="weather-box__settings">-->
             <!--<div class="weather-box__settings-units">-->
-                <!--<div class="weather-box__unit-button">-->
-                    <!--°C-->
-                <!--</div>-->
-                <!--<div class="weather-box__unit-button">-->
-                    <!--°F-->
-                <!--</div>-->
+            <!--<div class="weather-box__unit-button">-->
+            <!--°C-->
+            <!--</div>-->
+            <!--<div class="weather-box__unit-button">-->
+            <!--°F-->
+            <!--</div>-->
             <!--</div>-->
             <!--<div class="weather-box__settings-button">-->
-                <!--<div class="weather-box__settings-button-icon icon icon-settings"></div>-->
-                <!--<div class="weather-box__settings-button-title"></div>-->
+            <!--<div class="weather-box__settings-button-icon icon icon-settings"></div>-->
+            <!--<div class="weather-box__settings-button-title"></div>-->
             <!--</div>-->
-        <!--</div>-->
+            <!--</div>-->
+        </div>
     </div>
+
+    <div class="gallery-box">
+        <span class="gallery-close"><i class="icon icon-window-close"></i></span>
+        <div class="gallery-tab-list">
+            <div data-tab="tb1" class="gallery-tab-list__button active">Library</div>
+            <!--<div data-tab="tb2" class="gallery-tab-list__button">Favorites</div>-->
+            <div data-tab="tb3" class="gallery-tab-list__button">My image</div>
+            <div data-tab="tb4" class="gallery-tab-list__button">Settings</div>
+        </div>
+        <div class="window_list">
+            <div id="tb1" class="gallery-tab active">
+                <div class="gallery">
+
+                    <ul id="scroller_base">
+                    </ul>
+
+                </div><!-- gallery -->
+            </div>
+            <div id="tb2" class="gallery-tab">
+                <h2>You don`t have any favorites yet!</h2>
+                <p>Like photos to add them to your favorites</p>
+            </div>
+            <div id="tb3" class="gallery-tab dropbox-gallery-tab">
+
+                <div class="dropbox">
+                    <div class="dropbox__title">
+                        Drag and drop
+                    </div>
+                    <div class="dropbox__subtitle">
+                        Your image here to upload (<i class="icon icon-file-image"></i>JPG, PNG & BMP)
+                    </div>
+                    <div class="dropbox__browse-wrapper">
+                        Or
+                        <div class="dropbox__browse">
+                            Browse your library
+                            <input type="file" accept="image/png,image/jpg,image/jpeg,image/bmp" name="userupload"
+                                   id="userupload" class="dropbox__browse-input">
+                        </div>
+                    </div>
+                    <div class="dropbox__error"></div>
+                </div>
+
+                <div class="user-wallpaper">
+                    <div class="user-wallpaper__thumb-container"></div>
+                    <div class="user-wallpaper__controls">
+                        <div class="user-wallpaper__replace">
+                            Replace
+                        </div>
+                        <div class="user-wallpaper__delete">
+                            Delete
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="tb4" class="gallery-tab">
+                <h2>Open new tab with</h2>
+                <div class="wp-settings">
+                    <div class="wp-settings__item" data-item="random">
+                        <div class="wp-settings__radio">
+                            Random image from library
+                        </div>
+                    </div>
+                    <div class="wp-settings__item" data-item="picture-of-the-day">
+                        <div class="wp-settings__radio">
+                            Picture of the day
+                        </div>
+                    </div>
+                    <div class="wp-settings__item" data-item="my-image">
+                        <div class="wp-settings__radio">
+                            Only my image
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="apps-wrapper">
+        <div class="apps">
+            <div class="apps__title">
+                Apps
+            </div>
+            <div class="apps__close"></div>
+            <div class="apps__permissions">
+                <div class="apps__permissions-title">
+                    Extension requires additional permissions to display your apps in this panel
+                </div>
+                <div class="apps__permissions__button">
+                    Continue
+                </div>
+            </div>
+            <div class="apps__no-apps">
+                No apps found
+            </div>
+            <div class="apps__list">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="bookmarks-wrapper">
+        <div class="bookmarks">
+            <div class="bookmarks__title">
+                Bookmarks
+            </div>
+            <div class="bookmarks__close">
+                <i class="icon icon-window-close"></i>
+            </div>
+            <div class="bookmarks__permissions">
+                <div class="bookmarks__permissions-title">
+                    Extension requires additional permissions to display your bookmarks in this panel
+                </div>
+                <div class="bookmarks__permissions__button">
+                    Continue
+                </div>
+            </div>
+            <div class="bookmarks__no-bookmarks">
+                No apps found
+            </div>
+            <div class="bookmarks__list">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="todo-wrapper">
+        <div class="todo">
+            <div class="todo-header">
+                <div class="todo-header__title">
+                    Task List
+                </div>
+                <div class="todo-header__completed"></div>
+                <div class="todo-header__close"></div>
+            </div>
+            <div class="todo-list">
+
+            </div>
+            <div class="todo-input">
+                <input class="todo-input__input" placeholder="Enter new task">
+            </div>
+        </div>
+    </div>
+
+    <div class="wallpaper-name-wrapper">
+        <div class="wallpaper-name"></div>
+    </div>
+
+
 </div>
 
-<div class="gallery-box">
-    <span class="gallery-close"><i class="icon icon-window-close"></i></span>
-    <div class="gallery-tab-list">
-        <div data-tab="tb1" class="gallery-tab-list__button active">Library</div>
-        <!--<div data-tab="tb2" class="gallery-tab-list__button">Favorites</div>-->
-        <div data-tab="tb3" class="gallery-tab-list__button">My image</div>
-        <div data-tab="tb4" class="gallery-tab-list__button">Settings</div>
-    </div>
-    <div class="window_list">
-        <div id="tb1" class="gallery-tab active">
-            <div class="gallery">
-
-                <ul id="scroller_base">
-                </ul>
-
-            </div><!-- gallery -->
-        </div>
-        <div id="tb2" class="gallery-tab">
-            <h2>You don`t have any favorites yet!</h2>
-            <p>Like photos to add them to your favorites</p>
-        </div>
-        <div id="tb3" class="gallery-tab dropbox-gallery-tab">
-
-            <div class="dropbox">
-                <div class="dropbox__title">
-                    Drag and drop
-                </div>
-                <div class="dropbox__subtitle">
-                    Your image here to upload (<i class="icon icon-file-image"></i>JPG, PNG & BMP)
-                </div>
-                <div class="dropbox__browse-wrapper">
-                    Or
-                    <div class="dropbox__browse">
-                        Browse your library
-                        <input type="file" accept="image/png,image/jpg,image/jpeg,image/bmp" name="userupload" id="userupload" class="dropbox__browse-input">
-                    </div>
-                </div>
-                <div class="dropbox__error"></div>
+<div class="wallpaper-desc-popup-wrapper">
+    <div class="wallpaper-desc-popup">
+        <div class="wallpaper-desc-popup__buttons">
+            <div class="wallpaper-desc-popup__button">
+                Add to favorites
             </div>
-
-            <div class="user-wallpaper">
-                <div class="user-wallpaper__thumb-container"></div>
-                <div class="user-wallpaper__controls">
-                    <div class="user-wallpaper__replace">
-                        Replace
-                    </div>
-                    <div class="user-wallpaper__delete">
-                        Delete
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div id="tb4" class="gallery-tab">
-            <h2>Open new tab with</h2>
-            <div class="wp-settings">
-                <div class="wp-settings__item" data-item="random">
-                    <div class="wp-settings__radio">
-                        Random image from library
-                    </div>
-                </div>
-                <div class="wp-settings__item" data-item="picture-of-the-day">
-                    <div class="wp-settings__radio">
-                        Picture of the day
-                    </div>
-                </div>
-                <div class="wp-settings__item" data-item="my-image">
-                    <div class="wp-settings__radio">
-                        Only my image
-                    </div>
-                </div>
+            <div class="wallpaper-desc-popup__share-container" id="wallpaper-share">
             </div>
         </div>
-    </div>
-</div>
-
-<div class="apps-wrapper">
-    <div class="apps">
-        <div class="apps__title">
-            Apps
-        </div>
-        <div class="apps__close"></div>
-        <div class="apps__permissions">
-            <div class="apps__permissions-title">
-                Extension requires additional permissions to display your apps in this panel
-            </div>
-            <div class="apps__permissions__button">
-                Continue
-            </div>
-        </div>
-        <div class="apps__no-apps">
-            No apps found
-        </div>
-        <div class="apps__list">
-
-        </div>
-    </div>
-</div>
-
-<div class="bookmarks-wrapper">
-    <div class="bookmarks">
-        <div class="bookmarks__title">
-            Bookmarks
-        </div>
-        <div class="bookmarks__close">
-            <i class="icon icon-window-close"></i>
-        </div>
-        <div class="bookmarks__permissions">
-            <div class="bookmarks__permissions-title">
-                Extension requires additional permissions to display your bookmarks in this panel
-            </div>
-            <div class="bookmarks__permissions__button">
-                Continue
-            </div>
-        </div>
-        <div class="bookmarks__no-bookmarks">
-            No apps found
-        </div>
-        <div class="bookmarks__list">
-
-        </div>
-    </div>
-</div>
-
-<div class="todo-wrapper">
-    <div class="todo">
-        <div class="todo-header">
-            <div class="todo-header__title">
-                Task List
-            </div>
-            <div class="todo-header__completed"></div>
-            <div class="todo-header__close"></div>
-        </div>
-        <div class="todo-list">
-
-        </div>
-        <div class="todo-input">
-            <input class="todo-input__input" placeholder="Enter new task">
-        </div>
+        <div class="wallpaper-desc-popup__name"></div>
+        <div class="wallpaper-desc-popup__desc"></div>
     </div>
 </div>
 
 <script src="jquery.min.js"></script>
+<script src="share.js"></script>
 <script src="main.js"></script>
-
 </body>
 </html>

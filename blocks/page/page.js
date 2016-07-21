@@ -1,8 +1,7 @@
-import './page.css';
-import '../most-visited/most-visited';
-
 import settings from '../settings/settings';
 import _ from 'lodash';
+
+import './page.css';
 
 const BLOCKS_DEFAULT = {
     'search': {
@@ -49,7 +48,7 @@ class Page {
     constructor() {
 
         $(window).on(EVENTS.settingsUpdated, () => this._onBlockSettingsUpdated());
-        $(window).on(EVENTS.modalShow, () => this.onModalShow());
+        $(window).on(EVENTS.modalShow, () => this._onModalShow());
 
         this._inited = settings.inited().then(() => this._loadBlockSettings());
 
@@ -70,12 +69,12 @@ class Page {
 
     _updateBlockVisibility() {
         _.forOwn(this._blocks, (blockProps, blockName) => {
-            this.getBlockElem(blockName).toggleClass('hidden', !blockProps.visible);
+            this._getBlockElem(blockName).toggleClass('hidden', !blockProps.visible);
         });
     }
 
     _bindCommonEvents() {
-        $('.bodyBg').click(() => this.hideModals());
+        $('.bodyBg').click(() => this._hideModals());
     }
 
     inited() {
@@ -109,17 +108,20 @@ class Page {
         }
     }
 
-    getBlockElem(blockName) {
+    _getBlockElem(blockName) {
         return $(`[data-block="${blockName}"]`);
     }
 
-    hideModals() {
+    _hideModals() {
         $(window).trigger(EVENTS.hideModals);
-        $('.modal.active').removeClass('active');
     }
 
-    onModalShow() {
-        this.hideModals();
+    _onModalShow() {
+        this._hideModals();
+    }
+
+    toggleContentHidden(flag) {
+        $(".page-content").toggleClass('page-content_hidden', flag);
     }
 
 }

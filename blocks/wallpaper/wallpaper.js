@@ -3,6 +3,7 @@ import _ from 'lodash';
 import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
+import page from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
 import './dropbox-tab';
@@ -11,6 +12,7 @@ import './wallpaper.css';
 import './bg.css';
 import './dropbox-tab.css';
 import './settings-tab.css';
+import './wallpaper-info.css';
 
 const EMBEDED_BASE_PATH = './';
 
@@ -75,9 +77,11 @@ class Wallpaper {
             pictureOfTheDay: getSettingOption('picture-of-the-day'),
             myImage: getSettingOption('my-image')
         };
+        this.$wallpaperName = $('.wallpaper-name');
+        this.$descPopup = $('.wallpaper-desc-popup');
 
         this.wallpapers = EMBEDED_WALLPAPERS;
-        this.currentWallpaperName = undefined;
+        this.currentWallpaper = {};
 
         this.configFetcher = new Fetcher({
             url: CONFIG_URL,
@@ -119,10 +123,13 @@ class Wallpaper {
 
         this.$settingOptions.myImage.on('click', () => {
             if (!this.userWallpaper) {
-                this._setWallpaper(this.currentWallpaperName);
+                this._setWallpaper(this.currentWallpaper.name);
             }
             setOptionActive(this.$settingOptions.myImage);
         });
+
+        this.$wallpaperName.on('click', () => this._onWallpaperNameClick());
+
     }
 
     _showPanel() {
@@ -152,32 +159,38 @@ class Wallpaper {
     }
 
     _loadWallpaperSettings() {
+        const loadUserWallpaperSetting = () => {
+            const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
+            this.userWallpaper = true;
+            this._loadWallpaper(userWallpaperData);
+            setOptionActive(this.$settingOptions.myImage);
+        };
+        const loadPictureOfTheDaySetting = () => {
+            this._loadWallpaper(PICTURE_OF_THE_DAY_PATH);
+            setOptionActive(this.$settingOptions.pictureOfTheDay);
+        };
+        const loadRandomSetting = () => {
+            this._loadRandomWallpaperFromLib();
+            setOptionActive(this.$settingOptions.random);
+        };
+        const loadDefaultModeSetting = (wallpaperData) => {
+            this.currentWallpaper = wallpaperData;
+            this._loadWallpaper(wallpaperData.path);
+            this._updateWallpaperDesc(wallpaperData);
+            setOptionActive(this.$settingOptions.myImage);
+        };
+
         settings.inited().then(() => {
             const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
 
             if (wallpaperData.userWallpaper) {
-
-                const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
-                this.userWallpaper = true;
-                this._loadWallpaper(userWallpaperData);
-                setOptionActive(this.$settingOptions.myImage);
-
+                loadUserWallpaperSetting();
             } else if (wallpaperData.pictureOfTheDay) {
-
-                this._loadWallpaper(PICTURE_OF_THE_DAY_PATH);
-                setOptionActive(this.$settingOptions.pictureOfTheDay);
-
+                loadPictureOfTheDaySetting();
             } else if (wallpaperData.randomFromLibrary) {
-
-                this._loadRandomWallpaperFromLib();
-                setOptionActive(this.$settingOptions.random);
-
+                loadRandomSetting();
             } else {
-
-                this.currentWallpaperName = wallpaperData.name;
-                this._loadWallpaper(wallpaperData.path);
-                setOptionActive(this.$settingOptions.myImage);
-
+                loadDefaultModeSetting(wallpaperData);
             }
         });
     }
@@ -186,8 +199,9 @@ class Wallpaper {
         const wallpaperData = _.find(this.wallpapers, {
             name: wallpaperName
         });
-        this.currentWallpaperName = wallpaperName;
+        this.currentWallpaper = wallpaperData;
         this._loadWallpaper(wallpaperData.path);
+        this._updateWallpaperDesc(wallpaperData);
 
         settings.set(WALLPAPERS_STORAGE_KEY, wallpaperData);
     }
@@ -201,7 +215,7 @@ class Wallpaper {
     }
 
     setDefaultWallpaper() {
-        this._setWallpaper(this.currentWallpaperName || DEFAULT_WALLPAPER.name);
+        this._setWallpaper(this.currentWallpaper.name  || DEFAULT_WALLPAPER.name);
     }
 
     setPictureOfTheDay() {
@@ -225,7 +239,8 @@ class Wallpaper {
     _loadRandomWallpaper() {
         const randomWallpaper = _.sample(this.wallpapers);
         this._loadWallpaper(randomWallpaper.path);
-        this.currentWallpaperName = randomWallpaper.name;
+        this._updateWallpaperDesc(randomWallpaper);
+        this.currentWallpaper = randomWallpaper;
     }
 
     _loadWallpaper(wallpaperPath) {
@@ -243,6 +258,17 @@ class Wallpaper {
         });
     }
 
+    _updateWallpaperDesc({name, desc}) {
+        this.$wallpaperName.text(name);
+        this._initShare();
+    }
+
+    _onWallpaperNameClick() {
+        page.toggleContentHidden();
+        $('.wallpaper-desc-popup').toggleClass('wallpaper-desc-popup_visible');
+        console.log('this.$descPopup', this.$descPopup);
+    }
+
     _onThumbClick(e) {
         const wallpaperName = $(e.target).data('name');
         this._setWallpaper(wallpaperName);
@@ -253,6 +279,22 @@ class Wallpaper {
             .closest('.wallpaper-thumb')
             .data('name');
 
+    }
+
+    _initShare() {
+        const share = Ya.share2('wallpaper-share', {
+            content: {
+                url: 'https://yandex.com',
+                title: 'Yandex',
+                description: `It's all about Yandex`,
+                image: 'https://yastatic.net/morda-logo/i/logo.svg'
+            },
+            theme: {
+                bare: true,
+                lang: 'en',
+                services: 'facebook,twitter'
+            }
+        });
     }
 
     _addToFavList(wallpaperName) {

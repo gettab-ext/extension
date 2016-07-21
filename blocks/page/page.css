@@ -29,6 +29,15 @@ html {
     }
 }
 
+.page-content {
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
+
+    &_hidden {
+        opacity: 0;
+    }
+}
+
 .leftcol {
     padding-top: 0;
     padding-bottom: 0;
@@ -142,4 +151,14 @@ html {
 .open-settings-panel {
     margin-left: 40px;
     margin-right: 20px;
+}
+
+.bottom-wrapper {
+    bottom: 120px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    left: 0;
 }

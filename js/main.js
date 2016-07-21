@@ -18,6 +18,7 @@ import '../blocks/music/music';
 import storage from '../blocks/utils/storage';
 import page from '../blocks/page/page';
 
+/*
 storage.get('__newtab').then(flag => {
     if (flag === true) {
         storage.set('__newtab', false);
@@ -28,3 +29,5 @@ storage.get('__newtab').then(flag => {
         window.close();
     }
 });
+*/
+page.setInited();
