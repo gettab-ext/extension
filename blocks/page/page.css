@@ -130,7 +130,7 @@ html {
     content: '\e804';
 }
 
-#open-settings-panel {
+.open-settings-panel {
     margin-left: 40px;
     margin-right: 20px;
 }
