@@ -4,9 +4,7 @@ window.addEventListener('unhandledrejection', function(event) {
     console.error('Unhandled rejection (promise: ', event.promise, ', reason: ', event.reason, ').');
 });
 
-import '../blocks/utils/storage';
 import '../blocks/settings/settings';
-import '../blocks/page/page';
 import '../blocks/search/search';
 import '../blocks/settings-panel/settings-panel';
 import '../blocks/wallpaper/wallpaper';
@@ -17,4 +15,16 @@ import '../blocks/most-visited/most-visited';
 import '../blocks/todo/todo';
 import '../blocks/music/music';
 
+import storage from '../blocks/utils/storage';
+import page from '../blocks/page/page';
 
+storage.get('__newtab').then(flag => {
+    if (flag === true) {
+        storage.set('__newtab', false);
+        page.setInited();
+    } else {
+        storage.set('__newtab', true);
+        chrome.tabs.create({ url: chrome.extension.getURL("index.html") });
+        window.close();
+    }
+});

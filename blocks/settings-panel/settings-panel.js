@@ -101,4 +101,5 @@ class Settings {
 
 }
 
-window.blocks.settings = new Settings();
+const settingsPanel = new Settings();
+export default settingsPanel;

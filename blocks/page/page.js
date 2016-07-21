@@ -82,6 +82,13 @@ class Page {
         return this._inited;
     }
 
+    setInited() {
+        this._inited.then(() => {
+            $(".top-right").addClass('top-right_inited');
+            $(".page").addClass('page_visible');
+        });
+    }
+
     isBlockVisible(blockName) {
         return this._blocks[blockName] && this._blocks[blockName].visible || false;
     }
@@ -118,7 +125,5 @@ class Page {
 }
 
 const page = new Page();
-
-window.blocks = {};
 
 export default page;

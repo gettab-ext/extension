@@ -20,6 +20,15 @@ html {
     display: none !important;
 }
 
+.page {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+
+    &_visible {
+        opacity: 1;
+    }
+}
+
 .leftcol {
     padding-top: 0;
     padding-bottom: 0;

@@ -95,6 +95,10 @@ class Search {
                     }, SUGGESTION_DELAY);
             }
         });
+
+        $(document).ready(() => {
+            this.$input.focus();
+        });
     }
 
     _bindUpdateChecker() {
@@ -265,7 +269,6 @@ class Search {
 
 }
 
-window.blocks.search = new Search();
-
-
+const search = new Search();
+export default search;
 
