@@ -17,6 +17,7 @@ import '../blocks/music/music';
 
 import storage from '../blocks/utils/storage';
 import page from '../blocks/page/page';
+import stat from '../blocks/utils/stat';
 
 /*
 storage.get('__newtab').then(flag => {
@@ -31,3 +32,4 @@ storage.get('__newtab').then(flag => {
 });
 */
 page.setInited();
+stat.initGa();
