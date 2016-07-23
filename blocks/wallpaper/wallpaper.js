@@ -265,7 +265,7 @@ class Wallpaper {
             this.$descPopup.find(".wallpaper-desc-popup__desc").text(desc);
             this._initShare();
         } else {
-            this.$descPopup.removeClass('wallpaper-name_visible');
+            this.$wallpaperName.removeClass('wallpaper-name_visible');
         }
 
     }
