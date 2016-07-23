@@ -1,9 +1,8 @@
 import _ from 'lodash';
 
-import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import settings from '../settings/settings';
-import page from '../page/page';
+import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
 import './dropbox-tab';
@@ -87,7 +86,7 @@ class Wallpaper {
             url: CONFIG_URL,
             ttl: CONFIG_TTL,
             timeout: CONFIG_FETCH_TIMEOUT,
-            nocache: true
+            noHttpCache: true
         });
 
         this._bindEvents();
@@ -107,7 +106,11 @@ class Wallpaper {
 
         this.$wallpaperListContainer.on('click', '.wallpaper-thumb', e => this._onThumbClick(e));
         $(".gallery-close", this.$settingPanel).click(() => this._hidePanel());
-        $(window).on(EVENTS.hideModals, () => this._hidePanel());
+
+        $(window).on(EVENTS.hideModals, () => {
+            this._hidePanel();
+            this._hideWallpaperDescPopup();
+        });
 
         $(".wallpaper-thumb__fav").on('click', e => this._onFavClick(e));
 
@@ -260,13 +263,23 @@ class Wallpaper {
 
     _updateWallpaperDesc({name, desc}) {
         this.$wallpaperName.text(name);
+        this.$descPopup.find(".wallpaper-desc-popup__name").text(name);
+        this.$descPopup.find(".wallpaper-desc-popup__desc").text(desc);
         this._initShare();
     }
 
     _onWallpaperNameClick() {
-        page.toggleContentHidden();
-        $('.wallpaper-desc-popup').toggleClass('wallpaper-desc-popup_visible');
-        console.log('this.$descPopup', this.$descPopup);
+        this._showWallpaperDescPopup();
+    }
+
+    _showWallpaperDescPopup() {
+        page.toggleContentHidden(true);
+        this.$descPopup.addClass('wallpaper-desc-popup_visible');
+    }
+
+    _hideWallpaperDescPopup() {
+        page.toggleContentHidden(false);
+        this.$descPopup.removeClass('wallpaper-desc-popup_visible');
     }
 
     _onThumbClick(e) {
@@ -282,7 +295,10 @@ class Wallpaper {
     }
 
     _initShare() {
-        const share = Ya.share2('wallpaper-share', {
+        if (this.share) {
+            this.share.destroy();
+        }
+        this.share = Ya.share2('wallpaper-share', {
             content: {
                 url: 'https://yandex.com',
                 title: 'Yandex',

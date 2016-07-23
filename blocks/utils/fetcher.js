@@ -2,11 +2,11 @@ import storage from './storage';
 import utils from './utils';
 
 class Fetcher {
-    constructor({url, ttl, timeout, nocache}) {
+    constructor({url, ttl, timeout, noHttpCache}) {
         this.url = url;
         this.ttl = ttl;
         this.timeout = timeout;
-        this.nocache = nocache;
+        this.noHttpCache = noHttpCache;
 
         this.storageKey = `fetcher__${url}`;
     }
@@ -22,7 +22,7 @@ class Fetcher {
             const getter = new Promise(resolve => {
                 $.ajax({
                     url: this.url,
-                    data: this.nocache && `rnd=${Math.random() * 1000}`,
+                    data: this.noHttpCache && `rnd=${Math.random() * 1000}`,
                     success: (data) => {
                         storage.set(this.storageKey, data, this.ttl)
                             .then(() => resolve(data));

@@ -22,23 +22,24 @@
 }
 
 .wallpaper-desc-popup {
-    width: 700px;
-    background-color: rgba(0,0,0,0.9);
+    width: 400px;
+    background-color: rgba(0,0,0,0.6);
     margin: auto;
-    padding: 25px 40px;
+    padding: 12px 20px;
     z-index: 11;
     position: relative;
-    pointer-events: auto;
     opacity: 0;
     transition: opacity 0.3s ease-out;
+    pointer-events: none;
 
     &_visible {
+        pointer-events: auto;
         opacity: 1;
     }
 
     &-wrapper {
         position: absolute;
-        bottom: 80px;
+        bottom: 32px;
         width: 100%;
         pointer-events: none;
     }
@@ -46,6 +47,24 @@
     &__buttons {
         display: flex;
         justify-content: center;
+    }
+
+    &__name {
+        margin-top: 20px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255,255,255,0.2);
+        font-size: 18px;
+        text-align: center;
+        font-family: montserratregular, sans-serif;
+        cursor: default;
+    }
+
+    &__desc {
+        margin-top: 12px;
+        text-align: center;
+        color: rgb(118,118,118);
+        font-family: montserratregular, sans-serif;
+        cursor: default;
     }
 
     .ya-share2__list {
@@ -62,8 +81,13 @@
         line-height: 26px;
         box-sizing: border-box;
         padding: 0 13px;
+        margin: 0 4px;
         font-family: montserratregular;
         -webkit-user-select: none;
+        text-align: center;
+        color: white!important;
+        text-decoration: none;
+        cursor: pointer;
 
         &:hover {
             background-color: rgba(255,255,255,0.1);
@@ -72,6 +96,16 @@
 
     .ya-share2__title {
         display: none;
+    }
+
+    .ya-share2__item_service_facebook .ya-share2__link:after {
+        font-family: icon-custom;
+        content: '\F09A';
+    }
+
+    .ya-share2__item_service_twitter .ya-share2__link:after {
+        font-family: icon-custom;
+        content: '\F099';
     }
 
 }

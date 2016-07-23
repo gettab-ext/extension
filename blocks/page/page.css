@@ -34,6 +34,7 @@ html {
     transition: opacity 0.3s ease-out;
 
     &_hidden {
+        pointer-events: none;
         opacity: 0;
     }
 }
