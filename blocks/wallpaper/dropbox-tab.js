@@ -130,8 +130,8 @@ class DropboxTab {
     }
 
     deleteUserWallpaper() {
+        wallpaper.resetWallpaper();
         settings.set(USER_WALLPAPER_STORAGE_KEY, '');
-        wallpaper.setDefaultWallpaper();
         this.renderDropboxState();
     }
 

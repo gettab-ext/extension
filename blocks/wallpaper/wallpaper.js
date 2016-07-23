@@ -5,6 +5,8 @@ import settings from '../settings/settings';
 import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
+import {API} from '../config/config';
+
 import './dropbox-tab';
 
 import './wallpaper.css';
@@ -15,16 +17,25 @@ import './wallpaper-info.css';
 
 const EMBEDED_BASE_PATH = './';
 
-const CONFIG_URL = 'http://gettab1.site/wp/wp.json';
+const CONFIG_URL = `${API}/wp/wp.json`;
 const CONFIG_TTL = 5 * 60 * 1000;
-const CONFIG_FETCH_TIMEOUT = 1000;
-const PICTURE_OF_THE_DAY_PATH = 'http://gettab1.site/wp/wp.png';
+const CONFIG_FETCH_TIMEOUT = 3000;
+
+const WP_OF_THE_DAY_URL = `${API}/wp/wp.png`;
+const WP_OF_THE_DAY_INFO = `${API}/wp/wp-info.json`;
+const WP_OF_THE_DAY_INFO_TTL = 10 * 1000;
 
 const pathResolver = function(basePath, wp) {
     return Object.assign(wp, {
         path: `${basePath}/${wp.path}`,
         thumb: `${basePath}/${wp.thumb}`,
     });
+};
+
+const MODES = {
+    currentPicture: 'current-picture',
+    pictureOfTheDay: 'picture-of-the-day',
+    randomPicture: 'random-picture'
 };
 
 const EMBEDED_WALLPAPERS = [{
@@ -71,23 +82,22 @@ class Wallpaper {
         this.$wallpaperContainer = $(".bodyBg");
         this.$wallpaperListContainer = $("#scroller_base");
         this.$settingPanel = $('.gallery-box');
+
         this.$settingOptions = {
-            random: getSettingOption('random'),
-            pictureOfTheDay: getSettingOption('picture-of-the-day'),
-            myImage: getSettingOption('my-image')
+            random: getSettingOption(MODES.randomPicture),
+            pictureOfTheDay: getSettingOption(MODES.pictureOfTheDay),
+            currentImage: getSettingOption(MODES.currentPicture)
         };
+
         this.$wallpaperName = $('.wallpaper-name');
         this.$descPopup = $('.wallpaper-desc-popup');
 
         this.wallpapers = EMBEDED_WALLPAPERS;
-        this.currentWallpaper = {};
+        this.currentWallpaper = null;
 
-        this.configFetcher = new Fetcher({
-            url: CONFIG_URL,
-            ttl: CONFIG_TTL,
-            timeout: CONFIG_FETCH_TIMEOUT,
-            noHttpCache: true
-        });
+        this._initFetchers();
+        this._initLoaders();
+        this._initSetters();
 
         this._bindEvents();
         this._loadRemoteWallpapers();
@@ -95,8 +105,78 @@ class Wallpaper {
         this._loadWallpaperSettings();
     }
 
+    _initFetchers() {
+        this.configFetcher = new Fetcher({
+            url: CONFIG_URL,
+            ttl: CONFIG_TTL,
+            timeout: CONFIG_FETCH_TIMEOUT,
+            noHttpCache: true
+        });
+        this.wpOfTheDayInfoFetcher = new Fetcher({
+            url: WP_OF_THE_DAY_INFO,
+            ttl: WP_OF_THE_DAY_INFO_TTL,
+            timeout: CONFIG_FETCH_TIMEOUT,
+            noHttpCache: true
+        });
+    }
+
+    _initSetters() {
+        this.setters = utils.bindMethodMap(this, {
+            [MODES.currentPicture](wallpaperData) {
+                if (!wallpaperData) {
+                    wallpaperData = DEFAULT_WALLPAPER;
+                }
+
+                if (wallpaperData.userWallpaper) {
+                    settings.set(WALLPAPERS_STORAGE_KEY, {
+                        userWallpaper: true
+                    });
+                } else {
+                    settings.set(WALLPAPERS_STORAGE_KEY, wallpaperData);
+                }
+                this.loaders[MODES.currentPicture](wallpaperData);
+            },
+            [MODES.pictureOfTheDay]() {
+                settings.set(WALLPAPERS_STORAGE_KEY, {
+                    pictureOfTheDay: true
+                });
+                this.loaders[MODES.pictureOfTheDay]();
+            },
+            [MODES.randomPicture]() {
+                settings.set(WALLPAPERS_STORAGE_KEY, {
+                    randomFromLibrary: true
+                });
+                this.loaders[MODES.randomPicture]();
+            }
+        });
+    }
+
+    _initLoaders() {
+        this.loaders = utils.bindMethodMap(this, {
+            [MODES.currentPicture](wallpaperData) {
+                if (wallpaperData.userWallpaper) {
+                    const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
+                    this._renderWallpaper({path: userWallpaperData});
+                } else {
+                    this.currentWallpaper = wallpaperData;
+                    this._renderWallpaper(wallpaperData);
+                }
+                setOptionActive(this.$settingOptions.currentImage);
+            },
+            [MODES.pictureOfTheDay]() {
+                this._renderWallpaper({path: WP_OF_THE_DAY_URL});
+                this.wpOfTheDayInfoFetcher.get().then(info => this._renderWallpaper(info));
+                setOptionActive(this.$settingOptions.pictureOfTheDay);
+            },
+            [MODES.randomPicture]() {
+                this._loadRandomWallpaper();
+                setOptionActive(this.$settingOptions.random);
+            }
+        });
+    }
+
     _bindEvents() {
-        $('#open-wallpapers').click(() => this._showPanel());
+        this._bindPanelControls();
 
         $(".gallery-tab-list__button").click(e => {
             const $tabButton = $(e.target);
@@ -105,55 +185,89 @@ class Wallpaper {
         });
 
         this.$wallpaperListContainer.on('click', '.wallpaper-thumb', e => this._onThumbClick(e));
-        $(".gallery-close", this.$settingPanel).click(() => this._hidePanel());
+        this._bindSettingsOptions();
+    }
+
+    _bindPanelControls() {
+        const showPanel = () => {
+            $(window).trigger(EVENTS.modalShow);
+            this.$settingPanel.addClass('gallery-box_active');
+            dropboxTab.renderInitialState();
+        };
+        const hidePanel = () => {
+            this.$settingPanel.removeClass('gallery-box_active');
+        };
+        const showDescPopup = () => {
+            page.toggleContentHidden(true);
+            $(window).trigger(EVENTS.modalShow);
+            this.$descPopup.addClass('wallpaper-desc-popup_visible');
+        };
+        const hideDescPopup = () => {
+            page.toggleContentHidden(false);
+            this.$descPopup.removeClass('wallpaper-desc-popup_visible');
+        };
 
         $(window).on(EVENTS.hideModals, () => {
-            this._hidePanel();
-            this._hideWallpaperDescPopup();
+            hidePanel();
+            hideDescPopup();
         });
 
-        $(".wallpaper-thumb__fav").on('click', e => this._onFavClick(e));
-
-        this.$settingOptions.pictureOfTheDay.on('click', () => {
-            this.setPictureOfTheDay();
-            setOptionActive(this.$settingOptions.pictureOfTheDay);
-        });
-
-        this.$settingOptions.random.on('click', () => {
-            this.setRandomLibraryImage();
-            setOptionActive(this.$settingOptions.random);
-        });
-
-        this.$settingOptions.myImage.on('click', () => {
-            if (!this.userWallpaper) {
-                this._setWallpaper(this.currentWallpaper.name);
-            }
-            setOptionActive(this.$settingOptions.myImage);
-        });
-
-        this.$wallpaperName.on('click', () => this._onWallpaperNameClick());
-
+        $('#open-wallpapers').click(() => showPanel());
+        $(".gallery-close", this.$settingPanel).click(() => hidePanel());
+        this.$wallpaperName.on('click', () => showDescPopup());
     }
 
-    _showPanel() {
-        $(window).trigger(EVENTS.modalShow);
-        this.$settingPanel.addClass('gallery-box_active');
-        dropboxTab.renderInitialState();
-    }
-
-    _hidePanel() {
-        this.$settingPanel.removeClass('gallery-box_active');
+    _bindSettingsOptions() {
+        this.$settingOptions.pictureOfTheDay.on('click', () => this.setters[MODES.pictureOfTheDay]());
+        this.$settingOptions.random.on('click', () => this.setters[MODES.randomPicture]());
+        this.$settingOptions.currentImage.on('click', () => this.setters[MODES.currentPicture]());
     }
 
     _onTabButtonClick(tabId, $tabButton) {
         $(".gallery-tab-list__button").removeClass("gallery-tab-list__button_active");
         $tabButton.addClass("gallery-tab-list__button_active");
-        this._setActiveTab(tabId);
-    }
-
-    _setActiveTab(tabId) {
         this.$settingPanel.find(".gallery-tab").removeClass('active');
         this.$settingPanel.find('.gallery-tab#' + tabId).addClass('active');
+    }
+
+    _loadWallpaperSettings() {
+        settings.inited().then(() => {
+            const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
+
+            if (wallpaperData.pictureOfTheDay) {
+                this.loaders[MODES.pictureOfTheDay]();
+            } else if (wallpaperData.randomFromLibrary) {
+                this.loaders[MODES.randomPicture]();
+            } else {
+                this.loaders[MODES.currentPicture](wallpaperData);
+            }
+        });
+    }
+
+    _loadRandomWallpaper() {
+        this.libraryReady.then(() => {
+            const randomWallpaper = _.sample(this.wallpapers);
+            this._renderWallpaper(randomWallpaper);
+            this.currentWallpaper = randomWallpaper;
+        });
+
+    }
+
+    _renderWallpaper({path, name, desc}) {
+        if (path) {
+            utils.loadBackgroundImage(this.$wallpaperContainer, path, 'bodyBg_state_loaded', 'bodyBg_state_loading');
+        }
+
+        if (name && desc) {
+            this.$wallpaperName.addClass('wallpaper-name_visible');
+            this.$wallpaperName.text(name);
+            this.$descPopup.find(".wallpaper-desc-popup__name").text(name);
+            this.$descPopup.find(".wallpaper-desc-popup__desc").text(desc);
+            this._initShare();
+        } else {
+            this.$descPopup.removeClass('wallpaper-name_visible');
+        }
+
     }
 
     _renderWallpaperList() {
@@ -161,97 +275,8 @@ class Wallpaper {
         this.$wallpaperListContainer.html(wallpaperListHtml);
     }
 
-    _loadWallpaperSettings() {
-        const loadUserWallpaperSetting = () => {
-            const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
-            this.userWallpaper = true;
-            this._loadWallpaper(userWallpaperData);
-            setOptionActive(this.$settingOptions.myImage);
-        };
-        const loadPictureOfTheDaySetting = () => {
-            this._loadWallpaper(PICTURE_OF_THE_DAY_PATH);
-            setOptionActive(this.$settingOptions.pictureOfTheDay);
-        };
-        const loadRandomSetting = () => {
-            this._loadRandomWallpaperFromLib();
-            setOptionActive(this.$settingOptions.random);
-        };
-        const loadDefaultModeSetting = (wallpaperData) => {
-            this.currentWallpaper = wallpaperData;
-            this._loadWallpaper(wallpaperData.path);
-            this._updateWallpaperDesc(wallpaperData);
-            setOptionActive(this.$settingOptions.myImage);
-        };
-
-        settings.inited().then(() => {
-            const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
-
-            if (wallpaperData.userWallpaper) {
-                loadUserWallpaperSetting();
-            } else if (wallpaperData.pictureOfTheDay) {
-                loadPictureOfTheDaySetting();
-            } else if (wallpaperData.randomFromLibrary) {
-                loadRandomSetting();
-            } else {
-                loadDefaultModeSetting(wallpaperData);
-            }
-        });
-    }
-
-    _setWallpaper(wallpaperName = DEFAULT_WALLPAPER.name) {
-        const wallpaperData = _.find(this.wallpapers, {
-            name: wallpaperName
-        });
-        this.currentWallpaper = wallpaperData;
-        this._loadWallpaper(wallpaperData.path);
-        this._updateWallpaperDesc(wallpaperData);
-
-        settings.set(WALLPAPERS_STORAGE_KEY, wallpaperData);
-    }
-
-    setUserWallpaper() {
-        this.userWallpaper = true;
-        this._loadWallpaper(settings.get(USER_WALLPAPER_STORAGE_KEY));
-        settings.set(WALLPAPERS_STORAGE_KEY, {
-            userWallpaper: true
-        });
-    }
-
-    setDefaultWallpaper() {
-        this._setWallpaper(this.currentWallpaper.name  || DEFAULT_WALLPAPER.name);
-    }
-
-    setPictureOfTheDay() {
-        this._loadWallpaper(PICTURE_OF_THE_DAY_PATH);
-        settings.set(WALLPAPERS_STORAGE_KEY, {
-            pictureOfTheDay: true
-        });
-    }
-
-    setRandomLibraryImage() {
-        this._loadRandomWallpaper();
-        settings.set(WALLPAPERS_STORAGE_KEY, {
-            randomFromLibrary: true
-        });
-    }
-
-    _loadRandomWallpaperFromLib() {
-        this.wallpaperLibraryPromise.then(() => this._loadRandomWallpaper());
-    }
-
-    _loadRandomWallpaper() {
-        const randomWallpaper = _.sample(this.wallpapers);
-        this._loadWallpaper(randomWallpaper.path);
-        this._updateWallpaperDesc(randomWallpaper);
-        this.currentWallpaper = randomWallpaper;
-    }
-
-    _loadWallpaper(wallpaperPath) {
-        utils.loadBackgroundImage(this.$wallpaperContainer, wallpaperPath, 'bodyBg_state_loaded', 'bodyBg_state_loading');
-    }
-
     _loadRemoteWallpapers() {
-        this.wallpaperLibraryPromise = this.configFetcher.get().then(result => {
+        this.libraryReady = this.configFetcher.get().then(result => {
             const remoteLibrary = (result
                 ? result.list.map(pathResolver.bind({}, result .basePath))
                 : []
@@ -261,37 +286,10 @@ class Wallpaper {
         });
     }
 
-    _updateWallpaperDesc({name, desc}) {
-        this.$wallpaperName.text(name);
-        this.$descPopup.find(".wallpaper-desc-popup__name").text(name);
-        this.$descPopup.find(".wallpaper-desc-popup__desc").text(desc);
-        this._initShare();
-    }
-
-    _onWallpaperNameClick() {
-        this._showWallpaperDescPopup();
-    }
-
-    _showWallpaperDescPopup() {
-        page.toggleContentHidden(true);
-        this.$descPopup.addClass('wallpaper-desc-popup_visible');
-    }
-
-    _hideWallpaperDescPopup() {
-        page.toggleContentHidden(false);
-        this.$descPopup.removeClass('wallpaper-desc-popup_visible');
-    }
-
     _onThumbClick(e) {
         const wallpaperName = $(e.target).data('name');
-        this._setWallpaper(wallpaperName);
-    }
-
-    _onFavClick(e) {
-        const wallpaperName = $(e.currentTarget)
-            .closest('.wallpaper-thumb')
-            .data('name');
-
+        const wallpaperData = this._getWpData(wallpaperName);
+        this.setters[MODES.currentPicture](wallpaperData);
     }
 
     _initShare() {
@@ -313,16 +311,22 @@ class Wallpaper {
         });
     }
 
-    _addToFavList(wallpaperName) {
-
+    _getWpData(wallpaperName) {
+        return _.find(this.wallpapers, {
+            name: wallpaperName
+        });
     }
 
-    _removeFromFavList(wallpaperName) {
-
+    resetWallpaper() {
+        const wp = this.currentWallpaper;
+        console.log('this.currentWallpaper', this.currentWallpaper);
+        this.setters[MODES.currentPicture](wp);
     }
 
-    _renderFavList() {
-
+    setUserWallpaper() {
+        this.setters[MODES.currentPicture]({
+            userWallpaper: true
+        });
     }
 
 }

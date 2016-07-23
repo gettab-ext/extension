@@ -1,6 +1,7 @@
 import windows from '../utils/windows';
+import {API} from '../config/config';
 
-const PLAYER_URL = 'http://gettab1.site/player';
+const PLAYER_URL = `${API}/player`;
 
 let windowId = null;
 

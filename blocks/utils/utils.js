@@ -99,6 +99,13 @@ const utils = {
                 resolve();
             }, timeout)
         })
+    },
+
+    bindMethodMap(context, obj) {
+        return Object.keys(obj).reduce((methodMap, key) => {
+            methodMap[key] = obj[key].bind(context);
+            return methodMap;
+        }, {});
     }
 
 };
