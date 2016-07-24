@@ -261,9 +261,15 @@ class Wallpaper {
 
     }
 
-    _renderWallpaper({path, name, desc, embedded} = {}) {
+    _renderWallpaper({path, name, desc, embedded, userWallpaper} = {}) {
         if (path && this.renderedWallpaperPath !== path) {
-            utils.loadBackgroundImage(this.$wallpaperContainer, path, 'bodyBg_state_loaded', 'bodyBg_state_loading', WP_CACHE_TTL);
+            utils.loadBackgroundImage({
+                $elem: this.$wallpaperContainer,
+                url: path,
+                preloadClass: 'bodyBg_state_loading',
+                loadedClass: 'bodyBg_state_loaded',
+                cacheTTL: (userWallpaper ? null : WP_CACHE_TTL)
+            });
             this.renderedWallpaperPath = path;
         }
 

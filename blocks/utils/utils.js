@@ -4,7 +4,7 @@ import storage from './storage';
 
 const utils = {
 
-    loadBackgroundImage($elem, url, loadedClass, preloadClass, cacheTTL) {
+    loadBackgroundImage({$elem, url, loadedClass, preloadClass, cacheTTL}) {
         const storageKey = `image_cache_${url}`;
 
         const preRender = () => {
