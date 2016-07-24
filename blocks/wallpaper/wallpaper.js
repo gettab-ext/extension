@@ -5,7 +5,7 @@ import settings from '../settings/settings';
 import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
-import {API} from '../config/config';
+import {API, STATIC_HOST, SITE_URL} from '../config/config';
 
 import './dropbox-tab';
 
@@ -17,12 +17,12 @@ import './wallpaper-info.css';
 
 const EMBEDED_BASE_PATH = './';
 
-const CONFIG_URL = `${API}/wp/wp.json`;
+const CONFIG_URL = `${API}/wp.json`;
 const CONFIG_TTL = 5 * 60 * 1000;
 const CONFIG_FETCH_TIMEOUT = 3000;
 
-const WP_OF_THE_DAY_URL = `${API}/wp/wp.png`;
-const WP_OF_THE_DAY_INFO = `${API}/wp/wp-info.json`;
+const WP_OF_THE_DAY_URL = `${STATIC_HOST}/wp/wp.png`;
+const WP_OF_THE_DAY_INFO = `${API}/wp-info.json`;
 const WP_OF_THE_DAY_INFO_TTL = 10 * 1000;
 
 const pathResolver = function(basePath, wp) {
@@ -38,26 +38,30 @@ const MODES = {
     randomPicture: 'random-picture'
 };
 
-const EMBEDED_WALLPAPERS = [{
+const LOCAL_WP_DIR = 'wallpapers';
+
+const EMBEDDED_WALLPAPERS = [{
     "name": "Default",
     "desc": "Dark mountain theme",
-    "path": "wallpapers/1.jpg",
-    "thumb": "wallpapers/1_thumb.jpg"
+    "path": `${LOCAL_WP_DIR}/1.jpg`,
+    "thumb": `${LOCAL_WP_DIR}/1_thumb.jpg`,
+    "embedded": true
 }, {
     "name": "Peak",
     "desc": "Apple peak theme",
-    "path": "wallpapers/2.jpg",
-    "thumb": "wallpapers/2_thumb.jpg"
+    "path": `${LOCAL_WP_DIR}/2.jpg`,
+    "thumb": `${LOCAL_WP_DIR}/2_thumb.jpg`,
+    "embedded": true
 }, {
-    "name": "Birdsview",
+    "name": "Bird's-eye view",
     "desc": "From a height",
-    "path": "wallpapers/3.jpg",
-    "thumb": "wallpapers/3_thumb.jpg"
+    "path": `${LOCAL_WP_DIR}/3.jpg`,
+    "thumb": `${LOCAL_WP_DIR}/3_thumb.jpg`,
+    "embedded": true
 }].map(pathResolver.bind({}, EMBEDED_BASE_PATH));
 
 const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
-const FAV_STORAGE_KEY = 'wallpaper_fav_storage';
-export const DEFAULT_WALLPAPER = EMBEDED_WALLPAPERS[0];
+export const DEFAULT_WALLPAPER = EMBEDDED_WALLPAPERS[0];
 export const USER_WALLPAPER_STORAGE_KEY = 'user_wallpaper_setting';
 
 export const wallpaperThumbTmpl = ({name, path, thumb, mod}) => (`
@@ -92,7 +96,7 @@ class Wallpaper {
         this.$wallpaperName = $('.wallpaper-name');
         this.$descPopup = $('.wallpaper-desc-popup');
 
-        this.wallpapers = EMBEDED_WALLPAPERS;
+        this.wallpapers = EMBEDDED_WALLPAPERS;
         this.currentWallpaper = null;
 
         this._initFetchers();
@@ -165,7 +169,9 @@ class Wallpaper {
             },
             [MODES.pictureOfTheDay]() {
                 this._renderWallpaper({path: WP_OF_THE_DAY_URL});
-                this.wpOfTheDayInfoFetcher.get().then(info => this._renderWallpaper(info));
+                this.wpOfTheDayInfoFetcher.get().then(info => {
+                    this._renderWallpaper(Object.assign(info, {path: WP_OF_THE_DAY_URL}));
+                });
                 setOptionActive(this.$settingOptions.pictureOfTheDay);
             },
             [MODES.randomPicture]() {
@@ -198,8 +204,8 @@ class Wallpaper {
             this.$settingPanel.removeClass('gallery-box_active');
         };
         const showDescPopup = () => {
-            page.toggleContentHidden(true);
             $(window).trigger(EVENTS.modalShow);
+            page.toggleContentHidden(true);
             this.$descPopup.addClass('wallpaper-desc-popup_visible');
         };
         const hideDescPopup = () => {
@@ -253,7 +259,7 @@ class Wallpaper {
 
     }
 
-    _renderWallpaper({path, name, desc}) {
+    _renderWallpaper({path, name, desc, embedded} = {}) {
         if (path) {
             utils.loadBackgroundImage(this.$wallpaperContainer, path, 'bodyBg_state_loaded', 'bodyBg_state_loading');
         }
@@ -263,7 +269,13 @@ class Wallpaper {
             this.$wallpaperName.text(name);
             this.$descPopup.find(".wallpaper-desc-popup__name").text(name);
             this.$descPopup.find(".wallpaper-desc-popup__desc").text(desc);
-            this._initShare();
+
+            const getEmbeddedSharePath = p => p.match(new RegExp(`/${LOCAL_WP_DIR}/(.+)`))[1];
+            const sharePath = (embedded
+                ? `${STATIC_HOST}wp/${getEmbeddedSharePath(path)}`
+                : path
+            );
+            this._initShare({sharePath, name, desc});
         } else {
             this.$wallpaperName.removeClass('wallpaper-name_visible');
         }
@@ -292,16 +304,17 @@ class Wallpaper {
         this.setters[MODES.currentPicture](wallpaperData);
     }
 
-    _initShare() {
+    _initShare({path, name, desc}) {
         if (this.share) {
             this.share.destroy();
         }
+
         this.share = Ya.share2('wallpaper-share', {
             content: {
-                url: 'https://yandex.com',
-                title: 'Yandex',
-                description: `It's all about Yandex`,
-                image: 'https://yastatic.net/morda-logo/i/logo.svg'
+                url: `${SITE_URL}?wp=${encodeURIComponent(path)}&desc=${encodeURIComponent(desc)}`,
+                title: 'GetTab Extension',
+                description: `${name}`,
+                image: path
             },
             theme: {
                 bare: true,

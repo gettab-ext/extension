@@ -1871,7 +1871,7 @@
                         block: "ya-share2",
                         elem: "item"
                     }), r = [].indexOf.call(o, e);
-                    n.getCounter().reachGoal("BUTTON_CLICK", {serviceName: i, buttonIndex: r})
+                    // n.getCounter().reachGoal("BUTTON_CLICK", {serviceName: i, buttonIndex: r})
                 }
             }
         }, t.prototype.setCount = function (t, e) {
