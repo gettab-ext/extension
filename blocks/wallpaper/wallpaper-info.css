@@ -1,3 +1,5 @@
+@import '../page/icons.css';
+
 .wallpaper-name-wrapper {
     position: absolute;
     bottom: 40px;
@@ -105,13 +107,11 @@
     }
 
     .ya-share2__item_service_facebook .ya-share2__link:after {
-        font-family: icon-custom;
-        content: '\F09A';
+        @mixin icon_facebook;
     }
 
     .ya-share2__item_service_twitter .ya-share2__link:after {
-        font-family: icon-custom;
-        content: '\F099';
+        @mixin icon_twitter;
     }
 
 }

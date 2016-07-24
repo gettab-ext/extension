@@ -1,3 +1,5 @@
+@import '../page/icons.css';
+
 #searchForm {
     z-index: 9;
     position: absolute;
@@ -100,6 +102,9 @@
         position: absolute;
         left: 0;
         top: 9px
+    }
+    &:after {
+        @mixin icon_search;
     }
 }
 

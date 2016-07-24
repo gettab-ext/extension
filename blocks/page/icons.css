@@ -1,0 +1,69 @@
+@font-face {
+    font-family: 'icon-custom';
+    src: url('/fonts/fontello.woff2?16748942') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@define-mixin __icon {
+    -webkit-font-smoothing: antialiased;
+    font-family: 'icon-custom';
+    font-size: 20px;
+
+    @mixin-content;
+}
+
+@define-mixin icon_todo {
+    @mixin __icon;
+    content: '\e800';
+}
+
+@define-mixin icon_picture {
+    @mixin __icon;
+    content: '\e801';
+}
+
+@define-mixin icon_music {
+    @mixin __icon;
+    content: '\e802';
+}
+
+@define-mixin icon_bookmark {
+    @mixin __icon;
+    content: '\e803';
+}
+
+@define-mixin icon_apps {
+    @mixin __icon;
+    content: '\e804';
+}
+
+@define-mixin icon_logo {
+    @mixin __icon;
+    content: '\e805';
+}
+
+@define-mixin icon_weather {
+    @mixin __icon;
+    content: '\e806';
+}
+
+@define-mixin icon_search {
+    @mixin __icon;
+    content: '\e807';
+}
+
+@define-mixin icon_most-visited {
+    @mixin __icon;
+    content: '\e808';
+}
+
+@define-mixin icon_twitter {
+    @mixin __icon;
+    content: '\f099';
+}
+
+@define-mixin icon_facebook {
+    @mixin __icon;
+    content: '\f09a';
+}

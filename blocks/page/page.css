@@ -1,9 +1,4 @@
-@font-face {
-    font-family: 'icon-custom';
-    src: url('/fonts/fontello.woff2?16748942') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-}
+@import './icons.css';
 
 body {
     position: relative;
@@ -56,12 +51,6 @@ html {
 
     &_inited {
         opacity: 1;
-    }
-
-    *:before {
-        -webkit-font-smoothing: antialiased;
-        font-family: 'icon-custom';
-        font-size: 20px;
     }
 
     &__button-group {
@@ -130,23 +119,23 @@ html {
 }
 
 #open-todo:before {
-    content: '\e800';
+    @mixin icon_todo;
 }
 
 #open-music:before {
-    content: '\e802';
+    @mixin icon_music;
 }
 
 #open-wallpapers:before {
-    content: '\e801';
+    @mixin icon_picture;
 }
 
 #show-bookmarks-button:before {
-    content: '\e803';
+    @mixin icon_bookmark;
 }
 
 #show-apps-button:before {
-    content: '\e804';
+    @mixin icon_apps;
 }
 
 .open-settings-panel {
