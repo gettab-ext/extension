@@ -5,7 +5,7 @@ import settings from '../settings/settings';
 import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
-import {API, STATIC_HOST, SITE_URL} from '../config/config';
+import {API, STATIC_HOST, SITE_URL, WP_CACHE_TTL} from '../config/config';
 
 import './dropbox-tab';
 
@@ -63,6 +63,7 @@ const EMBEDDED_WALLPAPERS = [{
 const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
 export const DEFAULT_WALLPAPER = EMBEDDED_WALLPAPERS[0];
 export const USER_WALLPAPER_STORAGE_KEY = 'user_wallpaper_setting';
+const WP_CACHE_STORAGE_KEY = 'wallpaper_cache';
 
 export const wallpaperThumbTmpl = ({name, path, thumb, mod}) => (`
     <div class="wallpaper-thumb wallpaper-thumb_mod_${mod}" data-name="${name}" style="background-image: url('${thumb}') ">
@@ -98,6 +99,7 @@ class Wallpaper {
 
         this.wallpapers = EMBEDDED_WALLPAPERS;
         this.currentWallpaper = null;
+        this.renderedWallpaperPath = null;
 
         this._initFetchers();
         this._initLoaders();
@@ -160,7 +162,7 @@ class Wallpaper {
             [MODES.currentPicture](wallpaperData) {
                 if (wallpaperData.userWallpaper) {
                     const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
-                    this._renderWallpaper({path: userWallpaperData});
+                    this._renderWallpaper({path: userWallpaperData, userWallpaper: true});
                 } else {
                     this.currentWallpaper = wallpaperData;
                     this._renderWallpaper(wallpaperData);
@@ -260,8 +262,9 @@ class Wallpaper {
     }
 
     _renderWallpaper({path, name, desc, embedded} = {}) {
-        if (path) {
-            utils.loadBackgroundImage(this.$wallpaperContainer, path, 'bodyBg_state_loaded', 'bodyBg_state_loading');
+        if (path && this.renderedWallpaperPath !== path) {
+            utils.loadBackgroundImage(this.$wallpaperContainer, path, 'bodyBg_state_loaded', 'bodyBg_state_loading', WP_CACHE_TTL);
+            this.renderedWallpaperPath = path;
         }
 
         if (name && desc) {

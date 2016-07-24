@@ -1,27 +1,56 @@
 import tabs from './tabs';
 import windows from './windows';
+import storage from './storage';
 
 const utils = {
 
-    loadBackgroundImage($elem, url, loadedClass, preloadClass) {
-        return new Promise(resolve => {
+    loadBackgroundImage($elem, url, loadedClass, preloadClass, cacheTTL) {
+        const storageKey = `image_cache_${url}`;
 
+        const preRender = () => {
             preloadClass && $elem.addClass(preloadClass);
+        };
+        const render = (url) => {
+            $elem.css({'background-image': `url('${url}')`});
 
+            preloadClass && $elem.removeClass(preloadClass);
+            loadedClass && $elem.addClass(loadedClass);
+        };
+        const cacheImageData = () => {
+            return utils.toDataUrl(url).then(imageData => {
+                return storage.set(storageKey, imageData, cacheTTL);
+            });
+        };
+        const loadRemote = (url, callback) => {
             const img = new Image();
 
             img.onload = () => {
-                $elem.css({
-                    'background-image': `url('${url}')`
-                });
-
-                preloadClass && $elem.removeClass(preloadClass);
-                loadedClass && $elem.addClass(loadedClass);
-
-                resolve();
+                render(url);
+                if (cacheTTL) {
+                    cacheImageData().then(() => callback());
+                } else {
+                    callback();
+                }
             };
 
             img.src = url;
+        };
+
+        preRender();
+
+        return new Promise(resolve => {
+            if (cacheTTL) {
+                storage.get(storageKey).then(storedValue => {
+                    if (storedValue) {
+                        render(storedValue);
+                        resolve();
+                    } else {
+                        loadRemote(url, resolve);
+                    }
+                });
+            } else {
+                loadRemote(url, resolve);
+            }
         });
     },
 
@@ -106,6 +135,22 @@ const utils = {
             methodMap[key] = obj[key].bind(context);
             return methodMap;
         }, {});
+    },
+
+    toDataUrl(url) {
+        return new Promise(resolve => {
+            var xhr = new XMLHttpRequest();
+            xhr.responseType = 'blob';
+            xhr.onload = function() {
+                var reader = new FileReader();
+                reader.onloadend = function() {
+                    resolve(reader.result);
+                };
+                reader.readAsDataURL(xhr.response);
+            };
+            xhr.open('GET', url);
+            xhr.send();
+        });
     }
 
 };
