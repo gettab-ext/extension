@@ -57,8 +57,10 @@ class Search {
             this.$elem.addClass('search_focused');
         });
         this.$input.on('blur', () => {
-            this.$elem.removeClass('search_focused');
-            setTimeout(() => this._hideSuggest(), 500);
+            setTimeout(() => {
+                this.$elem.removeClass('search_focused');
+                this._hideSuggest();
+            }, 500);
         });
 
         this.$suggest.on('click', '.suggest-item', e => this._onSuggestItemClick(e));
@@ -128,6 +130,7 @@ class Search {
     _onSuggestItemClick(e) {
         const suggestVal = $(e.currentTarget).data('val');
 
+        this.$input.focus();
         this.$input.val(suggestVal);
         this.val = suggestVal;
 
