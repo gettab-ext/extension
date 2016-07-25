@@ -18,18 +18,18 @@ import '../blocks/music/music';
 import storage from '../blocks/utils/storage';
 import page from '../blocks/page/page';
 import stat from '../blocks/utils/stat';
+import {AUTOFOCUS} from '../blocks/config/config';
 
-/*
-storage.get('__newtab').then(flag => {
-    if (flag === true) {
-        storage.set('__newtab', false);
-        page.setInited();
-    } else {
-        storage.set('__newtab', true);
-        chrome.tabs.create({ url: chrome.extension.getURL("index.html") });
-        window.close();
-    }
-});
-*/
-page.setInited();
-stat.initGa();
+if (AUTOFOCUS) {
+    storage.get('__newtab').then(flag => {
+        if (flag === true) {
+            storage.set('__newtab', false);
+            page.setInited();
+            stat.init();
+        } else {
+            storage.set('__newtab', true);
+            chrome.tabs.create({ url: chrome.extension.getURL("index.html") });
+            window.close();
+        }
+    });
+}
