@@ -1,5 +1,6 @@
 import utils from '../utils/utils';
 import settings, {SETTING_KEYS} from '../settings/settings';
+import stat from '../utils/stat';
 
 import './search.css';
 import './suggest.css';
@@ -11,8 +12,6 @@ const SEARCH_URLS = {
     yahoo: ({q}) => `https://search.yahoo.com/search?p=${q}`,
     bing: ({q}) => `http://www.bing.com/search?q=${q}`
 };
-
-const suggestTimeout = 500;
 
 const suggestProviders = {
     bing(query) {
@@ -59,7 +58,7 @@ class Search {
         });
         this.$input.on('blur', () => {
             this.$elem.removeClass('search_focused');
-            setTimeout(() => this._hideSuggest(), 100);
+            setTimeout(() => this._hideSuggest(), 500);
         });
 
         this.$suggest.on('click', '.suggest-item', e => this._onSuggestItemClick(e));
@@ -134,6 +133,7 @@ class Search {
 
         this._hideSuggest();
         this._doSearch(suggestVal);
+        stat.send('search.suggest_click');
 
     }
 
@@ -220,6 +220,8 @@ class Search {
 
     _doSearch(query) {
         const engine = settings.get(SETTING_KEYS.searchEngine);
+
+        stat.send(`search.dosearch.${engine}`);
 
         let url = SEARCH_URLS[engine]({
             q: query

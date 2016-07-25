@@ -32,4 +32,7 @@ if (AUTOFOCUS) {
             window.close();
         }
     });
+} else {
+    page.setInited();
+    stat.init();
 }
