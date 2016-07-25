@@ -23,7 +23,7 @@ const CONFIG_FETCH_TIMEOUT = 3000;
 
 const WP_OF_THE_DAY_URL = `${STATIC_HOST}/wp/wp.png`;
 const WP_OF_THE_DAY_INFO = `${API}/wp-info.json`;
-const WP_OF_THE_DAY_INFO_TTL = 10 * 1000;
+const WP_OF_THE_DAY_INFO_TTL = 12 * 60 * 60 * 1000;
 
 const pathResolver = function(basePath, wp) {
     return Object.assign(wp, {

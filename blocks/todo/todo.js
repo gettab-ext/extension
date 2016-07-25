@@ -15,6 +15,7 @@ class Todo {
         this.$list = $('.todo-list');
         this.$popup = $(".todo");
         this.$input = $('.todo-input__input');
+        this.$todoBadge = $(".todo-badge");
 
         this.init();
     }
@@ -75,6 +76,13 @@ class Todo {
         // this.renderFooter();
         // this.$input.focus();
         storage.set(STORAGE_KEY, this.todos);
+
+        if (this.getActiveTodos().length > 0) {
+            this.$todoBadge.text(this.getActiveTodos().length);
+            this.$todoBadge.addClass('todo-badge_visible');
+        } else {
+            this.$todoBadge.removeClass('todo-badge_visible');
+        }
     }
 
     /*
