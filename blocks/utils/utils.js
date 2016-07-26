@@ -2,6 +2,9 @@ import tabs from './tabs';
 import windows from './windows';
 import storage from './storage';
 
+const POSITION_STORAGE_TIME = 15 * 60 * 1000;
+const POSITION_STORAGE_KEY = 'position-data';
+
 const utils = {
 
     loadBackgroundImage({$elem, url, loadedClass, preloadClass, cacheTTL}) {
@@ -151,7 +154,19 @@ const utils = {
             xhr.open('GET', url);
             xhr.send();
         });
+    },
+
+    getGeolocation() {
+        return new Promise(resolve => {
+            var geoSuccess = (position) => {
+                const coords = utils.cloneAsObject(position.coords);
+                storage.set(POSITION_STORAGE_KEY, coords, POSITION_STORAGE_TIME)
+                    .then(() => resolve(coords));
+            };
+            navigator.geolocation.getCurrentPosition(geoSuccess);
+        });
     }
+
 
 };
 

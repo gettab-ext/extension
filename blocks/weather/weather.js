@@ -5,20 +5,11 @@ import './weather-widget.css';
 
 import storage from '../utils/storage';
 import Fetcher from '../utils/fetcher';
-import utils from '../utils/utils';
 import {EVENTS} from '../page/page';
+import {API, USE_MYSTART_WEATHER_DATA} from '../config/config';
 
-const WEATHER_STORAGE_KEY = 'forecast-data';
-const POSITION_STORAGE_KEY = 'position-data';
-
-const WEATHER_API_URL = "http://gettab1.site/w";
-const GEOCODE_API_URL = 'http://gettab1.site/g';
 const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
-
-const WEATHER_STORAGE_TIME = 15 * 60 * 1000;
-const POSITION_STORAGE_TIME = 15 * 60 * 1000;
-
-const USE_MYSTART_DATA = true;
+const WEATHER_STORAGE_TIME = 10 * 1000;
 
 const monthNames = [
     "January", "February", "March",
@@ -60,6 +51,10 @@ class Weather {
             url: MYSTART_WEATHER_API,
             ttl: WEATHER_STORAGE_TIME,
         });
+        this.dataFetcher = new Fetcher({
+            url: `${API}/weather`,
+            ttl: WEATHER_STORAGE_TIME
+        });
 
         this._init();
     }
@@ -68,10 +63,10 @@ class Weather {
 
         this._bindEvents();
 
-        if (USE_MYSTART_DATA) {
+        if (USE_MYSTART_WEATHER_DATA) {
             this._loadDataMystart();
         } else {
-            this._loadDataNative();
+            this._loadData();
         }
 
         this._startTick();
@@ -100,56 +95,41 @@ class Weather {
     }
 
     _loadDataMystart() {
-        Promise.resolve()
-            .then(() => this._getMystartData())
-            .then(data => {
-                this.latitude = data.location.latitude;
-                this.longitude = data.location.longitude;
-
-                this._renderWidget(
-                    this._getConvertedTemp(data.now.feelsLike),
-                    data.location.city,
-                    data.forecast[0].shortDescription,
-                    data.now.iconCode
-                );
-
-                const forecast = data.forecast.map(item => {
-                    return {
-                        day: dayNames[(new Date(item.timeLocalStr)).getDay()],
-                        minTemp: this._getConvertedTemp(item.temperatureLow, true),
-                        maxTemp: this._getConvertedTemp(item.temperatureHigh, true)
-                    };
-                });
-
-                this._renderPopup({
-                    feelsLike: this._getConvertedTemp(data.now.feelsLike, true),
-                    humidity: data.now.humidity,
-                    wind: data.now.windSpeed,
-                    rain: data.now.precipProbability,
-                    forecast
-                });
-            });
-
+        return this.myStartFetcher.get()
+            .then(data => this._processData(data));
     }
 
-    _loadDataNative() {
-        Promise.resolve()
-            .then(() => this._getPosition())
-            .then(position => {
-                this.latitude = position.latitude;
-                this.longitude = position.longitude;
-                return Promise.all([this._getForecast(), this._getCityName()]);
-            })
-            .then(result => {
-                const forecast = result[0];
-                const cityName = result[1];
+    _loadData() {
+        return this.dataFetcher.get()
+            .then(data => this._processData(data));
+    }
 
-                this._renderWidget(
-                    this._getConvertedTemp(forecast.currently.apparentTemperature),
-                    cityName,
-                    forecast.currently.summary
-                );
-            });
+    _processData(data) {
+        this.latitude = data.location.latitude;
+        this.longitude = data.location.longitude;
+
+        this._renderWidget(
+            this._getConvertedTemp(data.now.feelsLike),
+            data.location.city,
+            data.forecast[0].shortDescription,
+            data.now.iconCode
+        );
+
+        const forecast = data.forecast.map(item => {
+            return {
+                day: dayNames[(new Date(item.timeLocalStr)).getDay()],
+                minTemp: this._getConvertedTemp(item.temperatureLow, true),
+                maxTemp: this._getConvertedTemp(item.temperatureHigh, true)
+            };
+        });
+
+        this._renderPopup({
+            feelsLike: this._getConvertedTemp(data.now.feelsLike, true),
+            humidity: data.now.humidity,
+            wind: data.now.windSpeed,
+            rain: data.now.precipProbability,
+            forecast
+        });
     }
 
     _renderWidget(currentTemp, cityName, weatherSummary, iconCode) {
@@ -185,60 +165,16 @@ class Weather {
         this.$widget.addClass('weather-widget_inited');
     }
 
-
-    _getPosition() {
-
-        return storage.get(POSITION_STORAGE_KEY)
-            .then(position => {
-                console.log('position', position);
-                if (position) {
-                    console.log('return cached position data');
-                    return position;
-                } else {
-                    return new Promise(resolve => {
-                        var geoSuccess = (position) => {
-                            const coords = utils.cloneAsObject(position.coords);
-                            storage.set(POSITION_STORAGE_KEY, coords, POSITION_STORAGE_TIME)
-                                .then(() => resolve(coords));
-                        };
-                        navigator.geolocation.getCurrentPosition(geoSuccess);
-                    });
-                }
-            });
-    }
-
-    _getForecast() {
-        return storage.get(WEATHER_STORAGE_KEY)
-            .then(cachedData => {
-                if (cachedData) {
-                    console.log('return cached weather data');
-                    return cachedData;
-                }
-
-                const coordString = [this.latitude, this.longitude].join(',');
-                const apiUrl = `${WEATHER_API_URL}?coord=${coordString}`;
-
-                return $.ajax(apiUrl)
-                    .then(data => storage.set(WEATHER_STORAGE_KEY, data, WEATHER_STORAGE_TIME));
-            });
+    _getData() {
 
     }
 
     _getMystartData() {
-        return this.myStartFetcher.get();
+        return
     }
 
     _getConvertedTemp(temp, short) {
         return `${Math.round(parseFloat(temp))}°${short ? '' : 'C'}`;
-    }
-
-    _getCityName() {
-        const coords = [this.longitude, this.latitude].join(',');
-        const geocodeUrl = `${GEOCODE_API_URL}?coord=${coords}`;
-
-        return $.ajax(geocodeUrl).then(response => {
-            return _.get(response, 'response.GeoObjectCollection.featureMember[0].GeoObject.name');
-        });
     }
 
     _getDate() {

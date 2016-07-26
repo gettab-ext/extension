@@ -5,3 +5,4 @@ export const SITE_URL = 'http://gettab.info/';
 export const WP_CACHE_TTL = 12 * 60 * 60 * 1000;
 
 export const AUTOFOCUS = false;
+export const USE_MYSTART_WEATHER_DATA = false;
