@@ -1,3 +1,5 @@
+import runtime from '../utils/runtime';
+
 const REQUIRED_PERMISSIONS = {
     permissions: [ 'tabs' ],
     origins: [ 'chrome://favicon/' ]
@@ -11,6 +13,18 @@ const tabs = {
     create(properties, callback = noop) {
         chrome.tabs.create(properties, function(tab) {
             callback(false, tab);
+        });
+    },
+
+    createNewTab() {
+        const launch = function(behavior, url) {
+            tabs.create({
+                active: true,
+                url: url
+            });
+        };
+        runtime.getNewtabInfo(function(newtab) {
+            launch('newtab', newtab.url);
         });
     },
 

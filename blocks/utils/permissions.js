@@ -1,5 +1,6 @@
 /* global chrome */
 import utils from '../utils/utils';
+import tabs from './tabs';
 
 const REQUIRED_PERMISSIONS = {
     permissions: ['bookmarks', 'management', 'tabs', 'topSites'],
@@ -8,7 +9,6 @@ const REQUIRED_PERMISSIONS = {
 
 class Permissions {
     constructor() {
-
     }
 
     _hasAll(callback = utils.noop) {
@@ -30,7 +30,8 @@ class Permissions {
                 }
 
                 if (granted) {
-                    chrome.runtime.reload();
+                    tabs.createNewTab();
+                    window.close();
                 }
             });
         });
