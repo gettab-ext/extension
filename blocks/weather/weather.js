@@ -9,7 +9,8 @@ import {EVENTS} from '../page/page';
 import {API, USE_MYSTART_WEATHER_DATA} from '../config/config';
 
 const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
-const WEATHER_STORAGE_TIME = 10 * 1000;
+const WEATHER_STORAGE_TIME = 20 * 60 * 1000;
+const FORECAST_DAYS = 5;
 
 const monthNames = [
     "January", "February", "March",
@@ -115,9 +116,9 @@ class Weather {
             data.now.iconCode
         );
 
-        const forecast = data.forecast.map(item => {
+        const forecast = data.forecast.slice(0, FORECAST_DAYS).map(item => {
             return {
-                day: dayNames[(new Date(item.timeLocalStr)).getDay()],
+                day: dayNames[(new Date(parseInt(item.timeLocalStr))).getDay()],
                 minTemp: this._getConvertedTemp(item.temperatureLow, true),
                 maxTemp: this._getConvertedTemp(item.temperatureHigh, true)
             };

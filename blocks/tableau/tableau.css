@@ -2,6 +2,13 @@
     position: absolute;
     width: 100%;
     top: 100px;
+    pointer-events: none;
+}
+
+@media (max-width: 1278px) {
+    .tableau-wrapper {
+        top: 100px;
+    }
 }
 
 .tableau {
@@ -13,8 +20,9 @@
     margin: auto;
     opacity: 0;
     transition: opacity 0.3s ease-out;
-    width: 640px;
+    width: 620px;
     overflow: hidden;
+    pointer-events: auto;
 
     &_inited {
         opacity: 1;
@@ -36,7 +44,6 @@
 .tableau_mode_no-sites .tableau__list {
     display: none;
 }
-
 
 .tableau__permissions {
     display: none;
@@ -76,6 +83,7 @@
     opacity: 0.8;
     -webkit-filter: brightness(85%);
     transition: -webkit-filter 0.2s ease-out, opacify 0.2s ease-out;
+    -webkit-user-select: none;
 
     &_icon-mode_logo {
         padding: 16px 20px;
