@@ -5,8 +5,7 @@ import './tableau.css';
 import utils from '../utils/utils';
 import CONST from '../utils/constants';
 import permissions from '../utils/permissions';
-
-import Vibrant from 'node-vibrant';
+import Fetcher from '../utils/fetcher';
 import _ from 'lodash';
 
 const REQUIRED_PERMISSIONS = {
@@ -15,6 +14,8 @@ const REQUIRED_PERMISSIONS = {
 };
 
 const LINK_COUNT = 8;
+const THUMB_FETCH_TIMEOUT = 15 * 1000;
+const THUMB_INFO_TTL = 14 * 7 * 24 * 60 * 60 * 1000;
 
 const tableauItem = ({title, href, icon, bgColor, iconMode}) => `
     <a href="${href}" class="tableau-item tableau-item_icon-mode_${iconMode}" style="background-color: ${bgColor};">
@@ -57,18 +58,17 @@ class Tableau {
         } else {
             this.renderEnabled(mostVisited);
         }
-        this.$block.addClass('tableau_inited');
+
     }
 
     renderDisabled(error) {
-
         if (error === 'PERMISSION_ERROR') {
             this.$block.addClass('tableau_mode_permissions-required');
         }
         if (error === 'NO_RESULTS') {
             this.$block.addClass('tableau_mode_no-sites');
         }
-
+        this.$block.addClass('tableau_inited');
     }
 
     renderEnabled(sites) {
@@ -97,10 +97,9 @@ class Tableau {
             });
         };
 
-        console.time('vibrant');
         Promise.all(sites.map(renderThumb)).then(rendered => {
-            console.timeEnd('vibrant');
             this.$list.html(rendered.join(''));
+            this.$block.addClass('tableau_inited');
         });
     }
 
@@ -196,16 +195,17 @@ class Tableau {
 
     getThumb(domain) {
         const URL = `https://api.browser.yandex.ru/dashboard3/get/get?nodes=${domain}&brandID=yandex&lang=en`;
-        return new Promise(resolve => {
-            $.ajax({
-                url: URL,
-                success: data => {
-                    resolve({
-                        bgColor: _.get(data, '[0].bgcolor'),
-                        logo: _.get(data, '[0].resources.logo_main')
-                    });
-                }
-            });
+        const thumbFetcher = new Fetcher({
+            url: URL,
+            ttl: THUMB_INFO_TTL,
+            timeout: THUMB_FETCH_TIMEOUT,
+        });
+
+        return thumbFetcher.get().then(data => {
+            return {
+                bgColor: _.get(data, '[0].bgcolor'),
+                logo: _.get(data, '[0].resources.logo_main')
+            };
         });
 
     }
