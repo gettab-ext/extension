@@ -12,6 +12,7 @@ import '../blocks/weather/weather';
 import '../blocks/apps/apps';
 import '../blocks/bookmarks/bookmarks';
 import '../blocks/most-visited/most-visited';
+import '../blocks/tableau/tableau';
 import '../blocks/todo/todo';
 import '../blocks/music/music';
 
