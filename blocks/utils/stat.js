@@ -10,6 +10,8 @@ const stat = {
 
         ga('create', 'UA-81203673-1', 'auto');
         ga('set', 'checkProtocolTask', function(){});
+    },
+    sendPageView() {
         ga('send', 'pageview', '/index.html');
     },
     send(event, nonInteraction) {

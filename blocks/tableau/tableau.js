@@ -6,6 +6,7 @@ import utils from '../utils/utils';
 import CONST from '../utils/constants';
 import permissions from '../utils/permissions';
 import Fetcher from '../utils/fetcher';
+import stat from '../utils/stat';
 import _ from 'lodash';
 
 const REQUIRED_PERMISSIONS = {
@@ -34,7 +35,6 @@ const getDomain = (url) => {
 class Tableau {
 
     constructor() {
-
         this.removedUrls = [];
 
         this.$block = $(".tableau");
@@ -43,11 +43,13 @@ class Tableau {
         this.get(LINK_COUNT, this.render.bind(this));
 
         this.bindEvents();
-
     }
 
     bindEvents() {
         $(".tableau__permissions").on('click', () => permissions.request());
+        this.$list.on('click', '.tableau-item', () => {
+            stat.send('tableau.click');
+        });
     }
 
     render(error, mostVisited) {
@@ -72,9 +74,6 @@ class Tableau {
     }
 
     renderEnabled(sites) {
-
-        const VIBRANT_OPTS = {
-        };
 
         const renderThumb = site => {
             return new Promise(resolve => {

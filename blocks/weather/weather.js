@@ -1,9 +1,6 @@
-import _ from 'lodash';
-
 import './weather-popup.css';
 import './weather-widget.css';
 
-import storage from '../utils/storage';
 import Fetcher from '../utils/fetcher';
 import {EVENTS} from '../page/page';
 import {API, USE_MYSTART_WEATHER_DATA} from '../config/config';

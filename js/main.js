@@ -27,6 +27,7 @@ if (AUTOFOCUS) {
             storage.set('__newtab', false);
             page.setInited();
             stat.init();
+            stat.sendPageView();
         } else {
             storage.set('__newtab', true);
             chrome.tabs.create({ url: chrome.extension.getURL("index.html") });
@@ -36,4 +37,5 @@ if (AUTOFOCUS) {
 } else {
     page.setInited();
     stat.init();
+    stat.sendPageView();
 }
