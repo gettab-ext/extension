@@ -1,5 +1,6 @@
 import settings from '../settings/settings';
 import _ from 'lodash';
+import stat from '../utils/stat';
 
 import './page.css';
 
@@ -13,18 +14,18 @@ const BLOCKS_DEFAULT = {
     'logo': {
         visible: true
     },
-    'greetings': {
-        visible: true
-    },
+    // 'greetings': {
+    //     visible: true
+    // },
     'apps': {
         visible: false
     },
     'bookmarks': {
         visible: true
     },
-    'recently-closed': {
-        visible: true
-    },
+    // 'recently-closed': {
+    //     visible: true
+    // },
     'music': {
         visible: true
     },
@@ -60,6 +61,7 @@ class Page {
     _loadBlockSettings() {
         this._blocks = settings.get(BLOCK_SETTINGS_STORAGE_KEY) || BLOCKS_DEFAULT;
         this._updateBlockVisibility();
+        this._sendBlockVisibiltyStat();
     }
 
     _onBlockSettingsUpdated() {
@@ -70,6 +72,14 @@ class Page {
     _updateBlockVisibility() {
         _.forOwn(this._blocks, (blockProps, blockName) => {
             this._getBlockElem(blockName).toggleClass('hidden', !blockProps.visible);
+        });
+    }
+
+    _sendBlockVisibiltyStat() {
+        _.forOwn(this._blocks, (blockProps, blockName) => {
+            if (blockProps.visible) {
+                stat.send(`page.show_block.${blockName}`);
+            }
         });
     }
 
