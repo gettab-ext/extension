@@ -4,6 +4,7 @@ import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import permissions from '../utils/permissions';
 import tabs from '../utils/tabs';
+import stat from '../utils/stat';
 
 import './apps.css';
 import './app.css';
@@ -67,6 +68,7 @@ class Apps {
 
         $(".apps__list").on('click', '.app', e => {
             const appId = $(e.currentTarget).data('app');
+            stat.send('apps.launch');
             this.launch(appId);
         });
     }

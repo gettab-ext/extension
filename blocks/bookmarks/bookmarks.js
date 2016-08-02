@@ -3,6 +3,7 @@ import {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import CONST from '../utils/constants';
 import permissions from '../utils/permissions';
+import stat from '../utils/stat';
 
 import './bookmarks.css';
 import './bookmarks-copy.css';
@@ -109,6 +110,7 @@ var generateTree = function(tree) {
 
             a.click(function(e) {
                 e.preventDefault();
+                stat.send('bookmarks.open');
                 utils.openLinkFromEvent(e);
             });
 

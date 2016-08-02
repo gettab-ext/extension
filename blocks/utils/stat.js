@@ -10,6 +10,7 @@ const stat = {
 
         ga('create', 'UA-81203673-1', 'auto');
         ga('set', 'checkProtocolTask', function(){});
+        ga('set', 'transport', 'beacon');
     },
     sendPageView() {
         ga('send', 'pageview', '/index.html');
@@ -21,12 +22,12 @@ const stat = {
         const eventLabel = eventData[2];
         const eventValue = eventData[3];
 
-        const passNonInteraction = (nonInteraction
-            ? { nonInteraction: true }
-            : undefined
-        );
+        const options = {};
+        if (nonInteraction) {
+            options.nonInteraction = true;
+        }
 
-        ga('send', 'event', eventCategory, eventAction, eventLabel, eventValue, passNonInteraction);
+        ga('send', 'event', eventCategory, eventAction, eventLabel, eventValue, options);
     }
 };
 
