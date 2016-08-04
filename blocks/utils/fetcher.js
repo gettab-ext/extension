@@ -4,13 +4,13 @@ import utils from './utils';
 const DEFAULT_TIMEOUT = 120 * 1000;
 
 class Fetcher {
-    constructor({url, ttl, timeout, noHttpCache}) {
+    constructor({key, url, ttl, timeout, noHttpCache}) {
         this.url = url;
         this.ttl = ttl;
         this.timeout = timeout || DEFAULT_TIMEOUT;
         this.noHttpCache = noHttpCache;
 
-        this.storageKey = `fetcher__${url}`;
+        this.storageKey = (key || `fetcher__${url}`);
     }
 
     /**

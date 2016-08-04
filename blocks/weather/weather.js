@@ -1,14 +1,9 @@
 import './weather-popup.css';
 import './weather-widget.css';
 
-import Fetcher from '../utils/fetcher';
 import page, {EVENTS} from '../page/page';
-import {API, USE_MYSTART_WEATHER_DATA, USE_CLIENT_WEATHER_FETCH} from '../config/config';
-import GeoDataFetcher from './geo-data';
-import WeatherDataFetcher from './weather-data';
+import transport from '../transport/transport';
 
-const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
-const WEATHER_STORAGE_TIME = 20 * 60 * 1000;
 const FORECAST_DAYS = 5;
 
 const ICON_FONT = [
@@ -51,34 +46,13 @@ class Weather {
 
         this.$forecastContainer = $(".weather-box__forecast");
 
-        this.myStartFetcher = new Fetcher({
-            url: MYSTART_WEATHER_API,
-            ttl: WEATHER_STORAGE_TIME,
-        });
-        this.dataFetcher = new Fetcher({
-            url: `${API}/weather`,
-            ttl: WEATHER_STORAGE_TIME
-        });
-        this.geoDataFetcher = new GeoDataFetcher();
-        this.weatherDataFetcher = new WeatherDataFetcher();
-
         this._init();
     }
 
     _init() {
-
         this._bindEvents();
-
-        if (USE_CLIENT_WEATHER_FETCH) {
-            this._loadClientData();
-        } else if (USE_MYSTART_WEATHER_DATA) {
-            this._loadDataMystart();
-        } else  {
-            this._loadData();
-        }
-
+        transport.requestData('weather-data').then(data => this._processData(data));
         this._startTick();
-
     }
 
     _bindEvents() {
@@ -100,34 +74,6 @@ class Weather {
         };
 
         tick();
-    }
-
-    _loadDataMystart() {
-        return this.myStartFetcher.get()
-            .then(data => this._processData(data));
-    }
-
-    _loadData() {
-        return this.dataFetcher.get()
-            .then(data => this._processData(data));
-    }
-
-    _loadClientData() {
-        let locationData; // FIXME: такой паттерн легко разваливается, если спросить _loadClientData во время получения погоды
-
-        this.geoDataFetcher.get()
-            .then(location => {
-                locationData = location;
-                return this.weatherDataFetcher.get(location)
-            })
-            .then(weatherData => {
-                const data = Object.assign({}, {location: locationData}, weatherData);
-                this._processData(data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-
     }
 
     _processData(data) {
