@@ -21,21 +21,6 @@ import page from '../blocks/page/page';
 import stat from '../blocks/utils/stat';
 import {AUTOFOCUS} from '../blocks/config/config';
 
-if (AUTOFOCUS) {
-    storage.get('__newtab').then(flag => {
-        if (flag === true) {
-            storage.set('__newtab', false);
-            page.setInited();
-            stat.init();
-            stat.sendPageView();
-        } else {
-            storage.set('__newtab', true);
-            chrome.tabs.create({ url: chrome.extension.getURL("index.html") });
-            window.close();
-        }
-    });
-} else {
-    page.setInited();
-    stat.init();
-    stat.sendPageView();
-}
+page.setInited();
+stat.init();
+stat.sendPageView();
