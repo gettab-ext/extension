@@ -16,11 +16,8 @@ import '../blocks/tableau/tableau';
 import '../blocks/todo/todo';
 import '../blocks/music/music';
 
-import storage from '../blocks/utils/storage';
 import page from '../blocks/page/page';
 import stat from '../blocks/utils/stat';
-import {AUTOFOCUS} from '../blocks/config/config';
 
 page.setInited();
-stat.init();
 stat.sendPageView();

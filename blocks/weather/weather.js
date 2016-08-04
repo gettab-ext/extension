@@ -167,10 +167,6 @@ class Weather {
 
     }
 
-    _getMystartData() {
-        return
-    }
-
     _getConvertedTemp(temp, short) {
         return `${Math.round(parseFloat(temp))}°${short ? '' : 'C'}`;
     }
