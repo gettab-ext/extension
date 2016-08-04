@@ -3,7 +3,9 @@ import './weather-widget.css';
 
 import Fetcher from '../utils/fetcher';
 import page, {EVENTS} from '../page/page';
-import {API, USE_MYSTART_WEATHER_DATA} from '../config/config';
+import {API, USE_MYSTART_WEATHER_DATA, USE_CLIENT_WEATHER_FETCH} from '../config/config';
+import GeoDataFetcher from './geo-data';
+import WeatherDataFetcher from './weather-data';
 
 const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
 const WEATHER_STORAGE_TIME = 20 * 60 * 1000;
@@ -53,6 +55,8 @@ class Weather {
             url: `${API}/weather`,
             ttl: WEATHER_STORAGE_TIME
         });
+        this.geoDataFetcher = new GeoDataFetcher();
+        this.weatherDataFetcher = new WeatherDataFetcher();
 
         this._init();
     }
@@ -61,9 +65,11 @@ class Weather {
 
         this._bindEvents();
 
-        if (USE_MYSTART_WEATHER_DATA) {
+        if (USE_CLIENT_WEATHER_FETCH) {
+            this._loadClientData();
+        } else if (USE_MYSTART_WEATHER_DATA) {
             this._loadDataMystart();
-        } else {
+        } else  {
             this._loadData();
         }
 
@@ -100,6 +106,24 @@ class Weather {
     _loadData() {
         return this.dataFetcher.get()
             .then(data => this._processData(data));
+    }
+
+    _loadClientData() {
+        let locationData; // FIXME: такой паттерн легко разваливается, если спросить _loadClientData во время получения погоды
+
+        this.geoDataFetcher.get()
+            .then(location => {
+                locationData = location;
+                return this.weatherDataFetcher.get(location)
+            })
+            .then(weatherData => {
+                const data = Object.assign({}, {location: locationData}, weatherData);
+                this._processData(data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
     }
 
     _processData(data) {
@@ -141,10 +165,16 @@ class Weather {
     }
 
     _renderPopup({feelsLike, humidity, wind, rain, forecast}) {
+        const $rain = $(".weather-box__current-rain");
+
         $(".weather-box__current-feel .weather-box__current-value").html(feelsLike);
         $(".weather-box__current-humidity .weather-box__current-value").html(`${humidity}%`);
         $(".weather-box__current-wind .weather-box__current-value").html(wind);
-        $(".weather-box__current-rain .weather-box__current-value").html(rain);
+        $rain.find(".weather-box__current-value").html(rain);
+
+        if (!rain) {
+            $rain.remove();
+        }
 
         this._renderForecast(forecast);
     }
