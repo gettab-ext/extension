@@ -1,5 +1,5 @@
 /* global chrome */
-import {EVENTS} from '../page/page';
+import page, {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import CONST from '../utils/constants';
 import permissions from '../utils/permissions';
@@ -216,9 +216,8 @@ class Bookmarks {
 
         $("#show-bookmarks-button").on('click', () => this.showPanel());
         $(".bookmarks__close").on('click', () => this.hidePanel());
-        $(window).on(EVENTS.hideModals, () => this.hidePanel());
-
         $(".bookmarks__permissions__button").on('click', () => permissions.request());
+        page.bindPopupHide('.bookmarks, #show-bookmarks-button', () => this.hidePanel());
     }
 
     showPanel() {

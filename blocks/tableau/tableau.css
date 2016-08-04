@@ -22,9 +22,10 @@
     transition: opacity 0.3s ease-out;
     width: 620px;
     overflow: hidden;
-    pointer-events: auto;
+    pointer-events: none;
 
     &_inited {
+        pointer-events: auto;
         opacity: 1;
     }
 }

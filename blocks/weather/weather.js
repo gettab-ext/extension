@@ -2,7 +2,7 @@ import './weather-popup.css';
 import './weather-widget.css';
 
 import Fetcher from '../utils/fetcher';
-import {EVENTS} from '../page/page';
+import page, {EVENTS} from '../page/page';
 import {API, USE_MYSTART_WEATHER_DATA} from '../config/config';
 
 const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
@@ -74,7 +74,7 @@ class Weather {
     _bindEvents() {
         this.$widget.on('click', () => this._showPopup());
         $(".weather-box__close").on('click', () => this._hidePopup());
-        $(window).on(EVENTS.hideModals, () => this._hidePopup());
+        page.bindPopupHide('.weather-box__forecast, .weather-widget', () => this._hidePopup());
     }
 
     _startTick() {

@@ -215,10 +215,8 @@ class Wallpaper {
             this.$descPopup.removeClass('wallpaper-desc-popup_visible');
         };
 
-        $(window).on(EVENTS.hideModals, () => {
-            hidePanel();
-            hideDescPopup();
-        });
+        $(window).on(EVENTS.hideModals, () => hideDescPopup());
+        page.bindPopupHide('.gallery-box, #open-wallpapers', () => hidePanel());
 
         $('#open-wallpapers').click(() => showPanel());
         $(".gallery-close", this.$settingPanel).click(() => hidePanel());

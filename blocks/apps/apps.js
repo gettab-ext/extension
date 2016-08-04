@@ -1,6 +1,6 @@
 /* global chrome */
 
-import {EVENTS} from '../page/page';
+import page, {EVENTS} from '../page/page';
 import utils from '../utils/utils';
 import permissions from '../utils/permissions';
 import tabs from '../utils/tabs';
@@ -59,18 +59,16 @@ class Apps {
     }
 
     bindEvents() {
-
         $("#show-apps-button").on('click', () => this.showPanel());
         $(".apps__close").on('click', () => this.hidePanel());
-        $(window).on(EVENTS.hideModals, () => this.hidePanel());
-
         $(".apps__permissions__button").on('click', () => permissions.request());
-
         $(".apps__list").on('click', '.app', e => {
             const appId = $(e.currentTarget).data('app');
             stat.send('apps.launch');
             this.launch(appId);
         });
+
+        page.bindPopupHide('.apps, #show-apps-button', () => this.hidePanel());
     }
 
     showPanel() {

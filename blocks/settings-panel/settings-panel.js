@@ -40,7 +40,7 @@ class Settings {
 
     _bindEvents() {
         $(".open-settings-panel").on('click', () => this._showPanel());
-        $(window).on(EVENTS.hideModals, () => this._hidePanel());
+        page.bindPopupHide('.settings-panel, .open-settings-panel', () => this._hidePanel());
 
         this.settingsArray.forEach(settingElem => {
             const $setting = $(settingElem);

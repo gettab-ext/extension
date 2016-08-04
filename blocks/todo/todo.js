@@ -1,4 +1,4 @@
-import {EVENTS} from '../page/page';
+import page, {EVENTS} from '../page/page';
 import storage from '../utils/storage';
 import utils from '../utils/utils';
 
@@ -65,7 +65,8 @@ class Todo {
 
         $("#open-todo").on('click', () => this.showPopup());
         $(".todo-header__close").on('click', () => this.hidePopup());
-        $(window).on(EVENTS.hideModals, () => this.hidePopup());
+
+        page.bindPopupHide('.todo, #open-todo', () => this.hidePopup());
     }
 
     render () {

@@ -134,6 +134,15 @@ class Page {
         $(".page-content").toggleClass('page-content_hidden', flag);
     }
 
+    bindPopupHide(popupContainer, hideFunction) {
+        $(window).on(EVENTS.hideModals, () => hideFunction());
+        $(document).on('click', e => {
+            if (!$(e.target).closest(popupContainer).length) {
+                hideFunction();
+            }
+        });
+    }
+
 }
 
 const page = new Page();
