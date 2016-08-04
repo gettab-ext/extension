@@ -11,6 +11,10 @@ const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
 const WEATHER_STORAGE_TIME = 20 * 60 * 1000;
 const FORECAST_DAYS = 5;
 
+const ICON_FONT = [
+    ":", "p", "S", "Q", "S", "W", "W", "W", "W", "I", "W", "I", "I", "I", "I", "W", "I", "W", "U", "Z", "Z", "Z", "Z", "Z", "E", "E", "3", "a", "A", "a", "A", "6", "1", "6", "1", "W", "1", "S", "S", "S", "M", "W", "I", "W", "a", "S", "U", "S"
+];
+
 const monthNames = [
     "January", "February", "March",
     "April", "May", "June", "July",
@@ -183,6 +187,7 @@ class Weather {
         this.$icon.css({
             'background-image': `url('../images/weather/${iconCode}.png`
         });
+        this.$icon.text(this._convertCodeToIconFont(iconCode));
     }
 
     _renderForecast(forecast) {
@@ -221,6 +226,10 @@ class Weather {
 
     _hidePopup() {
         $(".weather-box-wrapper").removeClass('weather-box-wrapper_active');
+    }
+
+    _convertCodeToIconFont(code) {
+        return ICON_FONT[code];
     }
 
 
