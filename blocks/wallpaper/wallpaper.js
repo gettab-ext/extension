@@ -6,9 +6,10 @@ import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
 import {API, STATIC_HOST, SITE_URL, WP_CACHE_TTL} from '../config/config';
+import Ps from 'perfect-scrollbar';
+import '../utils/perfect-scrollbar.css';
 
 import './dropbox-tab';
-
 import './wallpaper.css';
 import './bg.css';
 import './dropbox-tab.css';
@@ -292,6 +293,7 @@ class Wallpaper {
     _renderWallpaperList() {
         const wallpaperListHtml = this.wallpapers.map(wallpaperThumbTmpl).join('');
         this.$wallpaperListContainer.html(wallpaperListHtml);
+        Ps.initialize(this.$wallpaperListContainer.get(0));
     }
 
     _loadRemoteWallpapers() {

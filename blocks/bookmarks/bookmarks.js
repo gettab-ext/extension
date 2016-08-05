@@ -204,11 +204,8 @@ var selectRootLi = function(liIndex) {
 
 class Bookmarks {
     constructor() {
-
         this.$panel = $(".bookmarks");
-
         this.bindEvents();
-
         this.getAll((error, bookmarks) => this.render(error, bookmarks));
     }
 

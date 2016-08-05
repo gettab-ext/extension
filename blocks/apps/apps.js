@@ -5,6 +5,8 @@ import utils from '../utils/utils';
 import permissions from '../utils/permissions';
 import tabs from '../utils/tabs';
 import stat from '../utils/stat';
+import Ps from 'perfect-scrollbar';
+import '../utils/perfect-scrollbar.css';
 
 import './apps.css';
 import './app.css';
@@ -56,6 +58,7 @@ class Apps {
         this.bindEvents();
 
         this.getAll((error, apps) => this.render(error, apps));
+        Ps.initialize(this.$appList.get(0));
     }
 
     bindEvents() {

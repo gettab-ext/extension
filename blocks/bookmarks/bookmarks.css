@@ -110,5 +110,5 @@
     left: 40px;
     top: 96px;
     bottom: 40px;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
