@@ -5,9 +5,9 @@ import GeoDataFetcher from './geo-data-fetcher';
 import WeatherDataFetcher from './weather-data-fetcher';
 
 import {API, USE_MYSTART_WEATHER_DATA, USE_CLIENT_WEATHER_FETCH, WEATHER_DATA_TTL} from '../config/config';
+import {WEATHER_STORAGE_KEY} from '../config/const';
 
 const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
-const STORAGE_KEY = 'weather_data_storage';
 
 class WeatherBackend {
     constructor() {
@@ -15,16 +15,16 @@ class WeatherBackend {
         this.myStartFetcher = new Fetcher({
             url: MYSTART_WEATHER_API,
             ttl: WEATHER_DATA_TTL,
-            key: STORAGE_KEY,
+            key: WEATHER_STORAGE_KEY,
         });
         this.apiDataFetcher = new Fetcher({
             url: `${API}/weather`,
             ttl: WEATHER_DATA_TTL,
-            key: STORAGE_KEY,
+            key: WEATHER_STORAGE_KEY,
         });
         this.clientDataFetcher = new Fetcher({
             getter: () => this._fetchClientData(),
-            key: STORAGE_KEY,
+            key: WEATHER_STORAGE_KEY,
             autoRefresh: true,
             ttl: WEATHER_DATA_TTL
         });
@@ -32,7 +32,7 @@ class WeatherBackend {
         this.geoDataFetcher = new GeoDataFetcher();
         this.weatherDataFetcher = new WeatherDataFetcher();
 
-        transport.exposeDataSource(STORAGE_KEY, () => this.get());
+        transport.exposeDataSource(WEATHER_STORAGE_KEY, () => this.get());
     }
 
     get() {

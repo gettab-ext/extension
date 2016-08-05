@@ -4,14 +4,13 @@ import './weather-widget.css';
 import page, {EVENTS} from '../page/page';
 import transport from '../transport/transport';
 import storage from '../utils/storage';
+import {WEATHER_STORAGE_KEY} from '../config/const';
 
 const FORECAST_DAYS = 5;
 
 const ICON_FONT = [
     ":", "p", "S", "Q", "S", "W", "W", "W", "W", "I", "W", "I", "I", "I", "I", "W", "I", "W", "U", "Z", "Z", "Z", "Z", "Z", "E", "E", "3", "a", "A", "a", "A", "6", "1", "6", "1", "W", "1", "S", "S", "S", "M", "W", "I", "W", "a", "S", "U", "S"
 ];
-
-const STORAGE_KEY = 'weather_data_storage';
 
 const monthNames = [
     "January", "February", "March",
@@ -56,11 +55,11 @@ class Weather {
         this._bindEvents();
         this._startTick();
 
-        storage.get(STORAGE_KEY).then(data => {
+        storage.get(WEATHER_STORAGE_KEY).then(data => {
             if (data) {
                 this._processData(data)
             } else {
-                transport.requestData(STORAGE_KEY).then(data => this._processData(data));
+                transport.requestData(WEATHER_STORAGE_KEY).then(data => this._processData(data));
             }
         });
     }
