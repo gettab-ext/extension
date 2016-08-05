@@ -1,18 +1,15 @@
-import {API, GEO_DATA_TTL} from '../config/config';
-import Fetcher from '../utils/fetcher';
+import {API} from '../config/config';
 
 const GEO_DATA_URL = `${API}/geo`;
 
 class GeoDataFetcher {
-    constructor() {
-        this.fetcher = new Fetcher({
-            url: GEO_DATA_URL,
-            ttl: GEO_DATA_TTL,
-            noHttpCache: true
-        });
-    }
     get() {
-        return this.fetcher.get();
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: GEO_DATA_URL,
+                success: data => resolve(data)
+            });
+        });
     }
 }
 

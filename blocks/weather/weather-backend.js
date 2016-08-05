@@ -4,39 +4,48 @@ import Fetcher from '../utils/fetcher';
 import GeoDataFetcher from './geo-data-fetcher';
 import WeatherDataFetcher from './weather-data-fetcher';
 
-import {API, USE_MYSTART_WEATHER_DATA, USE_CLIENT_WEATHER_FETCH} from '../config/config';
+import {API, USE_MYSTART_WEATHER_DATA, USE_CLIENT_WEATHER_FETCH, WEATHER_DATA_TTL} from '../config/config';
 
 const MYSTART_WEATHER_API = 'https://www.mystart.com/api/weather/';
-const WEATHER_STORAGE_TIME = 20 * 60 * 1000;
+const STORAGE_KEY = 'weather_data_storage';
 
 class WeatherBackend {
     constructor() {
 
-        transport.exposeDataSource('weather-data', () => this.get());
-
         this.myStartFetcher = new Fetcher({
             url: MYSTART_WEATHER_API,
-            ttl: WEATHER_STORAGE_TIME,
+            ttl: WEATHER_DATA_TTL,
+            key: STORAGE_KEY,
         });
         this.apiDataFetcher = new Fetcher({
             url: `${API}/weather`,
-            ttl: WEATHER_STORAGE_TIME
+            ttl: WEATHER_DATA_TTL,
+            key: STORAGE_KEY,
         });
+        this.clientDataFetcher = new Fetcher({
+            getter: () => this._fetchClientData(),
+            key: STORAGE_KEY,
+            autoRefresh: true,
+            ttl: WEATHER_DATA_TTL
+        });
+
         this.geoDataFetcher = new GeoDataFetcher();
         this.weatherDataFetcher = new WeatherDataFetcher();
+
+        transport.exposeDataSource(STORAGE_KEY, () => this.get());
     }
 
     get() {
         if (USE_CLIENT_WEATHER_FETCH) {
-            return this._loadClientData();
+            return this.clientDataFetcher.get();
         } else if (USE_MYSTART_WEATHER_DATA) {
-            return this._loadDataMystart();
+            return this.myStartFetcher.get();
         } else  {
-            return this._loadApiData();
+            return this.apiDataFetcher.get();
         }
     }
 
-    _loadClientData() {
+    _fetchClientData() {
         return this.geoDataFetcher.get()
             .then(location => {
                 return Promise.all([Promise.resolve(location), this.weatherDataFetcher.get(location)]);
@@ -49,14 +58,6 @@ class WeatherBackend {
             .catch(err => {
                 console.log(err);
             });
-    }
-
-    _loadDataMystart() {
-        return this.myStartFetcher.get();
-    }
-
-    _loadApiData() {
-        return this.apiDataFetcher.get();
     }
 }
 

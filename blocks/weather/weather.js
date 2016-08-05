@@ -3,12 +3,15 @@ import './weather-widget.css';
 
 import page, {EVENTS} from '../page/page';
 import transport from '../transport/transport';
+import storage from '../utils/storage';
 
 const FORECAST_DAYS = 5;
 
 const ICON_FONT = [
     ":", "p", "S", "Q", "S", "W", "W", "W", "W", "I", "W", "I", "I", "I", "I", "W", "I", "W", "U", "Z", "Z", "Z", "Z", "Z", "E", "E", "3", "a", "A", "a", "A", "6", "1", "6", "1", "W", "1", "S", "S", "S", "M", "W", "I", "W", "a", "S", "U", "S"
 ];
+
+const STORAGE_KEY = 'weather_data_storage';
 
 const monthNames = [
     "January", "February", "March",
@@ -51,8 +54,15 @@ class Weather {
 
     _init() {
         this._bindEvents();
-        transport.requestData('weather-data').then(data => this._processData(data));
         this._startTick();
+
+        storage.get(STORAGE_KEY).then(data => {
+            if (data) {
+                this._processData(data)
+            } else {
+                transport.requestData(STORAGE_KEY).then(data => this._processData(data));
+            }
+        });
     }
 
     _bindEvents() {
@@ -81,25 +91,25 @@ class Weather {
         this.longitude = data.location.longitude;
 
         this._renderWidget(
-            this._getConvertedTemp(data.now.feelsLike),
+            this._getConvertedTemp(data.now.t),
             data.location.city,
-            data.forecast[0].shortDescription,
-            data.now.iconCode
+            data.forecast[0].d,
+            data.now.i
         );
 
         const forecast = data.forecast.slice(0, FORECAST_DAYS).map(item => {
             return {
-                day: dayNames[(new Date(parseInt(item.timeLocalStr))).getDay()],
-                minTemp: this._getConvertedTemp(item.temperatureLow, true),
-                maxTemp: this._getConvertedTemp(item.temperatureHigh, true)
+                day: dayNames[(new Date(parseInt(item.t))).getDay()],
+                minTemp: this._getConvertedTemp(item.l, true),
+                maxTemp: this._getConvertedTemp(item.h, true)
             };
         });
 
         this._renderPopup({
-            feelsLike: this._getConvertedTemp(data.now.feelsLike, true),
-            humidity: data.now.humidity,
-            wind: data.now.windSpeed,
-            rain: data.now.precipProbability,
+            feelsLike: this._getConvertedTemp(data.now.t, true),
+            humidity: data.now.h,
+            wind: data.now.w,
+            rain: data.now.p,
             forecast
         });
     }
