@@ -27,15 +27,20 @@
     justify-content: center;
 }
 
+.weather-widget__status {
+    height: 22px;
+    overflow: hidden;
+}
+
 .weather-widget__city {
     font-size: 20px;
-    line-height: 20px;
+    line-height: 22px;
     font-family: montserratbold, sans-serif;
 }
 
 .weather-widget__weather-icon {
     font: 32px/20px artill_clean_icons-webfont;
-    display: inline-flex;
+    display: inline;
     min-width: 18px;
     background-size: 18px;
     background-repeat: no-repeat;
@@ -44,6 +49,7 @@
     top: 2px;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
+    height: 20px;
 }
 
 .weather-widget__time, .weather-widget__weather-status {
