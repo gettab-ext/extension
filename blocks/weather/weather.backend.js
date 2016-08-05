@@ -1,4 +1,4 @@
-import transport from '../transport/transport-backend';
+import transport from '../transport/transport.backend';
 import Fetcher from '../utils/fetcher';
 
 import GeoDataFetcher from './geo-data-fetcher';
