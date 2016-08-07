@@ -28,6 +28,7 @@
   "dependencies": {
     "babel-plugin-transform-async-to-generator": "^6.8.0",
     "extract-text-webpack-plugin": "^1.0.1",
+    "jquery-lazyload": "^1.9.7",
     "lodash": "^4.13.1",
     "perfect-scrollbar": "^0.6.12",
     "postcss-import": "^8.1.2",

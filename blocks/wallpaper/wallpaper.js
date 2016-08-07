@@ -1,4 +1,7 @@
 import _ from 'lodash';
+import Ps from 'perfect-scrollbar';
+import '../utils/perfect-scrollbar.css';
+import 'jquery-lazyload';
 
 import utils from '../utils/utils';
 import settings from '../settings/settings';
@@ -17,9 +20,6 @@ import {
     WP_OF_THE_DAY_INFO,
     WP_OF_THE_DAY_INFO_TTL
 } from '../config/config';
-
-import Ps from 'perfect-scrollbar';
-import '../utils/perfect-scrollbar.css';
 
 import './dropbox-tab';
 import './wallpaper.css';
@@ -66,7 +66,7 @@ export const USER_WALLPAPER_STORAGE_KEY = 'user_wallpaper_setting';
 const WP_CACHE_STORAGE_KEY = 'wallpaper_cache';
 
 export const wallpaperThumbTmpl = ({name, path, thumb, mod}) => (`
-    <div class="wallpaper-thumb wallpaper-thumb_mod_${mod}" data-name="${name}" style="background-image: url('${thumb}') ">
+    <div class="wallpaper-thumb wallpaper-thumb_mod_${mod}" data-name="${name}" data-original='${thumb}'">
         <!--<div class="wallpaper-thumb__fav">-->
             <!--<div class="icon icon-add-favorites"></div>-->
         <!--</div>-->
@@ -293,6 +293,9 @@ class Wallpaper {
         const wallpaperListHtml = this.wallpapers.map(wallpaperThumbTmpl).join('');
         this.$wallpaperListContainer.html(wallpaperListHtml);
         Ps.initialize(this.$wallpaperListContainer.get(0));
+        $(".wallpaper-thumb").lazyload({
+            container: this.$wallpaperListContainer
+        });
     }
 
     _loadRemoteWallpapers() {
