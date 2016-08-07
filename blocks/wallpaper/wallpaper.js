@@ -5,7 +5,19 @@ import settings from '../settings/settings';
 import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
-import {API, STATIC_HOST, SITE_URL, WP_CACHE_TTL} from '../config/config';
+
+import {
+    WP_STATIC_HOST,
+    SITE_URL,
+    WP_CACHE_TTL,
+    WP_CONFIG_TTL,
+    WP_CONFIG_URL,
+    WP_CONFIG_FETCH_TIMEOUT,
+    WP_OF_THE_DAY_URL,
+    WP_OF_THE_DAY_INFO,
+    WP_OF_THE_DAY_INFO_TTL
+} from '../config/config';
+
 import Ps from 'perfect-scrollbar';
 import '../utils/perfect-scrollbar.css';
 
@@ -16,20 +28,12 @@ import './dropbox-tab.css';
 import './settings-tab.css';
 import './wallpaper-info.css';
 
-const EMBEDED_BASE_PATH = './';
-
-const CONFIG_URL = `${API}/wp.json`;
-const CONFIG_TTL = 5 * 60 * 1000;
-const CONFIG_FETCH_TIMEOUT = 3000;
-
-const WP_OF_THE_DAY_URL = `${STATIC_HOST}/wp/wp.png`;
-const WP_OF_THE_DAY_INFO = `${API}/wp-info.json`;
-const WP_OF_THE_DAY_INFO_TTL = 12 * 60 * 60 * 1000;
+const EMBEDED_BASE_PATH = './wallpapers/';
 
 const pathResolver = function(basePath, wp) {
     return Object.assign(wp, {
-        path: `${basePath}/${wp.path}`,
-        thumb: `${basePath}/${wp.thumb}`,
+        path: `${basePath}/${wp.id}.png`,
+        thumb: `${basePath}/${wp.id}_thumb.png`,
     });
 };
 
@@ -39,25 +43,20 @@ const MODES = {
     randomPicture: 'random-picture'
 };
 
-const LOCAL_WP_DIR = 'wallpapers';
-
 const EMBEDDED_WALLPAPERS = [{
+    "id": 1,
     "name": "Default",
     "desc": "Dark mountain theme",
-    "path": `${LOCAL_WP_DIR}/1.jpg`,
-    "thumb": `${LOCAL_WP_DIR}/1_thumb.jpg`,
     "embedded": true
 }, {
+    "id": 2,
     "name": "Peak",
     "desc": "Apple peak theme",
-    "path": `${LOCAL_WP_DIR}/2.jpg`,
-    "thumb": `${LOCAL_WP_DIR}/2_thumb.jpg`,
     "embedded": true
 }, {
+    "id": 3,
     "name": "Bird's-eye view",
     "desc": "From a height",
-    "path": `${LOCAL_WP_DIR}/3.jpg`,
-    "thumb": `${LOCAL_WP_DIR}/3_thumb.jpg`,
     "embedded": true
 }].map(pathResolver.bind({}, EMBEDED_BASE_PATH));
 
@@ -114,15 +113,15 @@ class Wallpaper {
 
     _initFetchers() {
         this.configFetcher = new Fetcher({
-            url: CONFIG_URL,
-            ttl: CONFIG_TTL,
-            timeout: CONFIG_FETCH_TIMEOUT,
+            url: WP_CONFIG_URL,
+            ttl: WP_CONFIG_TTL,
+            timeout: WP_CONFIG_FETCH_TIMEOUT,
             noHttpCache: true
         });
         this.wpOfTheDayInfoFetcher = new Fetcher({
             url: WP_OF_THE_DAY_INFO,
             ttl: WP_OF_THE_DAY_INFO_TTL,
-            timeout: CONFIG_FETCH_TIMEOUT,
+            timeout: WP_CONFIG_FETCH_TIMEOUT,
             noHttpCache: true
         });
     }
@@ -280,7 +279,7 @@ class Wallpaper {
 
             const getEmbeddedSharePath = p => p.match(new RegExp(`/${LOCAL_WP_DIR}/(.+)`))[1];
             const sharePath = (embedded
-                ? `${STATIC_HOST}wp/${getEmbeddedSharePath(path)}`
+                ? `${WP_STATIC_HOST}wp/${getEmbeddedSharePath(path)}`
                 : path
             );
             this._initShare({sharePath, name, desc});
@@ -299,7 +298,7 @@ class Wallpaper {
     _loadRemoteWallpapers() {
         this.libraryReady = this.configFetcher.get().then(result => {
             const remoteLibrary = (result
-                ? result.list.map(pathResolver.bind({}, result .basePath))
+                ? result.map(pathResolver.bind({}, WP_STATIC_HOST))
                 : []
             );
             this.wallpapers = this.wallpapers.concat(remoteLibrary);
