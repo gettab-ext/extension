@@ -12,7 +12,8 @@ var dir_build = path.resolve(__dirname, 'build');
 module.exports = {
     entry: {
         main: path.resolve(dir_js, 'main.js'),
-        background: path.resolve(dir_js, 'background.js')
+        background: path.resolve(dir_js, 'background.js'),
+        head: path.resolve(dir_js, 'head.js'),
     },
     output: {
         path: dir_build,

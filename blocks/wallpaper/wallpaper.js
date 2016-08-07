@@ -341,7 +341,6 @@ class Wallpaper {
 
     resetWallpaper() {
         const wp = this.currentWallpaper;
-        console.log('this.currentWallpaper', this.currentWallpaper);
         this.setters[MODES.currentPicture](wp);
     }
 
