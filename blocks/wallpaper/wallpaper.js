@@ -70,8 +70,11 @@ const EMBEDDED_WALLPAPERS = [{
 export const DEFAULT_WALLPAPER = EMBEDDED_WALLPAPERS[0];
 const WP_CACHE_STORAGE_KEY = 'wallpaper_cache';
 
-export const wallpaperThumbTmpl = ({name, path, thumb, mod}) => (`
-    <div class="wallpaper-thumb wallpaper-thumb_mod_${mod}" data-name="${name}" data-original='${thumb}'">
+export const wallpaperThumbTmpl = ({name, path, thumb, mod, forceThumb}) => (`
+    <div class="wallpaper-thumb wallpaper-thumb_mod_${mod}" 
+         data-name="${name}"
+         data-original="${thumb}"
+         style="background-image: ${forceThumb ? ('url(' + thumb  + ')') : 'inherit'}">
         <!--<div class="wallpaper-thumb__fav">-->
             <!--<div class="icon icon-add-favorites"></div>-->
         <!--</div>-->
@@ -350,6 +353,7 @@ class Wallpaper {
     }
 
     setUserWallpaper() {
+        console.log('setUserWallpaper');
         this.setters[MODES.currentPicture]({
             userWallpaper: true
         });

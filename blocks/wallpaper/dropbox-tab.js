@@ -120,7 +120,8 @@ class DropboxTab {
         const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
         const userWallpaperThumb = wallpaperThumbTmpl({
             thumb: userWallpaperData,
-            mod: 'user'
+            mod: 'user',
+            forceThumb: true
         });
         this.$userThumbContainer.html(userWallpaperThumb);
 

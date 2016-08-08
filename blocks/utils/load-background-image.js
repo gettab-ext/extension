@@ -6,7 +6,7 @@ window.loaded = window.loaded || new Map();
 const loadBackgroundImage = function ({elem, url, loadedClass, preloadClass, cacheTTL}) {
     const storageKey = `image_cache_${url}`;
 
-    if (loaded.get(elem)) {
+    if (loaded.get(elem) === url) {
         return Promise.resolve();
     }
 
@@ -20,7 +20,7 @@ const loadBackgroundImage = function ({elem, url, loadedClass, preloadClass, cac
             loadedClass && elem.classList.add(loadedClass)
         });
 
-        loaded.set(elem, true);
+        loaded.set(elem, url);
     };
     const cacheImageData = () => {
         return toDataUrl(url).then(imageData => {
