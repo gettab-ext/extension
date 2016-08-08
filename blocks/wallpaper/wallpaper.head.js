@@ -18,6 +18,9 @@ class FastWallpaperLoader {
     constructor() {
         this.ready = settings.inited().then(() => {
             const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY);
+            if (!wallpaperData) {
+                return;
+            }
             if (wallpaperData.pictureOfTheDay) {
                 return this._render(WP_OF_THE_DAY_URL, true);
             } else if (wallpaperData.randomFromLibrary) {
