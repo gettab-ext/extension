@@ -1,11 +1,11 @@
-const headReady = new Promise(resolve => {
-    window.markHeadReady = () => resolve();
+import wallpaperLoader from '../blocks/wallpaper/wallpaper.head';
+
+const documentReady = new Promise(resolve => {
+    window.addEventListener('DOMContentLoaded', () => resolve());
 });
 
-headReady.then(() => {
+Promise.all([documentReady, wallpaperLoader.ready]).then(() => {
     Array.from(document.querySelectorAll("script.deferred")).forEach(elem => {
         elem.src = elem.getAttribute('data-src');
     });
 });
-
-import '../blocks/wallpaper/wallpaper.head';

@@ -5,6 +5,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+    will-change: opacity;
     transition: background-image 0.3s ease-out, -webkit-filter 0.3s ease-out, opacity 0.3s ease-out;
     background-size: cover;
     opacity: 0;

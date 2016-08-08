@@ -16,41 +16,30 @@ import loadBackgroundImage from '../utils/load-background-image';
 
 class FastWallpaperLoader {
     constructor() {
-        console.timeStamp('start');
-        settings.inited().then(() => {
-            console.timeStamp('settings inited');
+        this.ready = settings.inited().then(() => {
             const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY);
-            const bgElem = document.querySelector(".bodyBg");
             if (wallpaperData.pictureOfTheDay) {
-                return loadBackgroundImage({
-                    elem: bgElem,
-                    url: WP_OF_THE_DAY_URL,
-                    cacheTTL: WP_CACHE_TTL,
-                    preloadClass: 'bodyBg_state_loading',
-                    loadedClass: 'bodyBg_state_loaded'
-                });
+                return this._render(WP_OF_THE_DAY_URL, true);
             } else if (wallpaperData.randomFromLibrary) {
                 // pass, have to wait for remote data
             } else {
                 if (wallpaperData.userWallpaper) {
                     const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
-                    return loadBackgroundImage({
-                        elem: bgElem,
-                        url: userWallpaperData,
-                        loadedClass: 'bodyBg_state_loaded'
-                    });
+                    return this._render(userWallpaperData, false);
                 } else {
-                    return loadBackgroundImage({
-                        elem: bgElem,
-                        url: wallpaperData.path,
-                        cacheTTL: WP_CACHE_TTL,
-                        loadedClass: 'bodyBg_state_loaded'
-                    });
+                    return this._render(wallpaperData.path, true);
                 }
             }
         })
-        .then(() => {
-            window.markHeadReady();
+    }
+
+    _render(path, useCache) {
+        const bgElem = document.querySelector(".bodyBg");
+        return loadBackgroundImage({
+            elem: bgElem,
+            url: path,
+            cacheTTL: useCache && WP_CACHE_TTL,
+            loadedClass: 'bodyBg_state_loaded'
         });
     }
 }

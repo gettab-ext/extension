@@ -14,11 +14,11 @@ const loadBackgroundImage = function ({elem, url, loadedClass, preloadClass, cac
         preloadClass && elem.classList.add(preloadClass);
     };
     const render = (url) => {
-        console.timeStamp('render');
-        elem.style.backgroundImage = `url('${url}')`;
-
-        preloadClass && elem.classList.remove(preloadClass);
-        loadedClass && elem.classList.add(loadedClass);
+        requestAnimationFrame(() => {
+            elem.style.backgroundImage = `url('${url}')`;
+            preloadClass && elem.classList.remove(preloadClass);
+            loadedClass && elem.classList.add(loadedClass)
+        });
 
         loaded.set(elem, true);
     };
