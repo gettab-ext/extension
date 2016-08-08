@@ -272,6 +272,7 @@ class Wallpaper {
                 url: path,
                 preloadClass: 'bodyBg_state_loading',
                 loadedClass: 'bodyBg_state_loaded',
+                errorClass: 'bodyBg_state_error',
                 cacheTTL: (userWallpaper ? null : WP_CACHE_TTL)
             });
             this.renderedWallpaperPath = path;

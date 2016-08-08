@@ -3,10 +3,10 @@ import toDataUrl from './to-data-url';
 
 window.loaded = window.loaded || new Map();
 
-const loadBackgroundImage = function ({elem, url, loadedClass, preloadClass, cacheTTL}) {
+const loadBackgroundImage = function ({elem, url, loadedClass, preloadClass, errorClass, cacheTTL}) {
     const storageKey = `image_cache_${url}`;
 
-    if (loaded.get(elem) === url) {
+    if (loaded.get(elem) === storageKey) {
         return Promise.resolve();
     }
 
@@ -20,7 +20,7 @@ const loadBackgroundImage = function ({elem, url, loadedClass, preloadClass, cac
             loadedClass && elem.classList.add(loadedClass)
         });
 
-        loaded.set(elem, url);
+        loaded.set(elem, storageKey);
     };
     const cacheImageData = () => {
         return toDataUrl(url).then(imageData => {
@@ -37,6 +37,12 @@ const loadBackgroundImage = function ({elem, url, loadedClass, preloadClass, cac
             } else {
                 callback();
             }
+        };
+
+        img.onerror = () => {
+            preloadClass && elem.classList.remove(preloadClass);
+            errorClass && elem.classList.add(errorClass);
+            callback();
         };
 
         img.src = url;

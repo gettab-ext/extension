@@ -42,7 +42,8 @@ class FastWallpaperLoader {
             elem: bgElem,
             url: path,
             cacheTTL: useCache && WP_CACHE_TTL,
-            loadedClass: 'bodyBg_state_loaded'
+            loadedClass: 'bodyBg_state_loaded',
+            errorClass: 'bodyBg_state_error'
         });
     }
 }
