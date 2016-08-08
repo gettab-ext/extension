@@ -12,7 +12,7 @@
    "name": "GetTab New Tab",
    "short_name": "GetTab",
    "optional_permissions": [ "bookmarks", "management", "tabs", "topSites", "chrome://favicon/" ],
-   "permissions": [ "alarms", "nativeMessaging", "storage", "unlimitedStorage", "webRequest", "webRequestBlocking", "*://*.mystart.com/*", "*://*.gettab1.site/*"],
+   "permissions": [ "alarms", "nativeMessaging", "storage", "unlimitedStorage", "webRequest", "webRequestBlocking", "*://*.gettab.info/*"],
    "version": "0.0.1",
    "offline_enabled": true,
    "icons": {

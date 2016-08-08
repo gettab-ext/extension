@@ -1,5 +1,9 @@
 import settings from '../settings/settings';
-import wallpaper, {USER_WALLPAPER_STORAGE_KEY, wallpaperThumbTmpl} from './wallpaper';
+import wallpaper, {wallpaperThumbTmpl} from './wallpaper';
+
+import {
+    USER_WALLPAPER_STORAGE_KEY
+} from '../config/const';
 
 const ACCEPTED_TYPES = ['jpeg', 'png', 'bmp'];
 

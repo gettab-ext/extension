@@ -11,7 +11,6 @@ export const SETTING_KEYS = {
 class Settings {
     constructor() {
         this._inited = this._loadSettings();
-
     }
 
     _loadSettings() {

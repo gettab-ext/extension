@@ -4,6 +4,7 @@ import '../utils/perfect-scrollbar.css';
 import 'jquery-lazyload';
 
 import utils from '../utils/utils';
+import loadBackgroundImage from '../utils/load-background-image';
 import settings from '../settings/settings';
 import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
@@ -20,6 +21,12 @@ import {
     WP_OF_THE_DAY_INFO,
     WP_OF_THE_DAY_INFO_TTL
 } from '../config/config';
+
+import {
+    WALLPAPERS_STORAGE_KEY,
+    USER_WALLPAPER_STORAGE_KEY,
+    LOCAL_WP_DIR
+} from '../config/const';
 
 import './dropbox-tab';
 import './wallpaper.css';
@@ -60,9 +67,7 @@ const EMBEDDED_WALLPAPERS = [{
     "embedded": true
 }].map(pathResolver.bind({}, EMBEDED_BASE_PATH));
 
-const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
 export const DEFAULT_WALLPAPER = EMBEDDED_WALLPAPERS[0];
-export const USER_WALLPAPER_STORAGE_KEY = 'user_wallpaper_setting';
 const WP_CACHE_STORAGE_KEY = 'wallpaper_cache';
 
 export const wallpaperThumbTmpl = ({name, path, thumb, mod}) => (`
@@ -132,7 +137,6 @@ class Wallpaper {
                 if (!wallpaperData) {
                     wallpaperData = DEFAULT_WALLPAPER;
                 }
-
                 if (wallpaperData.userWallpaper) {
                     settings.set(WALLPAPERS_STORAGE_KEY, {
                         userWallpaper: true
@@ -256,13 +260,12 @@ class Wallpaper {
             this._renderWallpaper(randomWallpaper);
             this.currentWallpaper = randomWallpaper;
         });
-
     }
 
     _renderWallpaper({path, name, desc, embedded, userWallpaper} = {}) {
         if (path && this.renderedWallpaperPath !== path) {
-            utils.loadBackgroundImage({
-                $elem: this.$wallpaperContainer,
+            loadBackgroundImage({
+                elem: this.$wallpaperContainer.get(0),
                 url: path,
                 preloadClass: 'bodyBg_state_loading',
                 loadedClass: 'bodyBg_state_loaded',
