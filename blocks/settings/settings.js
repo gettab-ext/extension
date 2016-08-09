@@ -1,4 +1,4 @@
-const STORAGE_KEY = "userSettings";
+import {SETTINGS_STORAGE_KEY} from '../config/const';
 
 const DEFAULT_SETTINGS = {
     'search_engine': 'yahoo'
@@ -15,8 +15,8 @@ class Settings {
 
     _loadSettings() {
         return new Promise(resolve => {
-            chrome.storage.local.get(STORAGE_KEY, items => {
-                this._settings = Object.assign(DEFAULT_SETTINGS, items[STORAGE_KEY]);
+            chrome.storage.local.get(SETTINGS_STORAGE_KEY, items => {
+                this._settings = Object.assign(DEFAULT_SETTINGS, items[SETTINGS_STORAGE_KEY]);
                 resolve();
             });
         });
@@ -27,7 +27,7 @@ class Settings {
 
         return new Promise(resolve => {
             chrome.storage.local.set({
-                [STORAGE_KEY]: this._settings
+                [SETTINGS_STORAGE_KEY]: this._settings
             }, () => resolve());
         });
     }

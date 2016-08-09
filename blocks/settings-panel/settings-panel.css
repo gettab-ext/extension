@@ -95,6 +95,11 @@
         }
     }
 
+    &_mod_sub {
+        border-top: none;
+        color: rgba(255,255,255,0.8);
+    }
+
     &_item_ {
         &search ^&__icon:before {
             @mixin icon_search;

@@ -1,11 +1,15 @@
 import settings from '../settings/settings';
 import _ from 'lodash';
 import stat from '../utils/stat';
+import {BLOCK_SETTINGS_STORAGE_KEY} from '../config/const';
 
 import './page.css';
 
 const BLOCKS_DEFAULT = {
     'search': {
+        visible: true
+    },
+    'autofocus': {
         visible: true
     },
     'most-visited': {
@@ -42,8 +46,6 @@ export const EVENTS = {
     modalShow: 'modal_show',
     hideModals: 'hide_modals'
 };
-
-const BLOCK_SETTINGS_STORAGE_KEY = 'blockSettings';
 
 class Page {
     constructor() {

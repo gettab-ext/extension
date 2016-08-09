@@ -354,7 +354,6 @@ class Wallpaper {
     }
 
     setUserWallpaper() {
-        console.log('setUserWallpaper');
         this.setters[MODES.currentPicture]({
             userWallpaper: true
         });

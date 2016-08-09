@@ -11,7 +11,6 @@ export const WP_OF_THE_DAY_URL = `${WP_STATIC_HOST}/wp.png`;
 export const WP_OF_THE_DAY_INFO = `${API}/wp-info.json`;
 export const WP_OF_THE_DAY_INFO_TTL = 12 * 60 * 60 * 1000;
 
-export const AUTOFOCUS = true;
 export const USE_MYSTART_WEATHER_DATA = false;
 export const USE_CLIENT_WEATHER_FETCH = true;
 

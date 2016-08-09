@@ -1,8 +1,24 @@
-import {AUTOFOCUS} from '../config/config';
+import {BLOCK_SETTINGS_STORAGE_KEY} from '../config/const';
+import settings from '../settings/settings';
+import _ from 'lodash';
+
+let autofocus;
 
 const initAutofocus = () => {
+
+    settings.inited().then(() => {
+        const autofocusSetting = settings.get(BLOCK_SETTINGS_STORAGE_KEY).autofocus;
+        autofocus = autofocusSetting && autofocusSetting.visible;
+    });
+
+    chrome.storage.onChanged.addListener((changes, area) => {
+        if (area === 'local' && changes.userSettings) {
+            autofocus = !!_.get(changes, 'userSettings.newValue.blockSettings.autofocus.visible');
+        }
+    });
+
     chrome.tabs.onCreated.addListener(function(t) {
-        if (AUTOFOCUS) {
+        if (autofocus) {
             var id = t.id;
             if (t.url && t.url == 'chrome://newtab/') {
                 chrome.tabs.remove(id);
