@@ -8,10 +8,10 @@ import './page.css';
 
 const BLOCKS_DEFAULT = {
     'search': {
-        visible: DEFAULT_AUTOFOCUS
+        visible: true
     },
     'autofocus': {
-        visible: true
+        visible: DEFAULT_AUTOFOCUS
     },
     'most-visited': {
         visible: true
