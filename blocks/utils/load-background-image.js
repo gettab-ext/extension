@@ -25,9 +25,12 @@ const loadBackgroundImage = function ({elem, url, loadedClass, preloadClass, err
     const cacheImageData = () => {
         return toDataUrl(url).then(imageData => {
             return storage.set(storageKey, imageData, cacheTTL);
+        }).catch(e => {
+            console.warn(e);
         });
     };
     const loadRemote = (url, callback) => {
+
         const img = new Image();
 
         img.onload = () => {

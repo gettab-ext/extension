@@ -2,13 +2,13 @@ import {BLOCK_SETTINGS_STORAGE_KEY} from '../config/const';
 import settings from '../settings/settings';
 import _ from 'lodash';
 
-let autofocus;
+let autofocus = true;
 
 const initAutofocus = () => {
 
     settings.inited().then(() => {
-        const autofocusSetting = settings.get(BLOCK_SETTINGS_STORAGE_KEY).autofocus;
-        autofocus = autofocusSetting && autofocusSetting.visible;
+        const blockSettings = settings.get(BLOCK_SETTINGS_STORAGE_KEY);
+        autofocus = !blockSettings || blockSettings.autofocus.visible;
     });
 
     chrome.storage.onChanged.addListener((changes, area) => {

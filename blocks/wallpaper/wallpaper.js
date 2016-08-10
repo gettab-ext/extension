@@ -39,8 +39,8 @@ const EMBEDED_BASE_PATH = './wallpapers/';
 
 const pathResolver = function(basePath, wp) {
     return Object.assign(wp, {
-        path: `${basePath}/${wp.id}.png`,
-        thumb: `${basePath}/${wp.id}_thumb.png`,
+        path: `${basePath}/${wp.filename}`,
+        thumb: `${basePath}/${wp.thumb_filename}`,
     });
 };
 
@@ -51,17 +51,20 @@ const MODES = {
 };
 
 const EMBEDDED_WALLPAPERS = [{
-    "id": 1,
+    "filename": '1.png',
+    "thumb_filename": '1_thumb.png',
     "name": "Default",
     "desc": "Dark mountain theme",
     "embedded": true
 }, {
-    "id": 2,
+    "filename": '2.png',
+    "thumb_filename": '2_thumb.png',
     "name": "Peak",
     "desc": "Apple peak theme",
     "embedded": true
 }, {
-    "id": 3,
+    "filename": '3.png',
+    "thumb_filename": '3_thumb.png',
     "name": "Bird's-eye view",
     "desc": "From a height",
     "embedded": true
@@ -70,9 +73,9 @@ const EMBEDDED_WALLPAPERS = [{
 export const DEFAULT_WALLPAPER = EMBEDDED_WALLPAPERS[0];
 const WP_CACHE_STORAGE_KEY = 'wallpaper_cache';
 
-export const wallpaperThumbTmpl = ({name, path, thumb, mod, forceThumb}) => (`
+export const wallpaperThumbTmpl = ({filename, path, thumb, mod, forceThumb}) => (`
     <div class="wallpaper-thumb wallpaper-thumb_mod_${mod}" 
-         data-name="${name}"
+         data-name="${filename}"
          data-original="${thumb}"
          style="background-image: ${forceThumb ? ('url(' + thumb  + ')') : 'inherit'}">
         <!--<div class="wallpaper-thumb__fav">-->
@@ -342,9 +345,9 @@ class Wallpaper {
         });
     }
 
-    _getWpData(wallpaperName) {
+    _getWpData(filename) {
         return _.find(this.wallpapers, {
-            name: wallpaperName
+            filename: filename
         });
     }
 

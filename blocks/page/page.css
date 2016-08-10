@@ -18,6 +18,19 @@ html {
     display: none !important;
 }
 
+.page {
+    &_not-inited {
+        [data-block] {
+            opacity: 0;
+        }
+    }
+    &_inited {
+        [data-block] {
+            opacity: 1;
+        }
+    }
+}
+
 .page-content {
     opacity: 1;
     transition: opacity 0.3s ease-out, visibility 0.3s ease-out;

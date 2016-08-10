@@ -96,7 +96,7 @@ class Page {
     setInited() {
         this._inited.then(() => {
             $(".top-right").addClass('top-right_inited');
-            $(".page").addClass('page_inited');
+            $(".page").removeClass('page_not-inited').addClass('page_inited');
         });
     }
 
