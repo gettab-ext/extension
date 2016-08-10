@@ -179,3 +179,7 @@
         font-family: montserratregular, sans-serif;
     }
 }
+
+.settings-item_item_music {
+    display: none;
+}

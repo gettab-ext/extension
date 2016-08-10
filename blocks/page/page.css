@@ -131,6 +131,10 @@ html {
     @mixin icon_todo;
 }
 
+#open-music {
+    display: none;
+}
+
 #open-music:before {
     @mixin icon_music;
 }
