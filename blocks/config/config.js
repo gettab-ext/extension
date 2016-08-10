@@ -14,4 +14,6 @@ export const WP_OF_THE_DAY_INFO_TTL = 12 * 60 * 60 * 1000;
 export const USE_MYSTART_WEATHER_DATA = false;
 export const USE_CLIENT_WEATHER_FETCH = true;
 
+export const DEFAULT_AUTOFOCUS = true;
+
 export const WEATHER_DATA_TTL = 20 * 1000;

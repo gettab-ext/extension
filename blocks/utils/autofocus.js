@@ -1,8 +1,9 @@
 import {BLOCK_SETTINGS_STORAGE_KEY} from '../config/const';
+import {DEFAULT_AUTOFOCUS} from '../config/config';
 import settings from '../settings/settings';
 import _ from 'lodash';
 
-let autofocus = true;
+let autofocus = DEFAULT_AUTOFOCUS;
 
 const initAutofocus = () => {
 

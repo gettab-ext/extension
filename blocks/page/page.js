@@ -2,12 +2,13 @@ import settings from '../settings/settings';
 import _ from 'lodash';
 import stat from '../utils/stat';
 import {BLOCK_SETTINGS_STORAGE_KEY} from '../config/const';
+import {DEFAULT_AUTOFOCUS} from '../config/config';
 
 import './page.css';
 
 const BLOCKS_DEFAULT = {
     'search': {
-        visible: true
+        visible: DEFAULT_AUTOFOCUS
     },
     'autofocus': {
         visible: true
