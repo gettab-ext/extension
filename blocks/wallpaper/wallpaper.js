@@ -25,8 +25,14 @@ import {
 import {
     WALLPAPERS_STORAGE_KEY,
     USER_WALLPAPER_STORAGE_KEY,
-    LOCAL_WP_DIR
+    LOCAL_WP_DIR,
+    WP_CACHE_STORAGE_KEY
 } from '../config/const';
+
+import {
+    EMBEDDED_WALLPAPERS,
+    DEFAULT_WALLPAPER
+} from './wallpaper.data';
 
 import './dropbox-tab';
 import './wallpaper.css';
@@ -34,8 +40,6 @@ import './bg.css';
 import './dropbox-tab.css';
 import './settings-tab.css';
 import './wallpaper-info.css';
-
-const EMBEDED_BASE_PATH = './wallpapers/';
 
 const pathResolver = function(basePath, wp) {
     return Object.assign(wp, {
@@ -49,29 +53,6 @@ const MODES = {
     pictureOfTheDay: 'picture-of-the-day',
     randomPicture: 'random-picture'
 };
-
-const EMBEDDED_WALLPAPERS = [{
-    "filename": '1.png',
-    "thumb_filename": '1_thumb.png',
-    "name": "Default",
-    "desc": "Dark mountain theme",
-    "embedded": true
-}, {
-    "filename": '2.png',
-    "thumb_filename": '2_thumb.png',
-    "name": "Peak",
-    "desc": "Apple peak theme",
-    "embedded": true
-}, {
-    "filename": '3.png',
-    "thumb_filename": '3_thumb.png',
-    "name": "Bird's-eye view",
-    "desc": "From a height",
-    "embedded": true
-}].map(pathResolver.bind({}, EMBEDED_BASE_PATH));
-
-export const DEFAULT_WALLPAPER = EMBEDDED_WALLPAPERS[0];
-const WP_CACHE_STORAGE_KEY = 'wallpaper_cache';
 
 export const wallpaperThumbTmpl = ({filename, path, thumb, mod, forceThumb}) => (`
     <div class="wallpaper-thumb wallpaper-thumb_mod_${mod}" 
@@ -276,7 +257,8 @@ class Wallpaper {
                 preloadClass: 'bodyBg_state_loading',
                 loadedClass: 'bodyBg_state_loaded',
                 errorClass: 'bodyBg_state_error',
-                cacheTTL: (userWallpaper ? null : WP_CACHE_TTL)
+                cacheTTL: (userWallpaper ? null : WP_CACHE_TTL),
+                key: WP_CACHE_STORAGE_KEY
             });
             this.renderedWallpaperPath = path;
         }

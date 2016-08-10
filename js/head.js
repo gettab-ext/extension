@@ -5,6 +5,7 @@ const documentReady = new Promise(resolve => {
 });
 
 Promise.all([documentReady, wallpaperLoader.ready]).then(() => {
+    console.timeStamp('deffered load');
     Array.from(document.querySelectorAll("script.deferred")).forEach(elem => {
         elem.src = elem.getAttribute('data-src');
     });

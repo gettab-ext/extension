@@ -8,7 +8,9 @@ const initAutofocus = () => {
 
     settings.inited().then(() => {
         const blockSettings = settings.get(BLOCK_SETTINGS_STORAGE_KEY);
-        autofocus = !blockSettings || blockSettings.autofocus.visible;
+        if (blockSettings) {
+            autofocus = blockSettings.autofocus.visible;
+        }
     });
 
     chrome.storage.onChanged.addListener((changes, area) => {

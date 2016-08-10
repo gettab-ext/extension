@@ -7,7 +7,8 @@ class GeoDataFetcher {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: GEO_DATA_URL,
-                success: data => resolve(data)
+                success: data => resolve(data),
+                error: () => reject()
             });
         });
     }

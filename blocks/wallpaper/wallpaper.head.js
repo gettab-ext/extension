@@ -8,17 +8,32 @@ import {
 } from '../config/config';
 
 import {
-    USER_WALLPAPER_STORAGE_KEY
+    DEFAULT_WALLPAPER
+} from './wallpaper.data';
+
+import {
+    USER_WALLPAPER_STORAGE_KEY,
+    WP_CACHE_STORAGE_KEY
 } from '../config/const';
 
 import settings from '../settings/settings';
 import loadBackgroundImage from '../utils/load-background-image';
 
+const wait = (timeout) => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            console.timeStamp('waited');
+            resolve();
+        }, timeout)
+    })
+};
+
 class FastWallpaperLoader {
     constructor() {
-        this.ready = settings.inited().then(() => {
-            const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY);
+        this.ready = Promise.race([wait(500), settings.inited().then(() => {
+            const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
             if (!wallpaperData) {
+                console.log('no wallpaperData');
                 return;
             }
             if (wallpaperData.pictureOfTheDay) {
@@ -33,7 +48,7 @@ class FastWallpaperLoader {
                     return this._render(wallpaperData.path, true);
                 }
             }
-        })
+        })]);
     }
 
     _render(path, useCache) {
@@ -43,7 +58,8 @@ class FastWallpaperLoader {
             url: path,
             cacheTTL: useCache && WP_CACHE_TTL,
             loadedClass: 'bodyBg_state_loaded',
-            errorClass: 'bodyBg_state_error'
+            errorClass: 'bodyBg_state_error',
+            key: WP_CACHE_STORAGE_KEY
         });
     }
 }

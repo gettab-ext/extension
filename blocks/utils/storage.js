@@ -55,6 +55,10 @@ class Storage {
         });
     }
 
+    _clean() {
+
+    }
+
 }
 
 const storage = new Storage();

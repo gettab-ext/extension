@@ -1,9 +1,9 @@
-export const API = 'http://gettab.info/api';
+export const API = 'http://77.246.159.213/api';
 export const CONFIG_URL = 'http://gettab.info/config';
 export const SITE_URL = 'http://gettab.info/';
 
-export const WP_STATIC_HOST = 'https://1381009407.rsc.cdn77.org/';
-export const WP_CONFIG_URL = `${CONFIG_URL}/wp.json`;
+export const WP_STATIC_HOST = 'http://77.246.159.213/wp';
+export const WP_CONFIG_URL = `${API}/wp.json`;
 export const WP_CONFIG_TTL = 10 * 1000;
 export const WP_CACHE_TTL = 12 * 60 * 60 * 1000;
 export const WP_CONFIG_FETCH_TIMEOUT = 5000;

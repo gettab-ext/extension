@@ -13,11 +13,12 @@ class WeatherDataFetcher {
             &q=select * from weather.forecast where woeid in (select woeid from geo.places(1) where text="${location}") and u="${units}"
         `);
 
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             $.ajax(url, {
                 success: data => {
                     resolve(this._parseData(data));
-                }
+                },
+                error: () => reject()
             });
         });
     }
