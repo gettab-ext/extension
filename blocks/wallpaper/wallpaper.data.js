@@ -1,4 +1,4 @@
-const pathResolver = function(basePath, wp) {
+export const pathResolver = function(basePath, wp) {
     return Object.assign(wp, {
         path: `${basePath}/${wp.filename}`,
         thumb: `${basePath}/${wp.thumb_filename}`,

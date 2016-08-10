@@ -4,11 +4,13 @@ import '../utils/perfect-scrollbar.css';
 import 'jquery-lazyload';
 
 import utils from '../utils/utils';
+import storage from '../utils/storage';
 import loadBackgroundImage from '../utils/load-background-image';
 import settings from '../settings/settings';
 import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
+import toDataUrl from '../utils/to-data-url';
 
 import {
     WP_STATIC_HOST,
@@ -26,12 +28,15 @@ import {
     WALLPAPERS_STORAGE_KEY,
     USER_WALLPAPER_STORAGE_KEY,
     LOCAL_WP_DIR,
-    WP_CACHE_STORAGE_KEY
+    WP_CACHE_STORAGE_KEY,
+    NEXT_WP_STORAGE_KEY,
+    RANDOM_WP_RENDERED
 } from '../config/const';
 
 import {
     EMBEDDED_WALLPAPERS,
-    DEFAULT_WALLPAPER
+    DEFAULT_WALLPAPER,
+    pathResolver
 } from './wallpaper.data';
 
 import './dropbox-tab';
@@ -40,13 +45,6 @@ import './bg.css';
 import './dropbox-tab.css';
 import './settings-tab.css';
 import './wallpaper-info.css';
-
-const pathResolver = function(basePath, wp) {
-    return Object.assign(wp, {
-        path: `${basePath}/${wp.filename}`,
-        thumb: `${basePath}/${wp.thumb_filename}`,
-    });
-};
 
 const MODES = {
     currentPicture: 'current-picture',
@@ -243,14 +241,27 @@ class Wallpaper {
 
     _loadRandomWallpaper() {
         this.libraryReady.then(() => {
-            const randomWallpaper = _.sample(this.wallpapers);
-            this._renderWallpaper(randomWallpaper);
-            this.currentWallpaper = randomWallpaper;
+            const randomWallpapers = _.sampleSize(this.wallpapers, 2);
+            if (!window[RANDOM_WP_RENDERED]) {
+                this._renderWallpaper(randomWallpapers[0]);
+            } else {
+                this._renderWallpaper(window[RANDOM_WP_RENDERED], true);
+            }
+
+            this.currentWallpaper = randomWallpapers[0];
+            this._preloadWallpaper(randomWallpapers[1]);
+
         });
     }
 
-    _renderWallpaper({path, name, desc, embedded, userWallpaper} = {}) {
-        if (path && this.renderedWallpaperPath !== path) {
+    _preloadWallpaper(wallpaperData) {
+        toDataUrl(wallpaperData.path).then(dataUrl => {
+            storage.set(NEXT_WP_STORAGE_KEY, Object.assign(wallpaperData, {dataUrl}));
+        });
+    }
+
+    _renderWallpaper({path, name, desc, embedded, userWallpaper} = {}, passImageRender = false) {
+        if (path && this.renderedWallpaperPath !== path && !passImageRender) {
             loadBackgroundImage({
                 elem: this.$wallpaperContainer.get(0),
                 url: path,
@@ -307,17 +318,17 @@ class Wallpaper {
         this.setters[MODES.currentPicture](wallpaperData);
     }
 
-    _initShare({path, name, desc}) {
+    _initShare({sharePath, name, desc}) {
         if (this.share) {
             this.share.destroy();
         }
 
         this.share = Ya.share2('wallpaper-share', {
             content: {
-                url: `${SITE_URL}?wp=${encodeURIComponent(path)}&desc=${encodeURIComponent(desc)}`,
+                url: `${SITE_URL}?wp=${encodeURIComponent(sharePath)}&desc=${encodeURIComponent(desc)}`,
                 title: 'GetTab Extension',
                 description: `${name}`,
-                image: path
+                image: sharePath
             },
             theme: {
                 bare: true,
