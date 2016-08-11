@@ -1,4 +1,5 @@
 export const WEATHER_STORAGE_KEY = 'weather_data_storage';
+export const WEATHER_UNITS_KEY = 'weather_settings_key';
 
 export const WALLPAPERS_STORAGE_KEY = 'wallpaper_settings';
 export const USER_WALLPAPER_STORAGE_KEY = 'user_wallpaper_setting';

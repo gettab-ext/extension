@@ -4,12 +4,17 @@ import './weather-widget.css';
 import page, {EVENTS} from '../page/page';
 import transport from '../transport/transport';
 import storage from '../utils/storage';
-import {WEATHER_STORAGE_KEY} from '../config/const';
+import settings from '../settings/settings';
+import {WEATHER_STORAGE_KEY, WEATHER_UNITS_KEY} from '../config/const';
 
 const FORECAST_DAYS = 5;
+const DEFAULT_UNITS = "c";
 
 const ICON_FONT = [
-    ":", "p", "S", "Q", "S", "W", "W", "W", "W", "I", "W", "I", "I", "I", "I", "W", "I", "W", "U", "Z", "Z", "Z", "Z", "Z", "E", "E", "3", "a", "A", "a", "A", "6", "1", "6", "1", "W", "1", "S", "S", "S", "M", "W", "I", "W", "a", "S", "U", "S"
+    ":", "p", "S", "Q", "S", "W", "W", "W", "W", "I", "W", "I", "I",
+    "I", "I", "W", "I", "W", "U", "Z", "Z", "Z", "Z", "Z", "E", "E",
+    "3", "a", "A", "a", "A", "6", "1", "6", "1", "W", "1", "S", "S",
+    "S", "M", "W", "I", "W", "a", "S", "U", "S"
 ];
 
 const monthNames = [
@@ -62,12 +67,20 @@ class Weather {
                 transport.requestData(WEATHER_STORAGE_KEY).then(data => this._processData(data));
             }
         });
+
+        settings.inited().then(() => {
+            this.units = settings.get(WEATHER_UNITS_KEY) || DEFAULT_UNITS;
+        });
     }
 
     _bindEvents() {
         this.$widget.on('click', () => this._showPopup());
         $(".weather-box__close").on('click', () => this._hidePopup());
         page.bindPopupHide('.weather-box__forecast, .weather-widget', () => this._hidePopup());
+        $(".weather-box__unit-button").on('click', e => {
+            const units = $(e.currentTarget).data('units');
+            this._setUnits(units);
+        });
     }
 
     _startTick() {
@@ -86,6 +99,8 @@ class Weather {
     }
 
     _processData(data) {
+        this.data = data;
+
         this.latitude = data.location.latitude;
         this.longitude = data.location.longitude;
 
@@ -153,12 +168,13 @@ class Weather {
         this.$widget.addClass('weather-widget_inited');
     }
 
-    _getData() {
-
-    }
-
     _getConvertedTemp(temp, short) {
-        return `${Math.round(parseFloat(temp))}°${short ? '' : 'C'}`;
+        const t = (this.units === 'f'
+            ? Math.round((9.0/5.0)*temp+32.0)
+            : Math.round(parseFloat(temp))
+        );
+
+        return `${t}°${short ? '' : this.units.toUpperCase()}`;
     }
 
     _getDate() {
@@ -187,6 +203,11 @@ class Weather {
         return ICON_FONT[code];
     }
 
+    _setUnits(units) {
+        this.units = units;
+        this._processData(this.data);
+        settings.set(WEATHER_UNITS_KEY, units);
+    }
 
 }
 
