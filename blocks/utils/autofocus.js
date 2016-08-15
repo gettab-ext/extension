@@ -24,10 +24,10 @@ const initAutofocus = () => {
         if (autofocus) {
             var id = t.id;
             if (t.url && t.url == 'chrome://newtab/') {
-                chrome.tabs.remove(id);
                 chrome.tabs.create({
                     url: chrome.extension.getURL("index.html") + '?r=1'
                 });
+                chrome.tabs.remove(id);
             }
         }
     });
