@@ -154,9 +154,6 @@ class Weather {
     }
 
     _setWidgetWeatherIcon(iconCode) {
-        this.$icon.css({
-            'background-image': `url('../images/weather/${iconCode}.png`
-        });
         this.$icon.text(this._convertCodeToIconFont(iconCode));
     }
 
