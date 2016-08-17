@@ -177,6 +177,14 @@
         margin-right: 16px;
         color: rgba(255,255,255,0.5) !important;
         font-family: montserratregular, sans-serif;
+        font-size: 13px;
+        text-decoration: none !important;
+        transition: color 0.1s ease-out;
+
+        &:hover {
+            color: rgba(255,255,255,0.9) !important;
+        }
+
     }
 }
 
