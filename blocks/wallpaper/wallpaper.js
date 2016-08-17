@@ -120,7 +120,7 @@ class Wallpaper {
         this.setters = utils.bindMethodMap(this, {
             [MODES.currentPicture](wallpaperData) {
                 if (!wallpaperData) {
-                    wallpaperData = DEFAULT_WALLPAPER;
+                    wallpaperData = this.currentWallpaper || DEFAULT_WALLPAPER;
                 }
                 if (wallpaperData.userWallpaper) {
                     settings.set(WALLPAPERS_STORAGE_KEY, {
@@ -141,6 +141,7 @@ class Wallpaper {
                 settings.set(WALLPAPERS_STORAGE_KEY, {
                     randomFromLibrary: true
                 });
+                window[RANDOM_WP_RENDERED] = null;
                 this.loaders[MODES.randomPicture]();
             }
         });
@@ -242,15 +243,16 @@ class Wallpaper {
     _loadRandomWallpaper() {
         this.libraryReady.then(() => {
             const randomWallpapers = _.sampleSize(this.wallpapers, 2);
+
             if (!window[RANDOM_WP_RENDERED]) {
                 this._renderWallpaper(randomWallpapers[0]);
+                this.currentWallpaper = randomWallpapers[0];
             } else {
                 this._renderWallpaper(window[RANDOM_WP_RENDERED], true);
+                this.currentWallpaper = window[RANDOM_WP_RENDERED];
             }
 
-            this.currentWallpaper = randomWallpapers[0];
             this._preloadWallpaper(randomWallpapers[1]);
-
         });
     }
 
