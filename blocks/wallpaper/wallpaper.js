@@ -11,6 +11,7 @@ import page, {EVENTS} from '../page/page';
 import dropboxTab from './dropbox-tab';
 import Fetcher from '../utils/fetcher';
 import toDataUrl from '../utils/to-data-url';
+import stat from '../utils/stat';
 
 import {
     WP_STATIC_HOST,
@@ -151,15 +152,18 @@ class Wallpaper {
         this.loaders = utils.bindMethodMap(this, {
             [MODES.currentPicture](wallpaperData) {
                 if (wallpaperData.userWallpaper) {
+                    stat.send('wallpaper.user');
                     const userWallpaperData = settings.get(USER_WALLPAPER_STORAGE_KEY);
                     this._renderWallpaper({path: userWallpaperData, userWallpaper: true});
                 } else {
+                    stat.send('wallpaper.one');
                     this.currentWallpaper = wallpaperData;
                     this._renderWallpaper(wallpaperData);
                 }
                 setOptionActive(this.$settingOptions.currentImage);
             },
             [MODES.pictureOfTheDay]() {
+                stat.send('wallpaper.picture_of_the_day');
                 this._renderWallpaper({path: WP_OF_THE_DAY_URL});
                 this.wpOfTheDayInfoFetcher.get().then(info => {
                     this._renderWallpaper(Object.assign(info, {path: WP_OF_THE_DAY_URL}));
@@ -167,6 +171,7 @@ class Wallpaper {
                 setOptionActive(this.$settingOptions.pictureOfTheDay);
             },
             [MODES.randomPicture]() {
+                stat.send('wallpaper.random');
                 this._loadRandomWallpaper();
                 setOptionActive(this.$settingOptions.random);
             }
