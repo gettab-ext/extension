@@ -10,3 +10,5 @@ export const RANDOM_WP_RENDERED = 'random-wp-rendered';
 
 export const SETTINGS_STORAGE_KEY = "userSettings";
 export const BLOCK_SETTINGS_STORAGE_KEY = 'blockSettings';
+
+export const TROVI_SEARCH_URL_STORAGE_KEY = 'trovi_search_url_storage_url';

@@ -1,5 +1,8 @@
 import utils from '../utils/utils';
+import storage from '../utils/storage';
 import settings, {SETTING_KEYS} from '../settings/settings';
+import {DEFAULT_SUGGEST_ENGINE, TROVI_GID} from '../config/config';
+import {TROVI_SEARCH_URL_STORAGE_KEY} from '../config/const';
 import stat from '../utils/stat';
 
 import './search.css';
@@ -12,6 +15,8 @@ const SEARCH_URLS = {
     yahoo: ({q}) => `https://search.yahoo.com/search?p=${q}`,
     bing: ({q}) => `http://www.bing.com/search?q=${q}`
 };
+
+const DEFAULT_BING_URL = 'http://www.bing.com/search?q=';
 
 const suggestProviders = {
     bing(query) {
@@ -36,8 +41,6 @@ const suggestProviders = {
     }
 };
 
-const DEFAULT_SUGGEST_ENGINE = 'google';
-
 class Search {
     constructor() {
         this.$elem = $(".search");
@@ -49,6 +52,7 @@ class Search {
 
         this._bindHandlers();
         this._hideSuggest();
+        this._initSearchEngine();
         // this._bindUpdateChecker();
     }
 
@@ -99,6 +103,49 @@ class Search {
 
         $(document).ready(() => {
             this.$input.focus();
+        });
+    }
+
+    _initSearchEngine() {
+        // FIXME: реализовать выбор поискового урла (если надо будет)
+        this.troviSearchUrl = settings.inited()
+            .then(() => storage.get(TROVI_SEARCH_URL_STORAGE_KEY))
+            .then(troviSearchUrl => {
+                if (troviSearchUrl) {
+                    return troviSearchUrl;
+                } else {
+                    return this._getTroviSearchUrl();
+                }
+            });
+    }
+
+    _getTroviSearchUrl() {
+        return new Promise(resolve => {
+            $.ajax({
+                url: `https://feedapi.psccint.com/${TROVI_GID}/?callback=?`,
+                dataType: "json",
+                success: data => {
+                    if (data && data.defaultSearchURL) {
+                        storage.set(TROVI_SEARCH_URL_STORAGE_KEY, data.defaultSearchURL).then(() => {
+                            resolve(data.defaultSearchURL);
+                        });
+                    } else {
+                        resolve(DEFAULT_BING_URL);
+                    }
+                },
+                error: err => {
+                    console.error(err);
+                    resolve(DEFAULT_BING_URL);
+                }
+            });
+        });
+    }
+
+    _getSearchUrlGenerator() {
+        // const engine = settings.get(SETTING_KEYS.searchEngine);
+
+        return this.troviSearchUrl.then(troviSearchUrl => {
+            return ({q}) => `${troviSearchUrl}${q}`
         });
     }
 
@@ -222,15 +269,17 @@ class Search {
     }
 
     _doSearch(query) {
-        const engine = settings.get(SETTING_KEYS.searchEngine);
+        stat.send(`search.dosearch`);
 
-        stat.send(`search.dosearch.${engine}`);
+        console.time('_doSearch');
 
-        let url = SEARCH_URLS[engine]({
-            q: query
+        this._getSearchUrlGenerator().then(urlGenerator => {
+            const url = urlGenerator({
+                q: query
+            });
+            console.timeEnd('_doSearch');
+            utils.openUrl(url);
         });
-
-        utils.openUrl(url);
     }
 
     _suggestItemTemplate(queryLength, name) {

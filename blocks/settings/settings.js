@@ -1,7 +1,8 @@
 import {SETTINGS_STORAGE_KEY} from '../config/const';
+import {DEFAULT_SEARCH_ENGINE} from '../config/config';
 
 const DEFAULT_SETTINGS = {
-    'search_engine': 'yahoo'
+    'search_engine': DEFAULT_SEARCH_ENGINE
 };
 
 export const SETTING_KEYS = {
