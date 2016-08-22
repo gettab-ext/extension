@@ -15,7 +15,7 @@ export const USE_MYSTART_WEATHER_DATA = false;
 export const USE_CLIENT_WEATHER_FETCH = true;
 
 export const DEFAULT_AUTOFOCUS = true;
-export const DEFAULT_SUGGEST_ENGINE = 'bing';
+export const DEFAULT_SUGGEST_ENGINE = 'google';
 export const DEFAULT_SEARCH_ENGINE = 'bing';
 export const TROVI_GID = 'SY1000651';
 
