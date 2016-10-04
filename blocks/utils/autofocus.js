@@ -4,6 +4,7 @@ import settings from '../settings/settings';
 import _ from 'lodash';
 
 let autofocus = DEFAULT_AUTOFOCUS;
+const newTabUrl = 'chrome://newtab/';
 
 const initAutofocus = () => {
 
@@ -20,17 +21,23 @@ const initAutofocus = () => {
         }
     });
 
-    chrome.tabs.onCreated.addListener(function(t) {
-        if (autofocus) {
-            var id = t.id;
-            if (t.url && t.url == 'chrome://newtab/') {
-                chrome.tabs.create({
-                    url: chrome.extension.getURL("index.html") + '?r=1'
-                });
-                chrome.tabs.remove(id);
-            }
+    const openNewTab = () => {
+        chrome.tabs.create({
+            url: chrome.extension.getURL("index.html") + '?r=1'
+        });
+    };
+
+    const onTabOpen = (t) => {
+        const id = t.id;
+        if (autofocus && t.url && t.url == newTabUrl) {
+            openNewTab();
+            chrome.tabs.remove(id);
         }
-    });
+    };
+
+    chrome.tabs.onCreated.addListener(onTabOpen);
+    chrome.tabs.query({url: newTabUrl}, tabs => tabs.forEach(tab => onTabOpen(tab)));
+
 };
 
 export default initAutofocus;
