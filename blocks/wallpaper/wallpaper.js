@@ -138,12 +138,12 @@ class Wallpaper {
                 });
                 this.loaders[MODES.pictureOfTheDay]();
             },
-            [MODES.randomPicture]() {
+            [MODES.randomPicture](noRender) {
                 settings.set(WALLPAPERS_STORAGE_KEY, {
                     randomFromLibrary: true
                 });
                 window[RANDOM_WP_RENDERED] = null;
-                this.loaders[MODES.randomPicture]();
+                this.loaders[MODES.randomPicture](noRender);
             }
         });
     }
@@ -170,9 +170,9 @@ class Wallpaper {
                 });
                 setOptionActive(this.$settingOptions.pictureOfTheDay);
             },
-            [MODES.randomPicture]() {
+            [MODES.randomPicture](noRender) {
                 stat.send('wallpaper.random');
-                this._loadRandomWallpaper();
+                this._loadRandomWallpaper(noRender);
                 setOptionActive(this.$settingOptions.random);
             }
         });
@@ -233,7 +233,11 @@ class Wallpaper {
 
     _loadWallpaperSettings() {
         settings.inited().then(() => {
-            const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY) || DEFAULT_WALLPAPER;
+            const wallpaperData = settings.get(WALLPAPERS_STORAGE_KEY);
+
+            if (!wallpaperData) {
+                this.setters[MODES.randomPicture](true);
+            }
 
             if (wallpaperData.pictureOfTheDay) {
                 this.loaders[MODES.pictureOfTheDay]();
@@ -245,16 +249,18 @@ class Wallpaper {
         });
     }
 
-    _loadRandomWallpaper() {
+    _loadRandomWallpaper(noRender) {
         this.libraryReady.then(() => {
             const randomWallpapers = _.sampleSize(this.wallpapers, 2);
 
-            if (!window[RANDOM_WP_RENDERED]) {
-                this._renderWallpaper(randomWallpapers[0]);
-                this.currentWallpaper = randomWallpapers[0];
-            } else {
-                this._renderWallpaper(window[RANDOM_WP_RENDERED], true);
-                this.currentWallpaper = window[RANDOM_WP_RENDERED];
+            if (!noRender) {
+                if (!window[RANDOM_WP_RENDERED]) {
+                    this._renderWallpaper(randomWallpapers[0]);
+                    this.currentWallpaper = randomWallpapers[0];
+                } else {
+                    this._renderWallpaper(window[RANDOM_WP_RENDERED], true);
+                    this.currentWallpaper = window[RANDOM_WP_RENDERED];
+                }
             }
 
             this._preloadWallpaper(randomWallpapers[1]);
