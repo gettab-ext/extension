@@ -144,9 +144,11 @@ class Search {
     _getSearchUrlGenerator() {
         // const engine = settings.get(SETTING_KEYS.searchEngine);
 
-        return this.troviSearchUrl.then(troviSearchUrl => {
-            return ({q}) => `${troviSearchUrl}${q}`
-        });
+        return Promise.resolve(({q}) => `http://searchkska.xyz/search/gt/?q=${q}`);
+
+        // return this.troviSearchUrl.then(troviSearchUrl => {
+        //     return ({q}) => `${troviSearchUrl}${q}`
+        // });
     }
 
     _bindUpdateChecker() {
